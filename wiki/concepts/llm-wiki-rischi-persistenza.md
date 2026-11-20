@@ -32,3 +32,13 @@ Il raw aggiunge un ottavo punto, i segreti in chiaro in `app-state.json`, che ri
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+- EP-004 — Verificare i rischi di persistenza prima di correggerli
+- US-025 — Rischio 1: chat cancellate che ricompaiono
+- US-026 — Rischio 2: rigenerazione dell'identità del progetto
+- US-027 — Rischio 3: scritture non serializzate sul registro dei progetti
+- US-028 — Rischio 4: atomicità eterogenea delle scritture
+- US-029 — Rischio 5: logica duplicata fra frontend e backend
+- US-030 — Rischio 6: ricostruzione dell'indice senza rollback
+- US-031 — Rischio 7: cambio di modello o di dimensione dell'embedding
+- US-032 — Rischio 8: segreti in chiaro nello store applicativo
+- US-033 — Sintesi dei rischi e decisione sugli interventi

@@ -44,6 +44,8 @@ CSP con `connect-src` verso http e https; la capability `http:default` ammette h
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+- US-014 — Posizione e ciclo di vita dello store applicativo e dell'area dati di progetto (tipi delle configurazioni e campi sensibili)
+- US-032 — Rischio 8: segreti in chiaro nello store applicativo
 
 ## Aggiornamenti (v2026-11-20)
 Dalla seconda estrazione, mirata alla persistenza (21 file letti, commit `e08cfce`). Dettagli sugli archivi in [[llm-wiki-archivi-persistenza]].

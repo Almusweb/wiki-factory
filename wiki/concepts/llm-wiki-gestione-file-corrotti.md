@@ -32,3 +32,7 @@ Pagina ricavata dalla seconda estrazione sulla persistenza (commit `e08cfce`), s
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+- US-014 — Posizione e ciclo di vita dello store applicativo e dell'area dati di progetto (gap `llm-wiki-app-state-percorso`)
+- US-021 — Schema degli archivi per progetto
+- US-026 — Rischio 2: rigenerazione dell'identità del progetto
+- US-027 — Rischio 3: scritture non serializzate sul registro dei progetti

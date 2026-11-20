@@ -101,3 +101,16 @@ tags: [factory, master, difetti, kanban]
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+- EP-001 — Difetti del master: analisi e segnalazione (`management/kanban/EP-001-difetti-master-analisi-e-segnalazione/EP-001.md`)
+- US-012 — Definire convenzioni e modello di segnalazione al master
+- US-001 — Difetto 1: lint deterministico su console Windows cp1252
+- US-002 — Difetto 2: protocollo di ingest senza il ramo repo
+- US-003 — Difetto 3: hook dei submodule e ID senza prefisso di namespace
+- US-004 — Difetto 4: schema di configurazione senza la chiave di attribuzione AI
+- US-005 — Difetto 5: frontmatter del file dei gap
+- US-006 — Difetto 6: comandi solo del master citati nelle derivate
+- US-007 — Difetto 7: installer e dev-agent con topologia custom
+- US-008 — Difetto 8: review di qualità e stato delle regole
+- US-009 — Difetto 9: installer e regole canonical
+- US-010 — Difetto 10: Check 4c e percorsi di codice multi-repo
+- US-011 — Difetto 11: Check 4ax e modifica del file dei submodule

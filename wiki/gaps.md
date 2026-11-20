@@ -129,3 +129,9 @@ File append-only: le informazioni che servono e la wiki non ha. Formato e chiusu
 **Gap:** la dimensione del vettore è fissata dal primo chunk di una scrittura (`vector_upsert_chunks_inner`) e nel campione non c'è una verifica esplicita di coerenza con la tabella esistente; la gestione di un cambio di modello o di dimensione dell'embedding sembra affidata al re-index (l'impronta di revisione include il modello). Il raw la segna «Da verificare». Fonte del gap: raw/2026-11-20-repo-llm_wiki.md §Divergenze e rischi.
 **Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (lettura di `search.rs`, dei punti d'uso di `embeddingConfig` e della UI Settings → Embedding). Non bloccante.
 **Impatto:** [[llm-wiki-rischi-persistenza]] riporta il punto come deduzione da verificare.
+
+## 2026-11-20 17:25 — master-difetti-impatto-priorita
+**Origine:** product-manager @ EP-001
+**Gap:** [[master-difetti-rilevati]] non contiene un'analisi di impatto né una priorità per gli 11 difetti del master: il documento di sessione elenca sintomo ed evidenza dichiarata, non conseguenze né gravità. Le priorità di US-001..US-011 sono quindi una proposta del product-manager basata sul solo sintomo dichiarato (high 1, 3, 7; medium 2, 4, 8, 9; low 5, 6, 10, 11), confermata dall'utente il 2026-11-20.
+**Sospetta fonte:** nessuna fonte chiara, serve input dell'utente o nuovo raw di sessione. Non bloccante.
+**Impatto:** la priorità di EP-001 e delle sue storie resta provvisoria finché non c'è un'analisi di impatto.

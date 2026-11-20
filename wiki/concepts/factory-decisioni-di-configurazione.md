@@ -45,3 +45,11 @@ Gli artefatti toccati dalla sessione sono nella tabella di [[session-2026-11-20-
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+- EP-001 — Difetti del master: analisi e segnalazione (decisione 10; workaround locali delle decisioni 6, 8, 9)
+- US-012 — Definire convenzioni e modello di segnalazione al master
+- US-004 — Difetto 4: schema senza la chiave di attribuzione AI (decisione 6)
+- US-005 — Difetto 5: frontmatter del file dei gap (decisione 9)
+- US-008 — Difetto 8: review di qualità e stato delle regole (decisione 8)
+- US-009 — Difetto 9: installer e regole canonical (decisione 8)
+- EP-002 — Completare la conoscenza del layer di persistenza (decisione 7, layer db agentico)
+- EP-003 — Documentare gli schemi attuali del layer di persistenza (decisione 7)

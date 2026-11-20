@@ -26,6 +26,10 @@ Gap aperto sullo stato del piano multimodale: [[gaps]] (`llm-wiki-multimodale-st
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+- EP-003 — Documentare gli schemi attuali del layer di persistenza
+- US-017 — Formato di log e indice del progetto wiki
+- US-019 — Indice degli schemi, identificatori e relazioni fra archivi
+- US-020 — Schema degli archivi vettoriali e delle revisioni di embedding
 
 ## Aggiornamenti (v2026-11-20)
 Seconda estrazione, mirata al layer di persistenza, sullo stesso commit `e08cfce` (21 file letti, `files_sampled` cumulativo 50, estrazione ancora `partial`). Archivi, versioni, operazioni distruttive, file corrotti e rischi sono nelle pagine dedicate: [[llm-wiki-archivi-persistenza]], [[llm-wiki-versioni-e-migrazioni]], [[llm-wiki-operazioni-distruttive]], [[llm-wiki-gestione-file-corrotti]], [[llm-wiki-rischi-persistenza]]. [^src: raw/2026-11-20-repo-llm_wiki.md §Premessa e perimetro]

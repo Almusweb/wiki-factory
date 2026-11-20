@@ -49,3 +49,8 @@ Fonte di tutte le righe: [^src: raw/2026-11-20-repo-llm_wiki.md §Operazioni dis
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+- US-016 — Chiamanti delle operazioni distruttive e dei percorsi legacy
+- US-017 — Formato di log e indice del progetto wiki
+- US-025 — Rischio 1: chat cancellate che ricompaiono
+- US-028 — Rischio 4: atomicità eterogenea delle scritture
+- US-030 — Rischio 6: ricostruzione dell'indice senza rollback

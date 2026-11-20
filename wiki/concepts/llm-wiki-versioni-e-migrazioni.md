@@ -48,3 +48,7 @@ Nel v2 è il percorso relativo sotto `wiki/` senza `.md` (funzione `wikiPageIdFr
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+- US-016 — Chiamanti delle operazioni distruttive e dei percorsi legacy (gap `llm-wiki-vector-v1-chiamanti`)
+- US-020 — Schema degli archivi vettoriali e delle revisioni di embedding
+- US-024 — Versioni di formato e regole di compatibilità
+- US-031 — Rischio 7: cambio di modello o di dimensione dell'embedding

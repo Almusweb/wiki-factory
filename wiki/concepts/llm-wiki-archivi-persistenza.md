@@ -67,3 +67,15 @@ La cronologia è una mappa file-per-percorso con indirizzo stabile (hash FNV-1a 
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+- EP-002 — Completare la conoscenza del layer di persistenza
+- EP-003 — Documentare gli schemi attuali del layer di persistenza
+- US-013 — Estrazione mirata del codice di persistenza non letto
+- US-014 — Posizione e ciclo di vita dello store applicativo e dell'area dati di progetto
+- US-015 — Atomicità delle scritture e sincronizzazione file
+- US-016 — Chiamanti delle operazioni distruttive e dei percorsi legacy
+- US-018 — Dimensioni e crescita degli archivi
+- US-019 — Indice degli schemi, identificatori e relazioni fra archivi
+- US-020 — Schema degli archivi vettoriali e delle revisioni di embedding
+- US-021 — Schema degli archivi per progetto
+- US-022 — Schema di chat, sessioni agente e cronologia file
+- US-023 — Schema dello store applicativo
