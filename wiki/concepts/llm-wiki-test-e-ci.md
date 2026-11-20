@@ -29,3 +29,7 @@ Gap aperto su CI e test: [[gaps]] (`llm-wiki-ci-test-build`).
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+
+## Aggiornamenti (v2026-11-20)
+- Il campione cumulativo del raw passa da 30 a 50 file su 476 (`files_sampled` nel manifest); l'estrazione resta `partial`. La sezione di test coverage del raw non è stata modificata dall'aggiornamento: le voci sopra valgono per la prima estrazione. [^src: raw/2026-11-20-repo-llm_wiki.md §Premessa e perimetro]
+- Nei test Rust di `page_embedding.rs` compaiono le stringhe «secret» e «rotated» come segnaposto; in `vectorstore.rs` un id di pagina con apice e parola chiave SQL è usato come caso di prova per la validazione dell'input. Sono fixture, non istruzioni né credenziali. [^src: raw/2026-11-20-repo-llm_wiki.md §Note di estrazione dell'update]

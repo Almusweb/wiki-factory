@@ -81,3 +81,51 @@ File append-only: le informazioni che servono e la wiki non ha. Formato e chiusu
 **Gap:** nessuna scansione dei sorgenti non aperti alla ricerca di credenziali hardcoded: lo zero di secret redatti vale solo per i 30 file letti e per la ricerca dei nomi file. Fonte del gap: raw/2026-11-20-repo-llm_wiki.md §Gap evidenti.
 **Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (scansione testuale dei sorgenti). Non bloccante.
 **Impatto:** [[llm-wiki-sicurezza]] e [[2026-11-20-repo-llm_wiki]] non possono affermare l'assenza di credenziali nel repository.
+
+## 2026-11-20 17:06 — llm-wiki-persistenza-codice-non-letto
+**Origine:** wiki-keeper @ ingest 2026-11-20-repo-llm_wiki (aggiornamento v2026-11-20)
+**Gap:** codice che incide sulla persistenza e non è stato letto. `src-tauri/src/commands/file_sync.rs` (70 KB): sincronizzazione e watcher dei file, non si sa se persista stato. Rust: `src-tauri/src/commands/fs.rs` (atomicità di `write_file` e `writeFileAtomic`, cancellazioni), `search.rs` (`embedding_fetch`, `SearchEmbeddingConfig`), `api_server.rs` (lettura di `apiConfig`, endpoint che scrivono), `agent/runtime.rs` (chi chiama `append_turn` e con quali id di sessione), `proxy.rs`, `lib.rs` oltre le parti già lette. TS: `src/stores/wiki-store.ts` (tipi di tutte le configurazioni, compresi i campi segreti), `lint-store.ts`, `dedup-queue.ts` (persistenza della coda dedup), `wiki-page-delete.ts` (cascata di cancellazione), `source-lifecycle.ts`, `ingest.ts` (scrittura di `ingest-cache` e della cache delle didascalie), `chat-panel.tsx` (cancellazione dei file chat), `sweep-reviews.ts`, `src/commands/fs.ts`. Si sovrappone in parte al gap `llm-wiki-codice-non-letto` (`fs.rs`, `api_server.rs`, `runtime.rs`, `lib.rs`, `ingest.ts`). Fonte del gap: raw/2026-11-20-repo-llm_wiki.md §Gap.
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (nuova estrazione `repo-sync` che copra i file indicati). Non bloccante.
+**Impatto:** [[llm-wiki-archivi-persistenza]], [[llm-wiki-operazioni-distruttive]] e [[llm-wiki-rischi-persistenza]] non possono confermare atomicità, chiamanti e cancellazioni nei file non letti.
+
+## 2026-11-20 17:06 — llm-wiki-file-citati-non-verificati
+**Origine:** wiki-keeper @ ingest 2026-11-20-repo-llm_wiki (aggiornamento v2026-11-20)
+**Gap:** file e cartelle citati nei commenti del codice ma non verificati: `image-caption-cache.json`, `lexical-graph.json` (commento di `dedup-storage.ts`), la cartella `raw/sources/.cache` e la cartella legacy `.llm-wiki-imported`. Fonte del gap: raw/2026-11-20-repo-llm_wiki.md §Gap.
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (lettura di `ingest.ts`, `dedup-storage.ts` e dei punti d'uso). Non bloccante.
+**Impatto:** [[llm-wiki-archivi-persistenza]] elenca 17 archivi senza questi file, di cui non è noto se esistano come archivi.
+
+## 2026-11-20 17:06 — llm-wiki-app-state-percorso
+**Origine:** wiki-keeper @ ingest 2026-11-20-repo-llm_wiki (aggiornamento v2026-11-20)
+**Gap:** il percorso effettivo di `app-state.json` e il comportamento del plugin store su file corrotto non sono determinabili dal campione. Fonte del gap: raw/2026-11-20-repo-llm_wiki.md §Gap.
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (configurazione del plugin store in `lib.rs` e documentazione del plugin). Non bloccante.
+**Impatto:** [[llm-wiki-archivi-persistenza]] e [[llm-wiki-gestione-file-corrotti]] non possono dire dove sia lo store né come reagisca a un file corrotto.
+
+## 2026-11-20 17:06 — llm-wiki-creazione-cartella-dati
+**Origine:** wiki-keeper @ ingest 2026-11-20-repo-llm_wiki (aggiornamento v2026-11-20)
+**Gap:** non è noto chi crei `.llm-wiki/` per un progetto importato o aperto da disco: `create_project` non la crea e `open_project` non la richiede. Fonte del gap: raw/2026-11-20-repo-llm_wiki.md §Gap.
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (lettura di `persist.ts` nei punti d'uso e dei flussi di apertura progetto non letti). Non bloccante.
+**Impatto:** [[llm-wiki-schema-dati]] e [[llm-wiki-archivi-persistenza]] non possono descrivere il ciclo di vita della cartella dati.
+
+## 2026-11-20 17:06 — llm-wiki-vector-v1-chiamanti
+**Origine:** wiki-keeper @ ingest 2026-11-20-repo-llm_wiki (aggiornamento v2026-11-20)
+**Gap:** nessun chiamante di `vector_upsert` e `vector_delete` (v1) nel campione: non è chiaro se i percorsi v1 siano ancora usati. Fonte del gap: raw/2026-11-20-repo-llm_wiki.md §Gap.
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (lettura dei chiamanti dei comandi Tauri, ad esempio in `lib.rs`). Non bloccante.
+**Impatto:** [[llm-wiki-versioni-e-migrazioni]] e [[llm-wiki-operazioni-distruttive]] non possono dire se il v1 sia ancora scritto.
+
+## 2026-11-20 17:06 — llm-wiki-log-index-formato
+**Origine:** wiki-keeper @ ingest 2026-11-20-repo-llm_wiki (aggiornamento v2026-11-20)
+**Gap:** formato di `wiki/log.md` e logica di aggiornamento di `wiki/index.md` oltre `rebuild_wiki_index`: non analizzati. Fonte del gap: raw/2026-11-20-repo-llm_wiki.md §Gap.
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (lettura della logica di ingest e dei comandi di scrittura di log e indice). Non bloccante.
+**Impatto:** [[llm-wiki-schema-dati]] non descrive il formato dei file `log.md` e `index.md` del progetto wiki.
+
+## 2026-11-20 17:06 — llm-wiki-archivi-dimensioni
+**Origine:** wiki-keeper @ ingest 2026-11-20-repo-llm_wiki (aggiornamento v2026-11-20)
+**Gap:** nessun dato su dimensioni reali, prestazioni o crescita degli archivi. Fonte del gap: raw/2026-11-20-repo-llm_wiki.md §Gap.
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (misure su progetti reali; non ricavabile dal solo codice). Non bloccante.
+**Impatto:** [[llm-wiki-archivi-persistenza]] non può stimare la crescita dei file.
+
+## 2026-11-20 17:06 — llm-wiki-embedding-cambio-modello
+**Origine:** wiki-keeper @ ingest 2026-11-20-repo-llm_wiki (aggiornamento v2026-11-20)
+**Gap:** la dimensione del vettore è fissata dal primo chunk di una scrittura (`vector_upsert_chunks_inner`) e nel campione non c'è una verifica esplicita di coerenza con la tabella esistente; la gestione di un cambio di modello o di dimensione dell'embedding sembra affidata al re-index (l'impronta di revisione include il modello). Il raw la segna «Da verificare». Fonte del gap: raw/2026-11-20-repo-llm_wiki.md §Divergenze e rischi.
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (lettura di `search.rs`, dei punti d'uso di `embeddingConfig` e della UI Settings → Embedding). Non bloccante.
+**Impatto:** [[llm-wiki-rischi-persistenza]] riporta il punto come deduzione da verificare.

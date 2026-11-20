@@ -53,3 +53,26 @@ Nessun contenuto del raw è stato scartato. Le sezioni sono confluite nelle pagi
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+
+## Aggiornamenti (v2026-11-20)
+Questa pagina riporta sopra «30 su 476» file campionati e 30 file per il valore di zero secret: sono i valori della prima estrazione, superati dall'aggiornamento seguente.
+
+### Seconda estrazione (layer di persistenza)
+- Sorgente: stesso commit `e08cfce65aad8b76b13546a081c1a8d4422b70c3`, ramo `develop`. Il manifest dà `extracted_at` 2026-11-20T16:58:00+01:00 e `files_sampled: 50`; il raw aggiunge in coda la sezione `## Aggiornamenti (v2026-11-20)`, senza modificare le precedenti. [^src: raw/2026-11-20-repo-llm_wiki.md §Premessa e perimetro]
+- Campione di questo giro: 21 file, tutti sotto 50.000 byte (circa 357 KB). Il cumulativo di 50 è la somma dei 30 della prima estrazione e dei 20 nuovi: `src/types/wiki.ts` era già stato letto ed è l'unico overlap verificabile; se il campione precedente contenesse altri file di questo giro, il valore reale sarebbe leggermente inferiore. [^src: raw/2026-11-20-repo-llm_wiki.md §Premessa e perimetro]
+- Non letto per limite di dimensione: `src-tauri/src/commands/file_sync.rs` (70 KB). [^src: raw/2026-11-20-repo-llm_wiki.md §Premessa e perimetro]
+- Segreti redatti: 0; nessun file `.env*` e nessun valore di credenziale in chiaro nei 21 file. Limite invariato: nessuna scansione testuale dei sorgenti non aperti. Istruzioni trovate nei file letti: nessuna. Stato complessivo: **partial**. [^src: raw/2026-11-20-repo-llm_wiki.md §Note di estrazione dell'update]
+
+### Pagine ricavate dall'aggiornamento
+- [[llm-wiki-archivi-persistenza]] — inventario dei 17 archivi e chiavi di `app-state.json`.
+- [[llm-wiki-versioni-e-migrazioni]] — versioni di formato e migrazioni.
+- [[llm-wiki-operazioni-distruttive]] — operazioni distruttive, innesco e salvaguardie.
+- [[llm-wiki-gestione-file-corrotti]] — comportamento sui file corrotti.
+- [[llm-wiki-rischi-persistenza]] — divergenze e rischi (deduzioni).
+- Pagine aggiornate: [[llm-wiki-schema-dati]], [[llm-wiki-sicurezza]], [[llm-wiki-stack-e-dipendenze]], [[llm-wiki-test-e-ci]].
+
+### Gap aperti dall'aggiornamento
+Dalla sezione `### Gap` dell'aggiornamento sono stati aperti in [[gaps]]: `llm-wiki-persistenza-codice-non-letto`, `llm-wiki-file-citati-non-verificati`, `llm-wiki-app-state-percorso`, `llm-wiki-creazione-cartella-dati`, `llm-wiki-vector-v1-chiamanti`, `llm-wiki-log-index-formato`, `llm-wiki-archivi-dimensioni`. Dalla sezione `### Divergenze e rischi`: `llm-wiki-embedding-cambio-modello`. I 12 gap della prima estrazione restano aperti. [^src: raw/2026-11-20-repo-llm_wiki.md §Gap]
+
+### Correzione di percorso
+Dove il raw cita `fs.rs` come non letto, il percorso corretto segnalato dall'estrattore è `src-tauri/src/commands/fs.rs`. Il raw non è stato modificato; la correzione vale in wiki.

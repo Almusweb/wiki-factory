@@ -225,3 +225,155 @@ Non esistono cartelle `docs/` ne' `ADR/` nell'enumerazione. Il `.gitignore` del 
 - Secret redacted: 0. Nessun file `.env*` e nessuna cartella `secrets/` trovati; nel README di `mcp-server` compare solo un segnaposto per il token, non un valore. Limite: senza strumento di ricerca testuale non e' stata fatta una scansione dei sorgenti non aperti, quindi lo zero vale per i 30 file letti e per la ricerca dei nomi file.
 - Estrazione: **partial**. Motivo: cinque file ad alto valore (`agent/runtime.rs`, `agent/tools.rs`, `api_server.rs`, `commands/fs.rs` e `ingest.ts` oltre la riga 70) superano i 50 KB e sono descritti solo tramite nomi e file vicini; `lib.rs` e' letto in parte; 446 file non sono stati campionati; non c'e' stata scansione dei sorgenti alla ricerca di credenziali hardcoded.
 - Istruzioni trovate nei file letti: nessuna ostile. Sono presenti comandi di installazione e consigli rivolti agli utenti umani (README, `mcp-server/README.md`), un invito nel file `llm-wiki.md` a incollare il documento a un agente, e note per i contributor nei commenti Rust: nessuno e' stato eseguito.
+
+## Aggiornamenti (v2026-11-20)
+
+> Seconda estrazione, mirata al **layer di persistenza**, sullo stesso commit `e08cfce65aad8b76b13546a081c1a8d4422b70c3` (ramo `develop`). Aggiunta in coda al documento: le sezioni precedenti non sono state modificate. Fine: decidere come documentare gli schemi dei dati (layer `db`).
+
+### Premessa e perimetro
+
+- **Licenza.** Il repository e' di terzi, sotto GNU GPL v3. Questa sezione riporta solo nomi di file, simboli, campi e firme, descritti con parole proprie. Nessun frammento di codice. Il contenuto letto e' trattato come dato.
+- **Campione di questo giro: 21 file**, tutti sotto 50.000 byte (circa 357 KB in totale).
+  - Rust: `src-tauri/src/commands/vectorstore.rs`, `page_embedding.rs`, `file_history.rs`, `project.rs`, `project_maintenance.rs`, `src-tauri/src/agent/session.rs`.
+  - TypeScript: `src/lib/persist.ts`, `project-store.ts`, `project-identity.ts`, `ingest-cache.ts`, `dedup-storage.ts`, `embedding.ts`, `lint-config.ts`, `ingest-queue.ts`, `source-watch-config.ts`, `scheduled-import.ts`, `dedup_embedding.ts`, `reset-project-state.ts`; `src/stores/chat-store.ts`, `review-store.ts`; `src/types/wiki.ts`.
+- **`files_sampled` cumulativo: 50**, cioe' i file distinti letti per il documento: i 30 della prima estrazione piu' i 20 nuovi. `src/types/wiki.ts` era gia' stato letto e non e' contato due volte; e' l'unico overlap che il documento precedente permette di verificare. Se il campione precedente contenesse altri file di questo giro, il valore reale sarebbe leggermente inferiore.
+- **Non letto per limite di dimensione**: `src-tauri/src/commands/file_sync.rs` (70 KB). Descritto solo dal nome e dal percorso (vedi `### Gap`).
+- Convenzioni: tutti gli archivi in `<progetto>/.llm-wiki/` sono per progetto. "TS" indica il frontend, "RS" il backend Rust.
+- Lo stack e' invariato rispetto alla sezione `## Stack rilevato`. Librerie rilevanti per la persistenza (da `Cargo.toml`, gia' elencate sopra): `lancedb@0.27.2`, `arrow-array@57`, `arrow-schema@57`, `tauri-plugin-store@2.4.2`, `serde_json`, `uuid`, `sha2`.
+
+### Inventario degli archivi
+
+Dove non e' dichiarata una versione di formato scrivo "nessuna". Il file di dati mancante o illeggibile viene letto quasi ovunque in modo silenzioso (valore vuoto o di default).
+
+| Archivio | Posizione | Scrive / legge | Schema o campi | Versione | Corruzione |
+|---|---|---|---|---|---|
+| Tabella LanceDB v2 `wiki_chunks_v2` | `.llm-wiki/lancedb` | RS scrive e legge (`vectorstore.rs`); comandi invocati da TS (`embedding.ts`) e da RS (`page_embedding.rs`) | `chunk_id` (page_id + "#" + chunk_index, solo debug), `page_id`, `chunk_index` (u32), `chunk_text`, `heading_path`, `vector` (lista a lunghezza fissa di f32; dimensione presa dal primo chunk) | solo il suffisso `_v2` del nome | Non gestita: errori di apertura propagati come stringa. Search e count su tabella assente restituiscono vuoto o 0 |
+| Tabella LanceDB v1 `wiki_vectors` (legacy) | `.llm-wiki/lancedb` | RS scrive (`vector_upsert`, ancora presente) e legge; TS solo conteggio e drop | `page_id`, `vector`. Una riga per pagina, id = nome base del file | `_v1` implicito | Come sopra |
+| Revisioni embedding | `.llm-wiki/embedding-revisions/<sha256(page_id)>.revision` | RS scrive (file temporaneo e rinomina) e legge; TS non lo usa | Testo semplice: impronta `sha256:` calcolata su revisione del contenuto, endpoint, modello, dimensione di output, header extra, dimensione e sovrapposizione dei chunk. La chiave API e' esclusa | nessuna | Illeggibile o vuoto: trattato come assente, quindi la pagina viene ri-incorporata |
+| `project.json` | `.llm-wiki/project.json` | TS scrive e legge (`project-identity.ts`); RS non lo legge | `id` (UUID), `createdAt` (ms) | nessuna | Mancante o corrotto: genera un nuovo UUID e sovrascrive; se la scrittura fallisce avvisa e restituisce comunque l'id |
+| `ingest-queue.json` | `.llm-wiki/ingest-queue.json` | TS (`ingest-queue.ts`) | Elenco di task: `id`, `projectId`, `sourcePath` (relativo), `folderContext`, `status` (pending, processing, done, failed, cancelled), `addedAt`, `error`, `retryCount`. I task `done` non vengono salvati | nessuna | Illeggibile: coda vuota; il salvataggio successivo sovrascrive il file |
+| `ingest-cache.json` | `.llm-wiki/ingest-cache.json` | TS (`ingest-cache.ts`) | `entries`, per nome sorgente: `hash` (SHA-256 del contenuto), `timestamp`, `filesWritten[]` | nessuna | Illeggibile: cache vuota (costo solo di ri-ingest); gli errori di salvataggio sono ignorati |
+| `review.json` | `.llm-wiki/review.json` | TS (`persist.ts`, `review-store.ts`) | Elenco di review: `id`, `type` (contradiction, duplicate, missing-page, confirm, suggestion), `title`, `description`, `sourcePath?`, `affectedPages?`, `searchQueries?`, `options[]` (label, action), `resolved`, `resolvedAction?`, `createdAt` | nessuna | Illeggibile: elenco vuoto |
+| `lint.json` | `.llm-wiki/lint.json` | TS (`persist.ts`) | Elenco di `LintItem` (tipo in `lint-store.ts`, non letto) | nessuna | Illeggibile: elenco vuoto |
+| `lint-config.json` | `.llm-wiki/lint-config.json` | TS (`lint-config.ts`), scrittura atomica | `ignoreOrphan`, `ignoreNoOutlinks`, `ignorePages[]` | nessuna | Illeggibile: valori di default, con avviso in console |
+| Chat | `.llm-wiki/conversations.json` e `.llm-wiki/chats/<id>.json` | TS (`persist.ts`, `chat-store.ts`) | Conversazione: `id`, `title`, `createdAt`, `updatedAt`, `selectedSkills?`, `contextFiles?`. Messaggio: `id`, `role`, `content`, `timestamp`, `conversationId`, `references?`, `agentSteps?`, `agentFileChanges?`, `userInputRequest?`, `contextFiles?`. Immagini e contenuti prima/dopo delle modifiche dell'agente non vengono persistiti | nessuna | Ricostruzione dell'indice dai file orfani (vedi `### Gestione dei file corrotti`) |
+| `chat-preferences.json` | `.llm-wiki/chat-preferences.json` | TS (`persist.ts`) | `useWebSearch`, `useAnyTxtSearch`, `agentMode`, `retrievalMode`, `selectedSkills`, `disabledSkills` | nessuna | Illeggibile: default; valori normalizzati in lettura |
+| `dedup-not-duplicates.json` | `.llm-wiki/dedup-not-duplicates.json` | TS (`dedup-storage.ts`) | Array di array di slug (gruppi "non sono duplicati") | nessuna | Illeggibile o forma errata: elenco vuoto; il salvataggio successivo sovrascrive |
+| `scheduled-import-db.json` | `.llm-wiki/scheduled-import-db.json` | TS (`scheduled-import.ts`), scrittura atomica | `version`, `directories` (chiave: percorso normalizzato; valore: `files` percorso-md5, `statCache` size e mtime, `lastScan`). Si salva solo la directory attiva | **`version: 1`**, unica versione di formato esplicita nel campione | Illeggibile: store vuoto con avviso; la scansione successiva riconsidera tutto come nuovo |
+| `history-settings.json` | `.llm-wiki/history-settings.json` | RS (`file_history.rs`) | `enabled` (default falso), `maxVersionsPerFile` (default 10, massimo 30) | nessuna | Illeggibile o symlink: default |
+| Cronologia file | `.llm-wiki/history/<hash FNV-1a a 64 bit del percorso relativo>.json` | RS scrive e legge; TS via comandi | Array di voci: `id`, `path`, `timestamp` (ms), `author`, `tool`, `content` (fino a 512 KB). Non registra file sotto `.llm-wiki` | nessuna | File illeggibile: saltato o trattato come vuoto. Rifiuta symlink |
+| Sessioni agente | `.llm-wiki/agent-sessions/<id>.json` | RS (`agent/session.rs`); chiamanti in `runtime.rs` non letto | `sessionId`, `projectId`, `messages[]` (`role`, `content`, `timestamp`), `updatedAt`. Solo gli ultimi 40 messaggi. L'id viene sanitizzato | nessuna (`sessionId` e `projectId` con default per file vecchi) | Vedi `### Gestione dei file corrotti` |
+| `app-state.json` | Store del plugin Tauri (cartella dati dell'app; percorso non verificato) | TS scrive quasi tutto (`project-store.ts`, `project-identity.ts`). RS legge `proxyConfig` e `apiConfig` (per i commenti di `project-store.ts`: `apiConfig` a ogni richiesta, con cache di 5 secondi) | Chiavi elencate in `### Schemi e campi` | nessuna | Gestione del plugin non verificata; `loadRegistry` ritorna un registro vuoto se la lettura fallisce |
+
+### Schemi e campi
+
+**LanceDB.** Lo schema v2 ha sei colonne: quattro di testo (`chunk_id`, `page_id`, `chunk_text`, `heading_path`), una intera senza segno a 32 bit (`chunk_index`) e `vector`, lista a lunghezza fissa di numeri a 32 bit. Nessuna colonna e' nulla. Lo schema v1 ha due colonne (`page_id`, `vector`). In `vectorstore.rs` i tipi di risultato sono `VectorSearchResult` (v1: `page_id`, `score`) e `ChunkSearchResult` (v2: `chunk_id`, `page_id`, `chunk_index`, `chunk_text`, `heading_path`, `score`); l'input di scrittura e' `ChunkUpsertInput` (`chunk_index`, `chunk_text`, `heading_path`, `embedding`). Il punteggio e' ricavato dalla distanza con la formula 1 / (1 + distanza). L'id di pagina e' validato (massimo 256 caratteri, niente apici, backslash, caratteri di controllo o invisibili) perche' viene inserito in un filtro testuale. Lato TS, `embedding.ts` aggrega i chunk per pagina con punteggio massimo piu' una coda pesata e limitata. Risultato di `page_embedding.rs`: `PageEmbeddingResult` (`path`, `pageId`, `revision`, `chunks`, `vectorsWritten`, `status` con valori unchanged o indexed). Limiti: pagina massimo 2 MiB, massimo 512 chunk, chunk da 64 a 32.000 caratteri (default 1.000, sovrapposizione 200), batch da 64.
+
+**File in `.llm-wiki/`.** Oltre a quanto in tabella: la cronologia e' una mappa file-per-percorso con indirizzo stabile (hash FNV-1a a 64 bit con costanti fisse, per resistere ai cambi di toolchain). Il record di coda `IngestTask` ha `status` a cinque valori. Il record di `scheduled-import-db.json` tiene un hash md5 per file e, in piu', size e mtime per saltare il ricalcolo.
+
+**`app-state.json` (chiavi in `project-store.ts` e `project-identity.ts`).**
+- `recentProjects` (massimo 10) e `lastProject`: oggetti con `id`, `name`, `path`.
+- `projectRegistry`: per id, `id`, `path`, `name`, `lastOpened`.
+- Configurazione LLM: `llmConfig`, `providerConfigs`, `activePresetId`, `taskModelRouting` (`chatPresetId`, `ingestPresetId`), `projectLlmOverrides` (per id progetto: `enabled`, `presetId`, `model`, `profile`), `customLlmPresets` (massimo 50, voci `id` con prefisso `custom-` e `label`).
+- Servizi: `searchApiConfig`, `embeddingConfig`, `multimodalConfig`, `mineruConfig`, `proxyConfig`, `apiConfig`.
+- Interfaccia e comportamento: `generalConfig` (`autostart`, `closeBehavior` con valori ask, minimize, exit), `language`, `theme`, `outputLanguage`, `projectOutputLanguages`, `zoomLevel`, `updateCheckState` (`enabled`, `lastCheckedAt`, `dismissedVersion`).
+- Per progetto: `scheduledImportConfig:<percorso>`, `projectFileSyncEnabled` (con chiave `default`), `sourceWatchConfig` (con chiave `default`), `sourceWatchAllProjects`.
+- Campi di `mineruConfig` (normalizzati in `project-store.ts`): `enabled`, `backend`, `localEndpoint`, `localToken`, `localBackend`, `localEffort`, `localParseMethod`, `localLanguage`, `localFormulaEnabled`, `localTableEnabled`, `localImageAnalysis`, `localServerUrl`, `token`, `modelVersion`.
+- `sourceWatchConfig` (normalizzata in `source-watch-config.ts`): `enabled`, `autoIngest`, `persistExtractedMarkdown`, `parsingConcurrency`, `ingestConcurrency`, `includeExtensions`, `excludeExtensions`, `excludeDirs`, `excludeGlobs`, `maxFileSizeMb` (da 1 a 4096).
+- Sincronizzazione con Rust: i commenti di `project-store.ts` indicano che i nomi `proxyConfig` e `apiConfig` devono coincidere con quelli letti dal codice Rust; se divergono, l'API resta senza token configurato.
+- Presenza di segreti: tra i campi in chiaro compaiono `token` e `localToken` in `mineruConfig`; per `apiConfig` i commenti parlano di un token API. Nessun valore e' stato letto. I tipi di `llmConfig`, `embeddingConfig`, `searchApiConfig` e `providerConfigs` sono in `src/stores/wiki-store.ts`, non letto: la presenza di chiavi API non e' verificata.
+
+**Tipi condivisi (`src/types/wiki.ts`).** `WikiProject` ha `id`, `name`, `path`; il commento dice che l'`id` e' un UUID persistito in `project.json`. Il tipo Rust di ritorno di `create_project` e `open_project` e' invece costruito solo con nome e percorso (`src-tauri/src/commands/project.rs`): l'`id` viene assegnato dal lato TS (`ensureProjectId`).
+
+**Layout creato da `create_project`.** Cartelle `raw/sources`, `raw/assets` e `wiki/` con le sottocartelle entities, concepts, sources, queries, comparisons, synthesis; file `schema.md`, `purpose.md`, `wiki/index.md`, `wiki/log.md`, `wiki/overview.md`; cartella `.obsidian/` con `app.json`, `appearance.json`, `core-plugins.json`. **`.llm-wiki/` non viene creata da questo comando**: nasce dopo, lato TS (`ensureDir` in `persist.ts` e `ensureProjectId`). `open_project` valida solo la presenza di `schema.md` e della cartella `wiki/`.
+
+### Versioni di formato e migrazioni
+
+Versioni esplicite: solo `version: 1` in `scheduled-import-db.json` e il suffisso `_v2` della tabella LanceDB. Per il resto la compatibilita' e' affidata a campi opzionali, normalizzatori tolleranti e valori di default.
+
+- **LanceDB v1 verso v2.**
+  - Non c'e' migrazione automatica dei dati: c'e' una procedura di ricostruzione. Il commento di `vectorstore.rs` dice che il v1 e' mantenuto perche' i progetti precedenti alla 0.3.11 si carichino ancora.
+  - `vector_legacy_row_count` rileva righe v1. Dal commento, la UI di Settings → Embedding mostra un invito a ri-indicizzare dopo l'aggiornamento (la UI non e' nel campione).
+  - Il re-index (`embedAllPages` con `clearExisting`, in `embedding.ts`) svuota il v2, riscrive i chunk e poi elimina il v1 con `vector_drop_legacy`, in modalita' "best effort".
+  - `vector_upsert` (v1) esiste ancora e non e' marcata come deprecata nel codice.
+- **Identificatore di pagina.** Nel v2 e' il percorso relativo sotto `wiki/` senza `.md` (funzione `wikiPageIdFromPath` in `embedding.ts`, `vector_page_id` in `page_embedding.rs`); nel v1 era il nome base. `removeLegacyVectorIdIfSafe` (presente sia in TS sia in Rust) elimina le righe con id "nome base" solo se esiste esattamente una pagina con quel nome.
+- **Chat.** `loadChatHistory` (`persist.ts`) legge, in ordine: il formato corrente; poi, in caso di errore, la ricostruzione dai file orfani; infine il vecchio `chat-history.json` in due forme (array piatto, migrato in una conversazione `default` chiamata "Previous Conversations"; oggetto combinato). La migrazione e' solo in lettura: dal campione non risulta che riscriva il formato nuovo ne' cancelli il vecchio file.
+- **Review.** `normalizeReviewItems` e `setItems` (`review-store.ts`) ricalcolano ogni id da un hash del contenuto (tipo piu' titolo normalizzato), eliminando i vecchi id numerici; gli elementi con lo stesso id si fondono ("resolved" vince, array uniti, `createdAt` minimo). Operazione idempotente, senza flag di versione.
+- **Impostazioni in `app-state.json`** (`project-store.ts`).
+  - `loadScheduledImportConfig` copia la chiave globale `scheduledImportConfig` (formato precedente alla 0.4.8) nella chiave per progetto e cancella quella globale.
+  - `loadSourceWatchConfig` ricade su `projectFileSyncEnabled` se non c'e' una configurazione di source watch.
+  - `normalizeSourceWatchConfig` (`source-watch-config.ts`) aggiunge png, jpg e jpeg se le estensioni coincidono con i vecchi default.
+- **`scheduled-import-db.json`.** `statCache` e' opzionale e additivo: i database di build precedenti ne sono privi e vengono ricalcolati una volta. Le chiavi con maiuscole e minuscole su Windows sono normalizzate in lettura. Resta il riferimento a una cartella legacy `.llm-wiki-imported`.
+- **Coda di ingest.** `loadQueue` assegna ai task senza `projectId` quello del progetto aperto.
+
+### Operazioni distruttive e innesco
+
+| Operazione (simbolo) | Archivio | Innesco | Salvaguardie osservate |
+|---|---|---|---|
+| `vector_clear_chunks` (drop tabella) | LanceDB v2 | Re-index completo da Settings → Embedding (commento in `vectorstore.rs`; flusso `embedAllPages` con `clearExisting`) | Il drop avviene solo dopo aver calcolato gli embedding. Non si procede se: albero wiki non leggibile; zero pagine ma chunk presenti; solo pagine vuote; una qualsiasi pagina fallita (in quel caso si aggiornano solo le pagine riuscite). **Se una scrittura fallisce dopo il drop l'indice resta incompleto: nessun rollback** (errore esplicito) |
+| `vector_drop_legacy` (drop tabella) | LanceDB v1 | Dopo un re-index riuscito (`dropLegacyVectorTableBestEffort`) e da Settings (commento) | No-op se la tabella non esiste |
+| `vector_delete_page` | righe v2 per `page_id` | Cancellazione sorgente (`removePageEmbedding`), `cleanupWrittenFiles` e cascata `cascadeDeleteWikiPage` (`wiki-page-delete.ts`, non letto), pulizia id legacy | Id validato; operazione idempotente |
+| `vector_delete` | righe v1 | Nessun chiamante nel campione | Come sopra |
+| `vector_upsert_chunks` | righe v2 | Ogni embedding di pagina | Sostituzione atomica ristretta alla pagina (merge-insert con cancellazione delle righe non piu' presenti). Lista vuota = no-op, non cancella |
+| `vector_upsert` | righe v1 | Chiamate legacy | Cancella e poi aggiunge in due passi (non atomico); l'errore di cancellazione e' solo loggato |
+| `vector_optimize_chunks` | versioni LanceDB | Ogni 20 pagine incrementali per progetto (contatore solo in memoria) e dopo scritture di massa | Compatta e pota le versioni precedenti, senza cancellazione "non verificata" (per l'uso multi-istanza); errori solo loggati |
+| `invalidate_page_revision` | `embedding-revisions` | Ogni upsert di chunk senza impronta (ad esempio dal percorso TS) | Assenza del file non e' errore |
+| `clear_file_history` | cartella `history/` | Comando Tauri (chiamante UI non nel campione) | Rifiuta symlink fuori dal progetto |
+| `set_file_history_settings` | cartella `history/` o voci | Salvataggio impostazioni: limite a 0 elimina la cartella (anche file corrotti); riduzione del limite, o primo salvataggio, taglia le voci piu' vecchie | Massimo bloccato a 30 |
+| `prune_history_store` | file di cronologia piu' vecchi | Dopo ogni registrazione, se si superano 128 MiB o 2.048 file | Salta il file appena scritto |
+| `restore_file_history` | file di lavoro della wiki | Azione utente | Salva prima il contenuto attuale come voce `before.history.restore`; rifiuta se il file attuale supera 512 KB |
+| `rebuild_wiki_index` | `wiki/index.md` | Comando Tauri (da Settings → manutenzione, per nome) | Sovrascrive per intero; file temporaneo e rinomina. Su Windows elimina prima l'originale: finestra non atomica |
+| `import_project_archive` | cartella di destinazione | Importazione utente | Destinazione vuota obbligatoria; rifiuta percorsi non sicuri e symlink; massimo 100.000 voci e 4 GB; richiede `wiki/index.md` |
+| `export_project_archive` | file zip | Esportazione utente | Include anche `.llm-wiki/` (chat, sessioni, cronologia, LanceDB). Destinazione fuori dal progetto |
+| Troncamento sessione agente (`append_turn`) | messaggi piu' vecchi | Ogni turno | Mantiene gli ultimi 40 |
+| Troncamento chat (`saveChatHistory`) | messaggi piu' vecchi | Ogni salvataggio | Salva solo gli ultimi 100 per conversazione: i precedenti si perdono al salvataggio |
+| `removeTasks`, `discardTasksForSources`, `clearCompletedTasks`, `cancelAllTasks` | `ingest-queue.json` | Azioni utente; riconciliazione dello scheduled import | `removeTasks` salta i task con run attivo. `cancelAllTasks` conserva i task. `clearCompletedTasks` tiene solo pending e processing, quindi elimina anche failed e cancelled |
+| `removeFromIngestCache`, `moveIngestCacheEntry` | `ingest-cache.json` | Cancellazione o rinomina di una sorgente | Gli errori di salvataggio sono ignorati |
+| `removeFromRecentProjects` | `app-state.json` | Rimozione di un progetto dall'elenco recenti | Azzera anche `lastProject`; **non** rimuove la voce da `projectRegistry` e non cancella cartelle |
+| `cleanupRemovedScheduledImports` | sorgenti mirror e pagine generate | Scansione quando un file sparisce o viene escluso | Solo per il progetto attivo; per gli altri si rinvia. Se fallisce, conserva il record per riprovare |
+| `resetProjectState` | solo memoria | Apertura o uscita da un progetto | Non cancella nulla su disco; chiama prima `pauseQueue`, che scarica la coda su disco |
+
+### Gestione dei file corrotti
+
+- **Regola generale.** Quasi tutti i caricamenti usano un `try/catch` che restituisce un valore vuoto o di default (`persist.ts`, `ingest-cache.ts`, `dedup-storage.ts`, `ingest-queue.ts`, `lint-config.ts`, `scheduled-import.ts`). Nessuna rinomina in quarantena, nessun backup del file corrotto, nessun segnale all'utente nel campione (al massimo un avviso in console).
+- **Effetto della prima scrittura dopo un file corrotto.** Dove il caricamento ricade sul valore vuoto e la scrittura successiva salva l'intero contenuto (coda, cache di ingest, elenco "non duplicati", database di scheduled import), il file corrotto viene sostituito dal nuovo contenuto.
+- **Sessioni agente** (`agent/session.rs`). `list_sessions` salta i file non leggibili. Ma `append_turn` carica la sessione con ripiego sul valore vuoto e poi salva: un file corrotto verrebbe quindi sostituito al turno successivo. La scrittura e' diretta, non atomica.
+- **Chat** (`persist.ts`). Se `conversations.json` manca o non si legge, `loadChatHistory` ricostruisce un indice minimo dai file `chats/*.json`, ignorando i file corrotti uno alla volta; se serve, prova poi il vecchio formato. Titolo della conversazione ricostruita: i primi 50 caratteri del primo messaggio utente, oppure "Previous Conversation".
+- **Cronologia file** (`file_history.rs`). File non leggibili sono saltati in conteggio e potatura; sono rimossi quando la cronologia viene disattivata a limite 0. Rifiuta symlink per impostazioni, cartella e singoli file.
+- **Identita' del progetto** (`project-identity.ts`). File mancante o corrotto: nuovo UUID e sovrascrittura (vedi `### Divergenze e rischi`).
+- **Embedding** (`page_embedding.rs`). La revisione illeggibile o vuota e' trattata come assente. Un errore nel salvare i metadati di revisione invalida la revisione e non fallisce la scrittura dei vettori.
+- **LanceDB.** Nessuna gestione dedicata: gli errori di connessione, apertura o scrittura sono propagati come messaggi di testo; nel percorso TS di ricerca un errore produce un elenco vuoto con messaggio di log.
+- **`app-state.json`.** `loadRegistry` ritorna un registro vuoto in caso di errore. Per le altre chiavi dipende dal comportamento del plugin store, non verificato.
+
+### Divergenze e rischi
+
+Sono **deduzioni dal codice letto**, non fatti osservati in esecuzione. Per ognuna indico file e simbolo.
+
+- **Possibile ricomparsa di chat cancellate.** `deleteConversation` (`src/stores/chat-store.ts`) rimuove la conversazione dallo store, ma `saveChatHistory` (`src/lib/persist.ts`) non elimina i file `chats/<id>.json` orfani, e `loadChatHistory` ricostruisce da quei file quando l'indice e' vuoto. Se l'utente cancella tutte le conversazioni, il caricamento successivo potrebbe resuscitarle. Non verificato: la rimozione fisica dei file potrebbe stare in codice non letto (ad esempio `chat-panel.tsx`).
+- **Rigenerazione dell'identita' del progetto.** In `ensureProjectId` (`project-identity.ts`) un `project.json` corrotto produce un nuovo UUID. `restoreQueue` (`ingest-queue.ts`) scarta poi come "cross-project" i task con il vecchio id; le impostazioni per progetto in `app-state.json`, indicizzate per id (`projectLlmOverrides`, `projectOutputLanguages`, `sourceWatchConfig`, `projectFileSyncEnabled`), resterebbero orfane.
+- **Scritture non serializzate sul registro.** Solo `saveProjectLlmOverride` e `saveCustomLlmPresets` (`project-store.ts`) hanno una catena di scrittura serializzata; `upsertProjectInfo` (`project-identity.ts`) usa lettura-modifica-scrittura non serializzata e parte da un registro vuoto se `loadRegistry` fallisce, con rischio di sovrascrivere l'intero `projectRegistry` con una sola voce.
+- **Atomicita' eterogenea.** Atomiche (file temporaneo e rinomina): `lint-config.json` (`writeFileAtomic`), `scheduled-import-db.json`, le revisioni embedding. Non atomiche: sessioni agente e cronologia (scrittura diretta in `session.rs` e `file_history.rs`). Per gli altri file TS dipende dall'implementazione di `writeFile` in `src/commands/fs.ts` / `fs.rs`, non letta.
+- **Logica duplicata tra TS e Rust.** Il chunking e' duplicato tra `page_embedding.rs` e `src/lib/text-chunker.ts` (il commento in `page_embedding.rs` lo dichiara); la pulizia dell'id legacy e' duplicata tra `embedding.ts` e `page_embedding.rs`. Inoltre `embedPage` (TS) scrive tramite `vector_upsert_chunks` senza impronta e quindi invalida le impronte salvate dal percorso Rust (`vector_upsert_chunks_inner`, ramo senza revisione).
+- **Re-index senza rollback.** In `embedAllPages` (`embedding.ts`), dopo `vector_clear_chunks` un errore di scrittura lascia l'indice incompleto; il messaggio d'errore lo dice esplicitamente e chiede di rilanciare il re-index.
+- **Cambio di modello o di dimensione dell'embedding.** La dimensione del vettore e' fissata dal primo chunk di una scrittura (`vector_upsert_chunks_inner`). Nel campione non c'e' una verifica esplicita di coerenza con la tabella esistente: la gestione di un cambio di modello sembra affidata al re-index (l'impronta di revisione include il modello). Da verificare.
+- **Segreti in chiaro in `app-state.json`.** Vedi `### Schemi e campi`: sono stati letti solo i nomi dei campi (`token`, `localToken`; token API di `apiConfig` dai commenti); nessun valore.
+
+### Gap
+
+- `src-tauri/src/commands/file_sync.rs` (70 KB): sincronizzazione e watcher dei file; non letto, non so se persista stato.
+- Rust non letto che incide sulla persistenza: `fs.rs` (atomicita' di `write_file` e `writeFileAtomic`, cancellazioni), `search.rs` (`embedding_fetch`, `SearchEmbeddingConfig`), `api_server.rs` (lettura di `apiConfig`, endpoint che scrivono), `agent/runtime.rs` (chi chiama `append_turn` e con quali id di sessione), `proxy.rs`, `lib.rs` oltre le parti gia' lette.
+- TS non letto: `src/stores/wiki-store.ts` (tipi di tutte le configurazioni, compresi i campi segreti), `lint-store.ts`, `dedup-queue.ts` (persistenza della coda dedup), `wiki-page-delete.ts` (cascata di cancellazione), `source-lifecycle.ts`, `ingest.ts` (scrittura di `ingest-cache` e della cache delle didascalie), `chat-panel.tsx` (cancellazione dei file chat), `sweep-reviews.ts`, `src/commands/fs.ts`.
+- File citati nei commenti ma non verificati: `image-caption-cache.json`, `lexical-graph.json` (commento di `dedup-storage.ts`), la cartella `raw/sources/.cache` e la cartella legacy `.llm-wiki-imported`.
+- Percorso effettivo di `app-state.json` e comportamento del plugin store su file corrotto: non determinabili dal campione.
+- Chi crea `.llm-wiki/` per un progetto importato o aperto da disco: `create_project` non la crea e `open_project` non la richiede.
+- Nessun chiamante di `vector_upsert` e `vector_delete` (v1) nel campione: non e' chiaro se i percorsi v1 siano ancora usati.
+- Formato di `wiki/log.md` e logica di aggiornamento di `wiki/index.md` oltre `rebuild_wiki_index`: non analizzati.
+- Nessun dato su dimensioni reali, prestazioni o crescita degli archivi.
+
+### Note di estrazione dell'update
+
+- File letti in questo giro: 21 su 476 (campione approvato dall'utente, ciascuno sotto 50.000 byte); `files_sampled` cumulativo nel manifest: 50.
+- Segreti redatti: 0. Nessun file `.env*` e nessun valore di credenziale in chiaro nei 21 file. Le stringhe "secret" e "rotated" nei test Rust di `page_embedding.rs` sono segnaposto di test, non conteggiati. Limite invariato: nessuna scansione testuale dei sorgenti non aperti.
+- Istruzioni trovate nei file letti: nessuna. Nei test Rust compare un id di pagina con apice e parola chiave SQL usato come caso di prova per la validazione dell'input (`vectorstore.rs`): e' una fixture, non un'istruzione. Nessun commento per i manutentori e' stato eseguito.
+- Stato dell'estrazione complessiva: **partial** (invariato), per i gap sopra.
+- Il documento supera il target di 5-15 KB per effetto dell'append in coda.

@@ -42,3 +42,6 @@ Il raw riporta l'output di `stack-detector`: il repository ha tre descriptor, se
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+
+## Aggiornamenti (v2026-11-20)
+La seconda estrazione, sul layer di persistenza, dichiara lo stack invariato rispetto alla sezione `## Stack rilevato`. Librerie rilevanti per la persistenza, da `Cargo.toml`: `lancedb@0.27.2`, `arrow-array@57`, `arrow-schema@57`, `tauri-plugin-store@2.4.2`, `serde_json`, `uuid`, `sha2`. Per l'uso di ciascuna negli archivi vedi [[llm-wiki-archivi-persistenza]]. [^src: raw/2026-11-20-repo-llm_wiki.md §Premessa e perimetro]
