@@ -1,0 +1,8 @@
+# tools/analytics deps
+pyyaml>=6.0
+# tools/analytics/run-monte-carlo.py
+numpy>=1.24
+# harvest-session-tokens.py
+jsonlines>=3.1
+# tools/object_storage/object_storage_access.py (opzionale: solo con object_storage_access.enabled: true)
+# boto3>=1.28

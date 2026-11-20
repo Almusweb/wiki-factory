@@ -1,0 +1,372 @@
+# factory.config.yaml — generato dall'installer da factory.starter.config.yaml il 2026-11-20
+# Soli Multi-Agents Factory, PATTERN v2.48. Capability opt-in: CAPABILITIES.md.
+
+project:
+  name: "wiki-factory"
+
+# factory.starter.config.yaml
+# Starter configuration for new adopters of soli-multi-agents-factory.
+#
+# HOW TO USE:
+#   1. Copy this file as factory.config.yaml in your project root.
+#   2. Update topology, code_path, vcs, routing, and stack with your project values.
+#   3. The 5 core capabilities are already active — no additional configuration required.
+#   4. To add opt-in capabilities, see:
+#        - CAPABILITIES.md          (capabilities by use case, flags and prerequisites)
+#        - schemas/factory.config.schema.json  (flag dependencies as if/then rules)
+#        - PATTERN.md               (full documentation)
+#
+# ACTIVE CORE CAPABILITIES (5) — selection criteria:
+#   1. Pipeline L1→L5          — base core, always active (no flag required)
+#   2. Central Model Registry  — update all agents by changing a single line
+#   3. Parallel Scheduler      — parallel waves at zero overhead, no extra config
+#   4. Token Ledger            — real cost visibility after every operation (EP-022)
+#   5. CQRL with layer_filter  — bounded quality review on layers with code (EP-012)
+#
+# Verified DAG (factory-config-dag, in the meta-framework wiki): no unsatisfied hard
+# dependencies among the 5 core capabilities. All 5 are roots or sub-flags with no
+# prerequisite flags among themselves — the set is coherent and deployable without additional
+# configuration.
+#
+# JSON SCHEMA VALIDATION (TSK-424, 2026-07-20):
+#   check-jsonschema --schemafile schemas/factory.config.schema.json factory.starter.config.yaml
+#   Result: ok -- validation done (0 ERROR, 0 WARNING)
+#   Note: sub-objects {temporal.budget.wave/tsk/sprint, tavola_rotonda.critico,
+#   voice_channel.barge_in/aec/wake_word} added with enabled:false to satisfy
+#   JSON schema if/then rules (DEP 11-13, 15-18) that activate
+#   vacuously when sub-blocks are absent.
+
+pattern_version: "2.48"
+
+# ===================================================================================
+# === 1. PIPELINE L1→L5 — BASE CORE (always active) ================================
+# ===================================================================================
+# The entire pipeline (ingest → plan → develop → review → publish) is active without
+# flags. Configure topology, code_path, routing, and stack for your project.
+
+# Topology: full-stack-agents | knowledge-only | plan-only |
+#            hybrid-be-agents | hybrid-fe-agents | custom
+# full-stack-agents enables all dev-agents (be/fe/db/qa) and the code-reviewer.
+topology: custom
+
+# Installed adapter (default: Claude Code).
+# For multi-adapter see adapters/<name>/manifest.yaml (PATTERN §12.2).
+adapters:
+  - name: claude
+    folder: .claude
+    maturity: full
+
+# Target code path — legacy single-repo (PATTERN §13).
+# Vuoto: la factory usa `code_paths:` qui sotto (multi-repo v2.12). Il `vcs:` top-level
+# resta valido solo nel caso legacy; il vcs effettivo vive nella entry di code_paths.
+code_path: ""
+
+# VCS mode: monorepo | submodule | sibling | external | none
+vcs:
+  mode: none
+  branch_awareness:         # VCS Branch Awareness Layer (EP-034, opt-in — PATTERN §15)
+    enabled: false          # Enable for multi-repo/submodule with multiple branches
+
+# Code paths (L5) — PATTERN §13. Repository di codice collegato come submodule,
+# in sola lettura al bootstrap. Riferimento: branch develop.
+code_paths:
+  - name: llm_wiki
+    path: code_repos/llm_wiki
+    layers: [fe, be, qa]
+    tags: [tauri-desktop, react, rust, mcp-server, browser-extension]
+    vcs:
+      mode: submodule
+      submodule_path: code_repos/llm_wiki
+      remote_url: https://github.com/Almusweb/llm_wiki.git
+      base_branch: develop
+      branch_strategy: per-tsk
+      commit_coupling: pin
+
+# Sorgente di alimentazione della wiki scelta al bootstrap (seed v2-12, G = existing-repo).
+wiki:
+  feeding_source: existing-repo
+  code_path_ref: llm_wiki
+
+# Stack mode: manual | guided | auto
+stack_mode: manual
+
+# TSK → consumer routing per layer (agent = dispatched to dev-agent; human = human gate)
+# Topologia custom: fe-dev, be-dev, qa-dev agentici; db, infra, docs umani.
+routing:
+  be: agent
+  fe: agent
+  db: human
+  qa: agent
+  infra: human
+  docs: human
+
+# Project technology stack (rilevato da code_repos/llm_wiki @ develop e08cfce, v0.6.13)
+stack:
+  backend: "rust-tauri2"    # Rust 2021 (rust-version 1.88) + Tauri 2, src-tauri/
+  frontend: "react-ts-vite-tailwind"  # React 19 + TypeScript 5.7 + Vite 8 + Tailwind 4 + shadcn, zustand
+  database: "lancedb-embedded"        # LanceDB 0.27 incorporato nell'app, nessun DB server
+  qa: "vitest"              # vitest 4 (+ fast-check); mcp-server: node --test
+  infra: "github-actions"   # .github/workflows/{ci,build}.yml, build desktop multipiattaforma
+
+# AI Attribution Policy (PATTERN §23.9) — repository di un cliente: nessuna traccia AI
+# nei commit, nei commenti, nella documentazione, nei test, nella config e nelle pipeline di
+# code_repos/llm_wiki. Niente Co-Authored-By, niente ID kanban/ADR/regole della factory.
+# I commit nel code_path si fanno solo con tools/vcs/sm_commit.py.
+ai_attribution_policy:
+  suppress_ai_traces: true
+  commit_tool: tools/vcs/sm_commit.py
+
+# AI Policy Check (EP-068) — scansione detective del code_path cliente.
+ai_policy_check:
+  enabled: true
+  status: active
+  triggers:
+    on_explicit: true
+    on_session_close: false
+    on_tsk_closed_count: 0
+  scope:
+    - path: code_repos/llm_wiki
+
+# Kanban publish — push-only mirror of kanban to external tool
+kanban_publish:
+  provider: none            # none | github | gitlab | jira | linear | custom
+
+
+# ===================================================================================
+# === 2. CENTRAL MODEL REGISTRY — CENTRALIZED MODELS (v2.27) ======================
+# ===================================================================================
+# Single point to update the default model for all agents.
+# Change tier_default to update 17+ agents simultaneously — zero files to touch.
+# DAG: no flag dependency — structure always active (not an opt-in flag).
+#
+# Tier semantics:
+#   tier_fast    — mechanical tasks: routing, parsing, lint, sync (low reasoning depth)
+#   tier_default — general tasks: code, analysis, docs (cost/capability balance)
+#   tier_deep    — complex reasoning: architecture, critical review
+models:
+  routing:
+    tier_fast:    claude-haiku-5-5
+    tier_default: claude-sonnet-5-5
+    tier_deep:    claude-opus-5-5
+  overrides: {}             # Per-agent exceptions: { wiki-query: tier_fast }
+
+
+# ===================================================================================
+# === 3. PARALLEL SCHEDULER — PARALLEL WAVE DISPATCH (v2.11) ========================
+# ===================================================================================
+# Builds a runtime DAG from TSK depends_on/blocked_by/code_path and dispatches
+# parallelizable waves without violating single-committer and batch gate.
+# DAG: graph root — no flag dependency, no tool prerequisite.
+scheduler:
+  enabled: true
+  max_parallel: 4                        # fan-out cap per wave (human gate above threshold)
+  parallel_gate_threshold: 3             # >= N agents in parallel → human gate (y/N)
+  code_path_conflict: strict             # strict|warn|off — glob overlap among TSK candidates
+  empty_code_path_policy: serial         # TSK without code_path → serial (conservative)
+  domains:
+    ingest:  true   # wiki-keeper-worker fan-out (default on)
+    develop: true   # dev-agent wave dispatch (default on)
+    lint:    true   # parallel wiki-lint checks per file
+    query:   true   # independent NL queries
+    plan:    false  # PM single-committer per epic
+    design:  false  # arch single-committer
+    publish: false  # batch_limit gate requires serialization
+    sync:    true   # parallel Sync sub-agents (PDF, Figma, repo)
+    review:  true   # Code Reviewer on independent TSK (antichain conflict-free)
+
+
+# ===================================================================================
+# === 4. TOKEN LEDGER — INLINE ECONOMIC FEEDBACK (v2.21, EP-022) ====================
+# ===================================================================================
+# Shows real token cost (not an estimate) after every operation with tool call
+# or file modification. Display one-liner: ◉ TOKENS in=X out=Y cache=Z (~$N).
+# DAG: no flag dependency. Soft prerequisite: Stop hook in .claude/settings.json
+#      and tools/analytics/show-session-tokens.py (display-only, no fail-loud if absent).
+analytics:
+  token_ledger:
+    enabled: true
+    display_mode: compact                # compact (one-liner) | full (box with breakdown)
+    show_cache_savings: true             # show cache savings in the one-liner
+    auto_call_on_wave_close: false       # opt-in: call --full at end of each wave
+
+  # Analytics sub-blocks — all disabled (separate opt-ins, see OPT-IN section)
+  measurement:
+    enabled: false          # Real per-TSK cost/time measurement (EP-009)
+  estimation:
+    enabled: false          # PERT + Monte Carlo estimation (EP-010) — soft on measurement
+  dogfooding:
+    enabled: false          # Factory self-observation — REQUIRES measurement: true (hard)
+  sprint_progress:
+    enabled: false          # Sprint burndown with kanban fallback (EP-043)
+
+
+# ===================================================================================
+# === 5. CQRL WITH LAYER_FILTER — BOUNDED QUALITY REVIEW (v2.12, EP-012) ==============
+# ===================================================================================
+# Code Quality Review Layer: evaluates idiomaticity, design, and robustness after each TSK
+# Develop. Loop bounded by max_iterations (non-bypassable R.Q4 invariant).
+# layer_filter: [be, fe, db, qa] excludes docs TSK from review (target cost ~-60%).
+# DAG: soft dependency on dev-agent topology (satisfied by full-stack-agents) and
+#      code_paths L5. Prerequisite: .claude/agents/code-reviewer.md present.
+code_quality:
+  enabled: true
+  max_iterations: 3                      # R.Q4 — bounded loop, non-bypassable invariant
+  thresholds:
+    confidence_min: 0.6                  # below threshold → degraded mode (language rules only)
+    batching_split: 7                    # |findings| > N → severity-tiered; otherwise all-in-one
+    pass_rate_warn: 0.05                 # pass_rate < N → review theater flag
+    false_positive_warn: 0.30            # false positive rate > N → warning
+  passes:
+    idiomaticity: true
+    design: true
+    robustness: true
+  router:
+    strategy: severity-tiered            # all-in-one | severity-tiered | split-by-area
+    max_diff_lines: 80
+    layer_filter: [be, fe, db, qa]       # CQRL only on layers with real code; docs excluded
+  ruleset:
+    path: ./code_quality/rules/
+    tiers: [canonical, emergent, team-specific]
+    evolve:
+      enabled: false                     # ruleset evolutionary loop — requires code_quality.enabled (hard)
+  reports:
+    path: ./code_quality/reports/
+    retain_iterations: 5
+    digest_cadence: weekly
+
+
+# ===================================================================================
+# === OPT-IN CAPABILITIES (disabled) ===============================================
+# ===================================================================================
+# To activate: change enabled: false → true and verify dependencies in the DAG.
+# Reference: factory-config-dag in the meta-framework wiki ("Requires flag" and
+# "Requires tool/environment" columns).
+
+# FE Correctness Layer (v2.17, EP-005/006) — FE visual verification via Playwright + axe.
+# DAG: no flag dependency; requires Playwright + browser runtime (soft).
+fe_correctness:
+  enabled: false
+  ssr_aware:
+    enabled: false          # SSR framework detection (EP-030) — soft on fe_correctness.enabled
+  functional_oracle:
+    enabled: false          # Acceptance-spec engine (EP-018) — requires Playwright (soft)
+
+# Accessibility Testing Layer (v2.18, EP-007) — WCAG 2.2 AA via axe-playwright.
+# DAG: no flag dependency; REQUIRES Playwright + axe-playwright installed (hard).
+a11y:
+  enabled: false
+
+# UX/UI Review & Design Layer (v2.18, EP-008) — UX rubric on screenshots.
+# DAG: no flag dependency; hard prerequisite of design_intelligence.enabled.
+ux_ui:
+  enabled: false
+
+# Release Governance (v2.19, EP-012) — battle-test gate before release tag.
+# DAG: no flag dependency; battle_test_gate REQUIRES release_governance.enabled (hard).
+release_governance:
+  enabled: false
+  battle_test_gate:
+    enabled: false          # REQUIRES release_governance.enabled: true + valid RUN-REPORT (hard)
+
+# Output Compression — Caveman (v2.14) — reduces agent-to-agent channel tokens.
+# DAG: no flag dependency; REQUIRES caveman CLI installed (hard).
+# decision_anchor and consistency_check REQUIRE compression.output.enabled: true (hard).
+compression:
+  output:
+    enabled: false
+    decision_anchor:
+      enabled: false        # Non-compressible decision_anchor field (ADR-047) — hard on output
+    consistency_check:
+      enabled: false        # consistency-checker agent (ADR-048) — hard on output
+  # Context Compression — Graphify (v2.14 Phase 2) — knowledge graph from code_path as context.
+  # DAG: no flag dependency; REQUIRES graphify CLI (pip install graphifyy) (hard).
+  # mcp_server REQUIRES compression.context.enabled: true (hard).
+  context:
+    enabled: false
+    mcp_server:
+      enabled: false        # Graphify MCP — REQUIRES compression.context.enabled: true (hard)
+
+# Temporal — master switch (EP-011/014). ALL sub-blocks REQUIRE temporal.enabled: true.
+# DAG: temporal.enabled is root; all sub-flags are hard descendants.
+temporal:
+  enabled: false
+  context_injection:
+    enabled: false          # UTC timestamp injected into agent system prompt (Pattern 1)
+  handoff_protocol:
+    enabled: false          # Structured Temporal Handoff Block in handoffs (Pattern 4)
+  state_machine:
+    enabled: false          # State file for long-running TSK (Pattern 3)
+  budget:
+    enabled: false          # Economic budget governor (EP-014) — soft on estimation+dogfooding
+    wave:
+      enabled: false        # REQUIRES temporal.budget.enabled: true (hard)
+    tsk:
+      enabled: false        # REQUIRES temporal.budget.enabled: true (hard)
+    sprint:
+      enabled: false        # REQUIRES temporal.budget.enabled: true (hard)
+  estimate_protocol:
+    enabled: false          # Adaptive elapsed/progress estimate (EP-043) — soft on scheduler
+
+# Design Intelligence Layer (v2.21, EP-019) — art-director thematic coordination + DSL.
+# DAG: REQUIRES ux_ui.enabled: true (hard — ADR-071 §B). Enable ux_ui first.
+design_intelligence:
+  enabled: false
+
+# Prototype Generation Layer (v2.25, EP-035) — figma→penpot→react→html cascade.
+# DAG: no flag dependency; html T0 guaranteed (INV-1); react T1 soft on FE code_path.
+prototyping:
+  enabled: false
+
+# QA Layer — failure taxonomy, flakiness detection, test self-healing.
+# DAG: failure_taxonomy and test_healing without dependencies; flakiness soft on qa-events.
+qa_layer:
+  failure_taxonomy:
+    enabled: false          # QA failure taxonomy routing (EP-029) — no flag dependency
+  flakiness_detection:
+    enabled: false          # Flaky test detection (EP-027) — soft on qa-events jsonl
+  test_healing:
+    enabled: false          # Automatic repair with confidence-gating (EP-028) — soft on spec
+
+# Wiki Lint — Semantic Drift Detection (v2.23-research, EP-031) — INFO only, never WARNING/ERROR.
+# DAG: no flag dependency; REQUIRES embedding API (Voyage/OpenAI) — network access (hard).
+wiki_lint:
+  semantic_check:
+    enabled: false
+
+# Tavola Rotonda Mode (v2.27, EP-039) — structured multi-agent deliberation for complex problems.
+# DAG: no flag dependency; critico.enabled is hard on tavola_rotonda.enabled.
+tavola_rotonda:
+  enabled: false
+  critico:
+    enabled: false          # REQUIRES tavola_rotonda.enabled: true (hard)
+
+# Voice Channel Layer (v2.28, EP-041) — STT/TTS/VAD for hands-free voice interaction.
+# DAG: no flag dependency; REQUIRES faster-whisper + silero-vad + piper-tts (hard).
+# Guided setup: /voice-install
+voice_channel:
+  enabled: false
+  barge_in:
+    enabled: false          # REQUIRES voice_channel.enabled: true + phase >= 3 (hard)
+  aec:
+    enabled: false          # REQUIRES voice_channel.enabled: true + phase >= 4 (hard)
+  wake_word:
+    enabled: false          # REQUIRES voice_channel.enabled: true (hard)
+
+# Hybrid Wiki Search (v2.29, EP-042) — vector+FTS+RRF semantic search on wiki.
+# DAG: no flag dependency; REQUIRES lancedb + sentence-transformers (~120 MB) (hard).
+wiki_search:
+  enabled: false
+
+# Capability Formativa (v2.32, EP-045) — adaptive tutoring Student Model SM-2.
+# DAG: no flag dependency; wiki_search_integration REQUIRES both enabled (hard).
+capability_formativa:
+  enabled: false
+  wiki_search_integration: false  # REQUIRES capability_formativa.enabled + wiki_search.enabled (hard)
+
+# Content Share Consumer Layer (v2.33, EP-048) — publishes HTML artifacts to soli-frames.
+# DAG: no flag dependency; REQUIRES SOLI_FRAMES_PAT + SOLI_FRAMES_DISPATCH_SECRET (hard).
+content_share:
+  enabled: false
+
+kanban_dates:
+  required_from: "2026-11-20"   # data d'installazione: Check 4be (ERROR) vale da qui in poi

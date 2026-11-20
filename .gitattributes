@@ -1,0 +1,27 @@
+# Merge policy della factory — TR-9b4e7c02 M0 (2026-09-17), rivista in EP-100 (2026-11-16, decisione D1)
+#
+# `management/kanban/sprint.md` e' curato a mano nel master (narrativa delle milestone, sezioni per
+# sprint) e mai rigenerato. Il rischio da evitare resta il merge SILENZIOSO: due modifiche a righe
+# diverse fuse senza marcatori danno una board coerente nella forma e falsa nel contenuto. Per questo
+# il file non usa il merge riga per riga di git: il driver `factory-sprint-sections`
+# (tools/kanban/sprint_sections_driver.py, registrato da tools/vcs/install_factory_hooks.py) fonde per
+# SEZIONI `## …`. Sezioni distinte dei due lati si tengono entrambe, il testo resta byte per byte; la
+# stessa sezione cambiata dai due lati e' un conflitto con marcatori, mai una scelta, e il controllo
+# dei marcatori (Check 4bn, pre-commit) lo intercetta. Senza driver registrato git usa il merge
+# standard riga per riga, cioe' il merge silenzioso: `/init-check` segnala ogni driver dichiarato qui e
+# non registrato nel clone (WARN, con il comando da lanciare).
+management/kanban/sprint.md merge=factory-sprint-sections
+
+# wiki/log.md e' append-only: due branch che aggiungono voci in coda si fondono senza
+# conflitto con il driver `factory-log-union` (tools/wiki/log_union_driver.py), registrato
+# in locale da tools/vcs/install_factory_hooks.py. Senza driver git usa il merge standard.
+wiki/log.md merge=factory-log-union
+
+# Eventi di analytics (append-only, una riga JSON per evento): due branch che aggiungono righe in
+# coda si fondono con `factory-events-union` (tools/wiki/events_union_driver.py), per righe e
+# senza duplicati. Il manifest di raw/ e' un oggetto JSON {chiave: valore}: `factory-manifest-union`
+# (tools/wiki/manifest_union_driver.py) unisce per chiave e lascia il conflitto solo se la stessa
+# chiave cambia in modo diverso nei due lati. Entrambi i driver si registrano in locale con
+# tools/vcs/install_factory_hooks.py; senza registrazione git usa il merge standard.
+analytics/events/*.jsonl merge=factory-events-union
+raw/.extraction-manifest.json merge=factory-manifest-union

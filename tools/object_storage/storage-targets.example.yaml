@@ -1,0 +1,57 @@
+# Registro dei bucket raggiungibili dalla capability object_storage_access (/storage, storage-operator).
+# ESEMPIO con endpoint e bucket fittizi: copiarlo in tools/object_storage/storage-targets.yaml (percorso di
+# `object_storage_access.registry`, gitignored) e sostituire i valori.
+#
+# Solo dati NON segreti: URL, nomi dei bucket, NOMI delle variabili d'ambiente. I valori delle credenziali
+# vivono solo nel file indicato da `object_storage_access.env_file` (default .env.object-storage, gitignored:
+# verificare che sia davvero ignorato prima di compilarlo).
+#
+# Struttura:
+#   endpoints.<nome>                       -> url, region, TLS
+#   environments.<env>.targets.<target>    -> bucket logico + candidati credenziali
+#   aliases.<alias>                        -> nome alternativo di un target (facoltativo)
+#
+# TLS: verificato per default. `ca_file` e' il PEM con la catena dell'endpoint (percorso relativo alla root
+# della factory, NON versionato: es. tools/object_storage/certs/ gitignored). `verify_tls: false` spegne la
+# verifica solo se scritto esplicitamente e produce un avviso a ogni uso.
+# credentials: lista ordinata di coppie [VAR_ACCESS_KEY, VAR_SECRET_KEY]; vince la prima coppia con entrambi
+#              i valori presenti nel file env.
+# Gli ambienti in `object_storage_access.read_only_envs` (default prod) sono in sola lettura per
+# configurazione, qualunque permesso abbia l'utenza.
+
+version: 1
+
+endpoints:
+  default:
+    url: https://s3.example.invalid
+    region: us-east-1
+    ca_file: tools/object_storage/certs/example-ca.pem
+  # Endpoint di prova con verifica spenta: sconsigliato, produce un avviso.
+  # lab:
+  #   url: https://s3-lab.example.invalid
+  #   verify_tls: false
+
+environments:
+  test:
+    label: "TEST"
+    targets:
+      documents:
+        bucket: bucket-di-esempio-test
+        credentials:
+          - [OBJECT_STORAGE_DOCUMENTS_TEST_ACCESS_KEY, OBJECT_STORAGE_DOCUMENTS_TEST_SECRET_KEY]
+        used_by: [document-service]
+      exports:
+        bucket: bucket-di-esempio-export-test
+        credentials:
+          - [OBJECT_STORAGE_EXPORTS_TEST_ACCESS_KEY, OBJECT_STORAGE_EXPORTS_TEST_SECRET_KEY]
+  prod:
+    label: "PROD (sola lettura)"
+    targets:
+      documents:
+        bucket: bucket-di-esempio-prod
+        credentials:
+          - [OBJECT_STORAGE_DOCUMENTS_PROD_ACCESS_KEY, OBJECT_STORAGE_DOCUMENTS_PROD_SECRET_KEY]
+        used_by: [document-service]
+
+aliases:
+  docs: documents

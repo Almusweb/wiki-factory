@@ -1,0 +1,18 @@
+/* Pannello «Dipendenze» — servito solo a capability `grafo_conoscenza` accesa. */
+.grafo-form { display: flex; flex-wrap: wrap; gap: .75rem; align-items: end; margin-bottom: .75rem; }
+.grafo-form label { display: block; font-size: .85rem; color: var(--tenue); }
+.grafo-form input[type="search"], .grafo-form select {
+  min-height: 2.75rem; padding: .5rem .75rem; font: inherit; color: var(--testo);
+  background: var(--fondo); border: 1px solid var(--bordo-forte); border-radius: .4rem; }
+.grafo-form input[type="search"] { min-width: 18rem; }
+.grafo-esiti { list-style: none; margin: 0 0 .75rem; padding: 0; display: grid; gap: .25rem; }
+.grafo-esiti button, .grafo-tabella td button { text-align: left; }
+.grafo-testata h3 { margin: .5rem 0 .25rem; }
+.grafo-conteggi { margin: 0 0 .75rem; padding: 0; list-style: none; display: flex; flex-wrap: wrap;
+                  gap: .25rem 1rem; font-variant-numeric: tabular-nums; }
+.grafo-nota { color: var(--tenue); font-size: .85rem; margin: .25rem 0; }
+.grafo-tabella caption { text-align: left; font-weight: 700; padding: .5rem 0 .25rem; }
+.grafo-tabella .path { display: block; color: var(--tenue); font-size: .75rem; word-break: break-all; }
+.grafo-tabella .nota { display: block; color: var(--tenue); font-size: .75rem; }
+.grafo-non-osservabile { border: 2px solid var(--assente); border-radius: .5rem; padding: .75rem 1rem;
+                         color: var(--assente); font-weight: 600; }

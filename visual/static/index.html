@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plancia · attività della factory</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<a class="salta" href="#contenuto">Salta al contenuto</a>
+
+<!-- Regione live: ogni transizione di stato e' annunciata qui SENZA spostare il focus.
+     `polite` e non `assertive`: un annuncio che interrompe la lettura in corso informa
+     peggio di uno che aspetta il proprio turno. -->
+<p class="solo-lettori" role="status" aria-live="polite" id="annuncio"></p>
+<!-- Seconda regione live, distinta: lo stato delle FONTI (quali non rispondono, il
+     collegamento perso e ritrovato) non deve sovrascrivere l'esito di un'azione, ne'
+     esserne sovrascritto. Ciascuna dice una sola famiglia di cose. -->
+<p class="solo-lettori" role="status" aria-live="polite" id="annuncio-fonti"></p>
+
+<header class="testata">
+  <div class="testata-riga">
+    <!-- Decorativa: per una tecnologia assistiva NON esiste. Cio' che indica sta in
+         `#stato-frase`, che e' scritto sempre, anche a mascotte spenta. -->
+    <span id="mascotte" aria-hidden="true"></span>
+    <div class="testata-testo">
+      <!-- Il testo lo sostituisce `renderTestata` con `visual_channel.titolo`. Qui sta il
+           default, cosi' la pagina ha un titolo anche prima che arrivino i dati. -->
+      <h1 id="titolo-pagina">Plancia</h1>
+      <p class="occhiello">Attività della factory · sola lettura sui dati, ogni azione passa dalla sessione</p>
+      <p class="stato-frase" id="stato-frase"></p>
+      <p class="stato-fonti" id="stato-fonti"></p>
+    </div>
+  </div>
+  <dl class="identita" id="identita"></dl>
+  <nav class="indice" aria-label="Sezioni della pagina">
+    <ul>
+      <li><a href="#t-turno">Lavoro in corso</a></li>
+      <li><a href="#t-comandi">Comandi</a></li>
+      <li><a href="#t-fonti">Fonti</a></li>
+      <li><a href="#t-glossario">Parole usate</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- Compare quando l'ultima lettura e' fallita: i dati sotto sono quelli dell'ultima
+     lettura riuscita e vanno letti come tali. -->
+<p id="dati-stantii" class="avvertenza" hidden></p>
+
+<main id="contenuto" tabindex="-1">
+
+  <section class="sezione" aria-labelledby="t-turno">
+    <div class="sezione-testa">
+      <h2 id="t-turno" tabindex="-1">Lavoro in corso</h2>
+      <p class="sezione-nota">Cosa sta facendo la factory adesso.</p>
+    </div>
+    <div id="turno" class="scheda"></div>
+    <form id="risposta" class="risposta" hidden>
+      <label for="risposta-testo" id="risposta-etichetta">La tua risposta</label>
+      <div class="risposta-riga">
+        <input type="text" id="risposta-testo" name="risposta" autocomplete="off"
+               placeholder="scrivi qui la tua risposta" aria-describedby="risposta-errore">
+        <button type="submit">Invia risposta</button>
+      </div>
+      <p id="risposta-errore" class="ragione" role="alert" hidden></p>
+    </form>
+  </section>
+
+  <section class="sezione" aria-labelledby="t-comandi">
+    <div class="sezione-testa">
+      <h2 id="t-comandi" tabindex="-1">Comandi</h2>
+      <p class="sezione-nota" id="scrittura-stato">Verifica del runtime in corso…</p>
+    </div>
+
+    <div id="azioni" class="pulsantiera"></div>
+
+    <!-- Esito dei comandi e fine del turno: visibile accanto ai comandi E annunciato.
+         Ogni voce si aggiunge senza sostituire la precedente, cosi' «Avviato» non
+         scompare quando arriva la fine del lavoro. -->
+    <div id="esito-comando" class="esito" role="log" aria-live="polite"
+         aria-label="Esito dei comandi"></div>
+
+    <h3 class="sotto">Preferenze</h3>
+    <div class="pulsantiera">
+      <button type="button" id="voce-toggle" aria-pressed="false">Canale vocale</button>
+      <button type="button" id="mascotte-toggle" aria-pressed="true">Mascotte</button>
+    </div>
+    <p class="sezione-nota" id="voce-stato"></p>
+
+    <p id="concorrenza" class="avvertenza" hidden></p>
+  </section>
+
+  <section class="sezione" aria-labelledby="t-fonti">
+    <div class="sezione-testa">
+      <h2 id="t-fonti" tabindex="-1">Fonti</h2>
+      <p class="sezione-nota">Ogni misura dice da dove viene e quanto è vecchia.
+        Se una fonte non si riesce a leggere, il riquadro dice «non osservabile»: non mostra mai zero.</p>
+    </div>
+    <div id="riquadri" class="griglia"><p class="attesa">Lettura in corso…</p></div>
+  </section>
+
+  <section class="sezione" aria-labelledby="t-glossario">
+    <div class="sezione-testa">
+      <h2 id="t-glossario" tabindex="-1">Parole usate</h2>
+      <p class="sezione-nota">Le parole di questa pagina, in poche righe.</p>
+    </div>
+    <dl class="glossario">
+      <div><dt>Comando</dt>
+           <dd>Un pulsante che chiede alla sessione di fare un lavoro. La plancia non
+               scrive nulla da sola.</dd></div>
+      <div><dt>Lavoro</dt>
+           <dd>Ciò che la factory esegue dopo un comando, dall'avvio al risultato.</dd></div>
+      <div><dt>Sessione</dt>
+           <dd>La finestra di Claude Code che esegue i comandi e scrive nel repository.</dd></div>
+      <div><dt>Fonte</dt>
+           <dd>Il file o lo strumento da cui viene un dato. Ogni riquadro in «Fonti» ne
+               nomina una.</dd></div>
+      <div><dt>Dato stantio</dt>
+           <dd>Un dato che potrebbe essere cambiato: l'ultima lettura è fallita o la fonte
+               non si aggiorna da parecchio.</dd></div>
+      <div><dt>Task</dt>
+           <dd>Un'unità di lavoro del kanban (la lavagna dei compiti), con un codice tipo
+               «TSK-123».</dd></div>
+      <div><dt>Prenotazione</dt>
+           <dd>Con una prenotazione una sessione dichiara su cosa sta lavorando. Serve a
+               far vedere le altre sessioni, non a bloccarle.</dd></div>
+      <div><dt>Pubblicare</dt>
+           <dd>Mandare le modifiche al repository condiviso. Il lavoro delle altre sessioni
+               si vede solo dopo che lo hanno pubblicato.</dd></div>
+      <div><dt>Pattern factory</dt>
+           <dd>La versione delle regole della factory. «Divergente» vuol dire diversa da
+               quella attesa da questa plancia.</dd></div>
+    </dl>
+  </section>
+
+</main>
+
+<footer class="pie">
+  <p id="aggiornamento">—</p>
+  <button type="button" id="ricarica">Aggiorna adesso</button>
+</footer>
+
+<!-- La conferma DESCRIVE la conseguenza. E' un dialogo nella pagina e non un
+     `confirm()` del browser, perche' deve essere leggibile da una tecnologia assistiva
+     e navigabile da tastiera. Sta FUORI da `main`: mentre e' aperto il resto della pagina
+     e' `inert`, e un dialogo dentro un contenitore inerte sarebbe inerte anche lui.
+     La conseguenza e' letta una volta sola, dal nome/descrizione del dialogo: non va
+     ripetuta in una regione live. -->
+<div id="conferma" class="conferma" role="alertdialog" aria-modal="true"
+     aria-labelledby="conferma-titolo" aria-describedby="conferma-testo" hidden>
+  <h3 id="conferma-titolo">Serve una conferma</h3>
+  <p id="conferma-testo"></p>
+  <div class="pulsantiera">
+    <button type="button" id="conferma-no">Annulla</button>
+    <button type="button" id="conferma-si" class="primario">Procedi</button>
+  </div>
+</div>
+
+<script type="module" src="/app.js"></script>
+</body>
+</html>
