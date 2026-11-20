@@ -1,0 +1,4 @@
+[submodule "code_repos/llm_wiki"]
+	path = code_repos/llm_wiki
+	url = https://github.com/Almusweb/llm_wiki.git
+	branch = develop
