@@ -20,6 +20,18 @@ status: open
 
 ---
 
+### Q_005 — Quale ruolo Sync scrive i report di verifica di EP-004 in `raw/`
+**Origine:** [[llm-wiki-rischi-persistenza]]
+**Tipo:** Requisito incompleto
+**Impatto:** MEDIO
+**Bloccante:** soft
+**Domanda:** l'utente ha deciso (2026-11-20 17:53) che il report di ogni verifica di EP-004 va scritto come raw in `raw/` da un ruolo Sync dedicato, da definire, e poi ingerito da `wiki-keeper`. Quale ruolo Sync scrive i report di verifica di EP-004 in `raw/`: un nuovo sub-agent o l'estensione di uno esistente? Con quali strumenti (senza Bash e per sola lettura del codice, come da Q_003)? Quale naming dei file e quale voce di manifest? Lo stesso canale vale per la sintesi di US-033?
+**Epiche bloccate:** EP-004
+**Storie bloccate:** US-025, US-026, US-027, US-028, US-029, US-030, US-031, US-032, US-033
+[^src: wiki/concepts/llm-wiki-rischi-persistenza.md §Contesto]
+
+---
+
 ## [CHIUSE]
 
 ### Q_001 — Canale e destinatario della segnalazione al master, e dove conservare l'esito
@@ -50,6 +62,7 @@ status: open
 **Risposto da:** l'utente
 **Decisione:** va escluso tutto. Nessun nome o URL del repository di codice, nessun percorso, hash, nome utente né il nome di questa factory. Si riproduce sempre su un caso neutro, con factory o fixture neutra.
 **Epiche/Storie sbloccate:** EP-001; US-001, US-002, US-003, US-004, US-005, US-006, US-007, US-008, US-009, US-010, US-011, US-012 (`pending_clarification` svuotato, criteri di accettazione adeguati)
+**Addendum (2026-11-20 17:53, risposta dell'utente):** percorsi. Nei report di EP-001 sono ammessi i percorsi dei file del master oggetto del difetto; restano esclusi quelli della factory e del repository di codice. Conferma dell'interpretazione del product-manager, che precisa e non sostituisce la risposta del 2026-11-20 17:36.
 [^src: wiki/concepts/factory-decisioni-di-configurazione.md §Politica sul repository di codice]
 
 ---

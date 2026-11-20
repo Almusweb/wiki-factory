@@ -114,3 +114,4 @@ tags: [factory, master, difetti, kanban]
 - US-009 — Difetto 9: installer e regole canonical
 - US-010 — Difetto 10: Check 4c e percorsi di codice multi-repo
 - US-011 — Difetto 11: Check 4ax e modifica del file dei submodule
+- US-034 — Difetto 12: risoluzione automatica del target sul repository di codice per lavoro interno alla factory (non è tra i difetti numerati di questa pagina: ipotesi segnalata dal tpm, aperta come gap `master-difetto-12-target-auto-derive`)
