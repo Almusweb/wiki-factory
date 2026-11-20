@@ -115,3 +115,11 @@ tags: [factory, master, difetti, kanban]
 - US-010 — Difetto 10: Check 4c e percorsi di codice multi-repo
 - US-011 — Difetto 11: Check 4ax e modifica del file dei submodule
 - US-034 — Difetto 12: risoluzione automatica del target sul repository di codice per lavoro interno alla factory (non è tra i difetti numerati di questa pagina: ipotesi segnalata dal tpm, aperta come gap `master-difetto-12-target-auto-derive`)
+
+## Aggiornamenti (v2026-11-20)
+Esito di sweep-reviews (categoria unsupported-claim, finding W8-W12 del lint run 3): il testo sopra non è modificato; le citazioni sono riportate qui accanto alle righe indicate, che nel corpo le hanno a fine blocco.
+- Riga 18 (legenda degli stati di verifica): testo di metodo del keeper, non affermazione sul raw; esente. Le due sole affermazioni verificabili: il documento di sessione non contiene analisi di impatto né priorità per i difetti [^src: raw/sessions/session-2026-11-20-16-3649aa67.md §Insight]; un'affermazione ambientale senza comando eseguito è un'ipotesi per la regola «Evidenza» del protocollo di chiusura [^code: CLAUDE.md:77]
+- Riga 37 (difetto 3): sintomo e test dell'hook, voce 3 [^src: raw/sessions/session-2026-11-20-16-3649aa67.md §Insight]; il prefisso di namespace opzionale in `ai_policy.py` (riga 39) [^code: CLAUDE.md:95]
+- Riga 65 (difetto 7): voce 7, con la previsione su `factory-upgrade-apply.py` al condizionale e non eseguita [^src: raw/sessions/session-2026-11-20-16-3649aa67.md §Insight]
+- Riga 79 (difetto 9): voce 9, affermazione senza evidenza di comando nel raw [^src: raw/sessions/session-2026-11-20-16-3649aa67.md §Insight]
+- Riga 93 (difetto 11): voce 11, affermazione senza evidenza di comando nel raw, non verificata dal keeper [^src: raw/sessions/session-2026-11-20-16-3649aa67.md §Insight]

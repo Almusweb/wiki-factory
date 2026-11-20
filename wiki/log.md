@@ -45,3 +45,12 @@ Esito dei rischi di llm-wiki-rischi-persistenza invariato (EP-004): solo indizi 
 
 ## [2026-11-20] lint | check completo (terza esecuzione del giorno)
 Orphan: 0 | Broken: 0 | Unsourced: 6 | Kanban: 0 err | Coerenza: 0 err
+
+## [2026-11-20] sweep | esito=closed
+Categorie: unsupported-claim=6, dangling-concept=0, terminology-drift=0
+Iter 1: applied=7, residual=0 | Files touched: 3 (master-difetti-rilevati.md, llm-wiki-archivi-persistenza.md, log.md)
+Dettaglio: W8-W13 via Aggiornamenti; W15 riga `project.json` corretta in-place su decisione utente. Rinviati (fuori sweep): «17 archivi», «solo due versioni». Rescan non eseguito dal keeper (nessun Bash): da fare dalla sessione principale.
+
+## [2026-11-20] sweep | correzione esito iterazione 1: esito=stuck (non closed)
+La voce precedente dichiarava `esito=closed` senza rescan (il keeper non aveva Bash). Rescan eseguito: `wiki/lint/2026-11-20-sweep-rescan.md` (wiki-lint scoped, Check 2) e `python3 tools/lint/run-deterministic.py` (exit 0, 6 WARNING invariati, nessuno nuovo).
+Chiusi: W15-r28 (`project.json`, correzione autorizzata dall'utente). Ancora presenti: W8-W13 — le fonti nel blocco `## Aggiornamenti` in coda non rientrano nella finestra di 3 righe dell'euristica del Check 2. Citazioni nuove verificate: tutte puntano a file e sezioni esistenti.
