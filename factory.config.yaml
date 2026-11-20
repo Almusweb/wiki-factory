@@ -489,3 +489,7 @@ code_intelligence:
   l3_impact:
     enabled: true
     auto_run_on_dev: false
+
+# Wiki Sweep (EP-056, PATTERN §35) — pass di qualita' semantica, gated. Acceso il 2026-11-20 su richiesta dell'utente.
+wiki_sweep:
+  enabled: true
