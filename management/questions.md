@@ -18,6 +18,17 @@ status: open
 **Storie bloccate:** US-018
 [^src: wiki/gaps.md §2026-11-20 17:06 — llm-wiki-archivi-dimensioni]
 
+### Q_006 — Criterio di conteggio di archivi e versioni di formato
+**Origine:** [[llm-wiki-archivi-persistenza]], [[llm-wiki-versioni-e-migrazioni]], [[llm-wiki-schema-dati]] (lint 2026-11-20 run 3, W15)
+**Tipo:** Requisito incompleto
+**Impatto:** MEDIO
+**Bloccante:** soft
+**Domanda:** (a) cosa conta come «archivio per progetto»: le 16 righe dell'inventario più lo store `app-state.json` (criterio già adottato dall'utente il 2026-11-20 per `design_&_architecture/db_schemas/README.md`), anche i 7 archivi aggiunti dalla tabella D della fetta B dentro `.llm-wiki/`, oppure anche `raw/parsed` e le immagini MinerU fuori da `.llm-wiki/`? (b) cosa conta come «versione di formato esplicita»: ogni campo `version` presente nei file (`scheduled-import-db`, `file-snapshot`, `file-change-queue`, `ingest-progress`, `ingest-generation`) o solo un versionamento con migrazione, e il suffisso `_v2` di LanceDB entra nella conta? La risposta permette di correggere nel corpo «17 archivi... una sola versione» e «solo due» versioni, oggi smentiti dalle rispettive `## Contradictions`.
+**Epiche bloccate:** EP-003
+**Storie bloccate:** US-019, US-024
+[^src: wiki/gaps.md §2026-11-20 18:23 — llm-wiki-archivi-sommario-conteggi]
+[^src: wiki/lint/2026-11-20-lint-report.md §W15]
+
 ---
 
 ## [CHIUSE]
