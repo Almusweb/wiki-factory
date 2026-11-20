@@ -72,7 +72,7 @@ vcs:
 code_paths:
   - name: llm_wiki
     path: code_repos/llm_wiki
-    layers: [fe, be, qa]
+    layers: [fe, be, db, qa, docs]
     tags: [tauri-desktop, react, rust, mcp-server, browser-extension]
     vcs:
       mode: submodule
@@ -97,20 +97,25 @@ wiki:
 stack_mode: manual
 
 # TSK → consumer routing per layer (agent = dispatched to dev-agent; human = human gate)
-# Topologia custom: fe-dev, be-dev, qa-dev agentici; db, infra, docs umani.
+# Topologia custom: fe-dev, be-dev, db-dev, qa-dev, docs-dev agentici; infra umana.
+# db = layer di persistenza (LanceDB incorporato, file JSON in .llm-wiki/, store app-state.json),
+# deciso il 2026-11-20 dopo l'analisi dei moduli di persistenza.
 routing:
   be: agent
   fe: agent
-  db: human
+  db: agent
   qa: agent
   infra: human
-  docs: human
+  docs: agent
 
 # Project technology stack (rilevato da code_repos/llm_wiki @ develop e08cfce, v0.6.13)
 stack:
   backend: "rust-tauri2"    # Rust 2021 (rust-version 1.88) + Tauri 2, src-tauri/
   frontend: "react-ts-vite-tailwind"  # React 19 + TypeScript 5.7 + Vite 8 + Tailwind 4 + shadcn, zustand
-  database: "lancedb-embedded"        # LanceDB 0.27 incorporato nell'app, nessun DB server
+  database: "lancedb-embedded + json-files + tauri-store"  # nessun DB server. LanceDB 0.27 in <progetto>/.llm-wiki/lancedb
+                                      # (tabelle wiki_vectors v1 legacy, wiki_chunks_v2; schema Arrow nel codice Rust,
+                                      # src-tauri/src/commands/vectorstore.rs); file JSON in <progetto>/.llm-wiki/ senza
+                                      # versione di formato (src/lib/persist.ts); store app-state.json letto da TS e Rust
   qa: "vitest"              # vitest 4 (+ fast-check); mcp-server: node --test
   infra: "github-actions"   # .github/workflows/{ci,build}.yml, build desktop multipiattaforma
 
@@ -245,7 +250,7 @@ code_quality:
     digest_cadence: weekly
   trigger_default:                       # review di default (dev-protocol Fase 4-quater, dispatch-policy §12)
     enabled: true
-    layer: [fe, be, qa]                  # i layer con routing agent
+    layer: [fe, be, db, qa]              # i layer con codice e routing agent (docs escluso, come in layer_filter)
     consumer: [agent]
     review_status_field: review_status
     review_status_default: pending
