@@ -42,3 +42,6 @@ Slug collisions risolte: 8, tutte concept compatibili, fuse (archivi-persistenza
 Contraddizioni: 25 segnalate dai worker, 18 distinte su 8 pagine, scritte in `## Contradictions` senza toccare il testo esistente.
 Validazione contratto `proposed_pages`: primo giro exit 1 per tutti e tre i JSON; retry del worker C e pulizia dei campi extra di A e B; poi valido (exit 0).
 Esito dei rischi di llm-wiki-rischi-persistenza invariato (EP-004): solo indizi da verificare. Nessun gap assegnato a US-014..US-017 è stato chiuso.
+
+## [2026-11-20] lint | check completo (terza esecuzione del giorno)
+Orphan: 0 | Broken: 0 | Unsourced: 6 | Kanban: 0 err | Coerenza: 0 err
