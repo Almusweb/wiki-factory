@@ -20,18 +20,6 @@ status: open
 
 ---
 
-### Q_005 — Quale ruolo Sync scrive i report di verifica di EP-004 in `raw/`
-**Origine:** [[llm-wiki-rischi-persistenza]]
-**Tipo:** Requisito incompleto
-**Impatto:** MEDIO
-**Bloccante:** soft
-**Domanda:** l'utente ha deciso (2026-11-20 17:53) che il report di ogni verifica di EP-004 va scritto come raw in `raw/` da un ruolo Sync dedicato, da definire, e poi ingerito da `wiki-keeper`. Quale ruolo Sync scrive i report di verifica di EP-004 in `raw/`: un nuovo sub-agent o l'estensione di uno esistente? Con quali strumenti (senza Bash e per sola lettura del codice, come da Q_003)? Quale naming dei file e quale voce di manifest? Lo stesso canale vale per la sintesi di US-033?
-**Epiche bloccate:** EP-004
-**Storie bloccate:** US-025, US-026, US-027, US-028, US-029, US-030, US-031, US-032, US-033
-[^src: wiki/concepts/llm-wiki-rischi-persistenza.md §Contesto]
-
----
-
 ## [CHIUSE]
 
 ### Q_001 — Canale e destinatario della segnalazione al master, e dove conservare l'esito
@@ -79,6 +67,28 @@ status: open
 **Risposto da:** l'utente
 **Decisione:** solo lettura del codice. Niente osservazione dell'app in esecuzione, niente test di caratterizzazione, nessuna modifica al repository del cliente.
 **Epiche/Storie sbloccate:** EP-004; US-025, US-026, US-027, US-028, US-029, US-030, US-031, US-032 (`pending_clarification` svuotato; criteri riscritti come analisi statica; esito «non conclusivo» ammesso quando la sola lettura non basta)
+[^src: wiki/concepts/llm-wiki-rischi-persistenza.md §Contesto]
+
+---
+
+### Q_005 — Quale ruolo Sync scrive i report di verifica di EP-004 in `raw/`
+**Origine:** [[llm-wiki-rischi-persistenza]]
+**Tipo:** Requisito incompleto
+**Impatto:** MEDIO
+**Bloccante:** soft
+**Domanda:** l'utente ha deciso (2026-11-20 17:53) che il report di ogni verifica di EP-004 va scritto come raw in `raw/` da un ruolo Sync dedicato, da definire, e poi ingerito da `wiki-keeper`. Quale ruolo Sync scrive i report di verifica di EP-004 in `raw/`: un nuovo sub-agent o l'estensione di uno esistente? Con quali strumenti (senza Bash e per sola lettura del codice, come da Q_003)? Quale naming dei file e quale voce di manifest? Lo stesso canale vale per la sintesi di US-033?
+**Epiche bloccate:** EP-004
+**Storie bloccate:** US-025, US-026, US-027, US-028, US-029, US-030, US-031, US-032, US-033
+**Data risoluzione:** 2026-11-20 18:41
+**Risposto da:** l'utente
+**Decisione:** dossier unico per EP-004 via `repo-sync`, nessun agente nuovo.
+- **Chi scrive:** il ruolo Sync esistente `repo-sync` (nessun sub-agent nuovo, nessuna estensione; senza Bash, con i gate di Fase 1 e di Fase 4). La verifica dei rischi di US-025..US-032 si fa con un solo dossier per EP-004, per sola lettura del codice (Q_003): non si misura l'applicazione in esecuzione.
+- **Dove e naming:** `raw/<data>-repo-llm_wiki-dossier-ep004.md`, con voce nel manifest `raw/.extraction-manifest.json` con `source: repo`. Se il dossier diventa troppo grande per un'estrazione, si divide in più dossier con slug distinti.
+- **Contenuto:** il dossier è la base fattuale comune a tutte le storie di verifica. Per ciascuno degli 8 rischi riporta i file letti, le evidenze e l'esito proposto (confermato, smentito o non conclusivo, come da Q_003).
+- **Ingest:** `wiki-keeper` ingerisce il dossier e registra in wiki l'esito di ciascun rischio. Nessun esito è scritto direttamente in `wiki/`.
+- **US-033:** la sintesi dei rischi e degli interventi è scritta da `wiki-keeper` come pagina `syntheses/` a partire dai dossier ingeriti, senza raw aggiuntivo.
+- **Origine dell'idea:** il «dossier» riprende la Fase 2 della guida del master `wiki/guides/protocollo-analisi-funzionale.md` (bozza 2026-11-19, non distribuita alle derivate): una base fattuale unica, identica per tutti. Qui è adattata: lo scrive un Sync e non la sessione principale (PATTERN §7 r.1: L1 si scrive solo dai Sync; chi legge codice non fidato non ha Bash) e si ottiene con la sola lettura del codice (Q_003), non misurando l'app in esecuzione.
+**Epiche/Storie sbloccate:** EP-004; US-025, US-026, US-027, US-028, US-029, US-030, US-031, US-032, US-033 (`pending_clarification` svuotato; criteri e Business Rules adeguati al meccanismo del dossier)
 [^src: wiki/concepts/llm-wiki-rischi-persistenza.md §Contesto]
 
 ---

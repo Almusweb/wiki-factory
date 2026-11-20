@@ -14,7 +14,7 @@ Ordine di lavoro:
 
 1. **EP-002 — Completare la conoscenza del layer di persistenza** (high, 65%). Chiude i gap di persistenza con una nuova estrazione mirata.
 2. **EP-003 — Documentare gli schemi attuali del layer di persistenza** (high, 80%). Fa esistere `design_&_architecture/db_schemas/`, prerequisito di `db-dev`. Indipendente a livello di epica da EP-002; solo US-023 dipende da US-014.
-3. **EP-004 — Verificare i rischi di persistenza prima di correggerli** (high, 55%). Le storie di verifica dipendono da storie di EP-002 (US-016, US-015, US-014).
+3. **EP-004 — Verificare i rischi di persistenza prima di correggerli** (high, 55%). Le storie di verifica dipendono da storie di EP-002 (US-016, US-015, US-014) e da un dossier unico scritto da `repo-sync` (Q_005).
 4. **EP-001 — Difetti del master: analisi e segnalazione** (medium, 70%). In parallelo alle altre tre, perché indipendente: riguarda il meta-framework, non l'applicazione. Contiene US-001..US-011 (difetti numerati in wiki), US-012 (convenzioni di segnalazione) e US-034 (difetto 12, ipotesi segnalata dal tpm).
 
 ## Non pianificato
@@ -24,4 +24,4 @@ Gli interventi sul codice del layer di persistenza non sono pianificati prima di
 Nessuna epica con confidence sotto 50% al momento.
 
 ## Question soft aperte
-Aperte: Q_004 (EP-002, US-018) e Q_005 (EP-004, US-025..US-033). Q_001, Q_002 e Q_003 sono chiuse il 2026-11-20 17:36 (Q_002 con addendum del 17:53). Dettagli in `management/questions.md`.
+Aperta: Q_004 (EP-002, US-018). Q_001, Q_002 e Q_003 sono chiuse il 2026-11-20 17:36 (Q_002 con addendum del 17:53); Q_005 è chiusa il 2026-11-20 18:41 (EP-004: dossier unico scritto da `repo-sync`, ingerito da `wiki-keeper`). Dettagli in `management/questions.md`.
