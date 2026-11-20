@@ -31,3 +31,6 @@ context: Bootstrap wiki-factory 2.48 su llm_wiki: ingest, opt-in, analisi persis
 
 ## [2026-11-20] ingest | 2026-11-20-repo-llm_wiki (aggiornamento) + session-2026-11-20-16-3649aa67
 Pagine create: 9 | Figure: 0 | Aggiornamenti: 5 | Gap nuovi: 8 | Gap chiusi: 0
+
+## [2026-11-20] lint | check completo (seconda esecuzione del giorno)
+Orphan: 0 | Broken: 0 | Unsourced: 7 | Kanban: 0 err | Coerenza: 0 err

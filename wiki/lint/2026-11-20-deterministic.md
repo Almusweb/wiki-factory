@@ -5,8 +5,8 @@ Data di riferimento: 2026-11-20. Comando: `python3 tools/lint/run-deterministic.
 | Check | Cosa | ERROR | WARNING | INFO | Exit |
 |---|---|---|---|---|---|
 | 1, 4, 4ag | Struttura wiki: orphan, broken-link, storie collegate, staleness | 0 | 0 | 0 | 0 |
-| 3, 4as, 4b | Integrita' kanban, assignee, question | 0 | 0 | 0 | 0 |
-| 4au | Roll-up di stato TSK -> US -> epica e sprint.md | 0 | 0 | 0 | 0 |
+| 3, 4as, 4b | Integrita' kanban, assignee, question | 0 | 1 | 0 | 0 |
+| 4au | Roll-up di stato TSK -> US -> epica e sprint.md | 0 | 1 | 1 | 0 |
 | 4am | Coerenza delle versioni dichiarate | 0 | 0 | 0 | 0 |
 | 4ar | Annotazioni SUNSET scadute | 0 | 0 | 0 | 0 |
 | 4aq | Path portabili su Windows | 0 | 0 | 0 | 0 |
@@ -20,24 +20,24 @@ Data di riferimento: 2026-11-20. Comando: `python3 tools/lint/run-deterministic.
 | 4bi | Tracciabilita' decisione -> requisito -> task (design_traceability, solo forma) | 0 | 0 | 0 | 0 |
 | 4bj | Segreti nei file tracciati (oracolo gitleaks; WARN; ERROR da secrets_guard.required_from) | 0 | 0 | 0 | 0 |
 | 4bl | Path assoluti o fuori repo in .claude/settings.json (WARN; ERROR da settings_paths_check.required_from) | 0 | 0 | 0 | 0 |
-| 4bk | Agenti che leggono contenuto non fidato con Bash nei tools (WARN; ERROR da ingest_agent_tools.required_from) | 0 | 3 | 0 | 0 |
-| 4g | depends_on e scheduler: tipo, orfani, cicli, code_path, blocked_by, blocco scheduler: | 0 | 0 | 0 | 0 |
+| 4bk | Agenti che leggono contenuto non fidato con Bash nei tools (WARN; ERROR da ingest_agent_tools.required_from) | 0 | 0 | 0 | 0 |
+| 4g | depends_on e scheduler: tipo, orfani, cicli, code_path, blocked_by, blocco scheduler: | 0 | 0 | 1 | 0 |
 | 4ai | Integrita' del layer agenti: tool in whitelist, skill e comandi referenziati esistenti | 0 | 2 | 0 | 0 |
 | 4aj, 4bm | model: degli agenti coerente con il registro models: (fuori registro, override disatteso) | 0 | 0 | 0 | 0 |
 | 4bn | Marcatori di conflitto nei file in coda e append-only su HEAD (WARN) | 0 | 0 | 0 | 0 |
 | 4bo | Lettori diretti di memory/active-sessions.yaml, senza registry_path() (WARN) | 0 | 0 | 0 | 0 |
 | 4j | Repository risolvibile sui TSK aperti degli agenti (regola lint.kanban.tsk_target) | 0 | 0 | 0 | 0 |
 
-**Totale script**: 0 ERROR, 6 WARNING, 0 INFO
+**Totale script**: 0 ERROR, 5 WARNING, 2 INFO
 
 ### 1, 4, 4ag — Struttura wiki: orphan, broken-link, storie collegate, staleness
 
 `python3 tools/lint/check-wiki-structure.py --root . --oggi 2026-11-20`
 
 ```
-Check 1 completato su 13 file — 0 orphan rilevati, 0 broken-link rilevati
-Check 4 completato su 12 sezioni «Storie collegate»
-Check 4ag completato su 12 file (oggi=2026-11-20) — 0 MISSING-DATE, 0 STALE, 0 INFO
+Check 1 completato su 21 file — 0 orphan rilevati, 0 broken-link rilevati
+Check 4 completato su 20 sezioni «Storie collegate»
+Check 4ag completato su 20 file (oggi=2026-11-20) — 0 MISSING-DATE, 0 STALE, 0 INFO
 ```
 
 ### 3, 4as, 4b — Integrita' kanban, assignee, question
@@ -45,9 +45,10 @@ Check 4ag completato su 12 file (oggi=2026-11-20) — 0 MISSING-DATE, 0 STALE, 0
 `python3 tools/lint/check-kanban-integrity.py --root .`
 
 ```
-[3] popolazione: 0 EP, 0 US, 0 TSK (aperti e chiusi, archivio incluso)
-[4b] question lette: 0 aperte, 0 risolte
-[3/4as/4b] 0 ERROR, 0 WARNING — nessun finding
+- [WARNING][questions][4b] US-018: orphan-pending-clarification — Q_004 non citata nel pending_clarification di alcun ADR
+[3] popolazione: 4 EP, 34 US, 10 TSK (aperti e chiusi, archivio incluso)
+[4b] question lette: 1 aperte, 0 risolte
+[3/4as/4b] 0 ERROR, 1 WARNING — 4b/questions=1
 ```
 
 ### 4au — Roll-up di stato TSK -> US -> epica e sprint.md
@@ -55,9 +56,13 @@ Check 4ag completato su 12 file (oggi=2026-11-20) — 0 MISSING-DATE, 0 STALE, 0
 `python3 tools/lint/check-status-rollup.py --root .`
 
 ```
-[Passo 1] Raccolti: 0 EP, 0 US, 0 TSK
-[4au.5] sprint.md assente: sub-check non eseguito
-Riepilogo 4au: 4au.1=0, 4au.2=0, 4au.3=0, 4au.4=0, 4au.5=0, 4au.6=0, 4au.7=0
+- [WARNING][status-rollup][4au.1] management/kanban/EP-001-difetti-master-analisi-e-segnalazione/US-012-convenzioni-segnalazione-master/US-012.md
+  US status=in_progress — tutti i 1 TSK sono terminali
+- [INFO][status-rollup][4au.5] management/kanban/sprint.md
+  1 righe con ultima colonna che non e' uno stato, non confrontate (es. EP-002)
+[Passo 1] Raccolti: 4 EP, 34 US, 10 TSK
+[4au.5] sprint.md: 8 righe lette (forma rilevata: EP-level=1, TSK-level=7 — status in ultima colonna)
+Riepilogo 4au: 4au.1=1, 4au.2=0, 4au.3=0, 4au.4=0, 4au.5=1, 4au.6=0, 4au.7=0
 ```
 
 ### 4am — Coerenza delle versioni dichiarate
@@ -85,7 +90,7 @@ OK — tutti i siti di dichiarazione concordano su 2.48
 `python3 tools/lint/check-portable-paths.py`
 
 ```
-path tracciati: 3
+path tracciati: 1046
 OK — ogni path e' scrivibile su Windows, macOS e Linux
 ```
 
@@ -105,7 +110,7 @@ Totale: 1 submodule senza `ignore = dirty`
 `python3 tools/lint/check-log-append-guard.py .`
 
 ```
-[4bb] OK — 0 commit di wiki/log.md esaminati, nessuna riga tolta senza archivio
+[4bb] OK — 1 commit di wiki/log.md esaminati, nessuna riga tolta senza archivio
 ```
 
 ### 4bc — Chiusure dei gap verificate sulla wiki
@@ -113,7 +118,7 @@ Totale: 1 submodule senza `ignore = dirty`
 `python3 tools/lint/check-gap-closures.py .`
 
 ```
-[4bc] OK — 12 gap, nessuna chiusura non verificata
+[4bc] OK — 25 gap, nessuna chiusura non verificata
 ```
 
 ### 4bd — wiki/gaps.md append-only (ultimo commit che lo tocca)
@@ -121,7 +126,7 @@ Totale: 1 submodule senza `ignore = dirty`
 `python3 tools/lint/check-gaps-append-guard.py .`
 
 ```
-[4bd] OK — 0 commit di wiki/gaps.md esaminati, nessuna riga tolta
+[4bd] OK — 1 commit di wiki/gaps.md esaminati, nessuna riga tolta
 ```
 
 ### 4be — Date di lavoro dei TSK (started_at, closed_at) dalla data di adozione
@@ -161,7 +166,7 @@ Totale: 1 submodule senza `ignore = dirty`
 `python3 tools/lint/check-secrets.py --root . --oggi 2026-11-20`
 
 ```
-[4bj] OK — gitleaks: nessun finding su 2 file (previene nel percorso cooperativo, rileva negli altri).
+[4bj] OK — gitleaks: nessun finding su 1045 file (previene nel percorso cooperativo, rileva negli altri).
 ```
 
 ### 4bl — Path assoluti o fuori repo in .claude/settings.json (WARN; ERROR da settings_paths_check.required_from)
@@ -177,12 +182,7 @@ Totale: 1 submodule senza `ignore = dirty`
 `python3 tools/lint/check-ingest-agent-tools.py --root . --oggi 2026-11-20`
 
 ```
-## WARNING (lettori di contenuto non fidato con Bash)
-- [WARNING][ingest-tools][4bk] .claude/agents/figma-sync.md: legge contenuto non fidato, dichiara Bash e non ha eccezione
-- [WARNING][ingest-tools][4bk] .claude/agents/graphify-sync.md: legge contenuto non fidato, dichiara Bash e non ha eccezione
-- [WARNING][ingest-tools][4bk] .claude/agents/session-sync.md: legge contenuto non fidato, dichiara Bash e non ha eccezione
-
-Totale: 3 agenti
+[4bk] OK — nessun lettore di contenuto non fidato con Bash fuori da eccezioni valide
 ```
 
 ### 4g — depends_on e scheduler: tipo, orfani, cicli, code_path, blocked_by, blocco scheduler:
@@ -190,7 +190,8 @@ Totale: 3 agenti
 `python3 tools/lint/check-depends-on.py --root .`
 
 ```
-[4g] 0 artefatti, 0 con depends_on, 0 archi nel grafo
+- [INFO][dependencies-drift-candidate][4g] TSK-005: ## Dependencies e depends_on differiscono (solo corpo: -; solo frontmatter: TSK-003, TSK-004)
+[4g] 48 artefatti, 34 con depends_on, 44 archi nel grafo
 ```
 
 ### 4ai — Integrita' del layer agenti: tool in whitelist, skill e comandi referenziati esistenti
