@@ -377,9 +377,9 @@ voice_channel:
 # DAG: no flag dependency; REQUIRES lancedb + sentence-transformers (~120 MB) (hard).
 wiki_search:
   enabled: true                          # attivato 2026-11-20
-  backend: auto                          # auto = hybrid se lancedb e sentence-transformers sono installati, altrimenti fts5 (SQLite, zero dipendenze)
+  backend: fts5                          # fissato 2026-11-20, decisione dell'utente: nessuno stack di embedding sul PC (con auto passerebbe a hybrid se qualcuno installasse lancedb e sentence-transformers)
   fts_db: .wiki-search/fts.sqlite        # indice fts5 locale (gitignored)
-  mode: hybrid                           # in fts5 degrada a ricerca testuale
+  mode: fts                              # solo ricerca testuale
   top_k: 5
   exclude_types: [meta]
 
@@ -470,8 +470,13 @@ session_close:
   log_entry_limit: 20
   target_doc_kb: 8
 
-# Code Intelligence Stack (PATTERN §33) — solo L1 (universal-ctags 6.1.0 installato).
-# L2 (tree-sitter + lancedb) e L3 (graphify) spenti: dipendenze assenti.
+# Code Intelligence Stack (PATTERN §33).
+# L1: universal-ctags 6.1.0. L3 acceso il 2026-11-20 (decisione dell'utente): graphify 0.9.113,
+# grafo solo AST e senza LLM (update --no-cluster, poi cluster-only --no-label), costruito su una
+# copia da `git archive` in .graphify-state/src/<slug>/ (gitignored), cosi' il repo del cliente non
+# riceve scritture; grafo in .graphify-state/code_paths/<slug>/graph.json.
+# L2 spento per decisione dell'utente (2026-11-20): nessuno stack di embedding sul PC (torch,
+# sentence-transformers, lancedb); i pacchetti residui di un tentativo fallito sono stati disinstallati.
 code_intelligence:
   enabled: true
   l1_ctags:
@@ -482,5 +487,5 @@ code_intelligence:
   l2_semantic:
     enabled: false
   l3_impact:
-    enabled: false
+    enabled: true
     auto_run_on_dev: false
