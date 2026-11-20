@@ -1,0 +1,19 @@
+{
+  "2026-11-20-repo-llm_wiki": {
+    "source": "repo",
+    "extracted_at": "2026-11-20T15:28:00+01:00",
+    "primary_artifact": "raw/2026-11-20-repo-llm_wiki.md",
+    "secondary_artifacts": ["raw/images/2026-11-20-repo-llm_wiki-tree.md"],
+    "extractor_version": "repo-sync@2.12.0",
+    "extraction_metadata": {
+      "source_path": "C:\\local_git\\code\\wiki-factory\\code_repos\\llm_wiki",
+      "git_commit": "e08cfce65aad8b76b13546a081c1a8d4422b70c3",
+      "git_branch": "develop",
+      "stack": { "language": "typescript", "framework": "react", "confidence": 0.7 },
+      "files_sampled": 30,
+      "files_total_in_repo": 476,
+      "secrets_redacted": 0,
+      "status": "partial"
+    }
+  }
+}
