@@ -5,7 +5,7 @@ title: llm-wiki — versioni di formato e migrazioni
 status: draft
 created: 2026-11-20
 updated: 2026-11-20
-sources: ["raw/2026-11-20-repo-llm_wiki.md"]
+sources: ["raw/2026-11-20-repo-llm_wiki.md", "raw/2026-11-20-repo-llm_wiki-persistenza-b.md", "raw/2026-11-20-repo-llm_wiki-persistenza-c.md"]
 tags: [llm-wiki, dati, migrazioni, db]
 ---
 
@@ -52,3 +52,28 @@ Nel v2 è il percorso relativo sotto `wiki/` senza `.md` (funzione `wikiPageIdFr
 - US-020 — Schema degli archivi vettoriali e delle revisioni di embedding
 - US-024 — Versioni di formato e regole di compatibilità
 - US-031 — Rischio 7: cambio di modello o di dimensione dell'embedding
+
+## Aggiornamenti (v2026-11-20)
+Dalle fette B e C delle estrazioni mirate sulla persistenza ([[2026-11-20-repo-llm_wiki-persistenza-b]], [[2026-11-20-repo-llm_wiki-persistenza-c]]). Il testo sopra non è modificato; qualificatori come nel raw. Il gap `llm-wiki-vector-v1-chiamanti` non è chiuso qui.
+
+### Altri campi `version`
+`file-snapshot.json` e `file-change-queue.json` hanno `version`, e `read_snapshot` e `read_queue` portano `version` da 0 a 1; i checkpoint `ingest-progress` e `ingest-generation` hanno `version: 1`. Sono archivi non presenti nell'inventario di [[llm-wiki-archivi-persistenza]]; il comportamento è in [[llm-wiki-sincronizzazione-file]]. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-b.md §Sincronizzazione e osservazione dei file]
+
+### Forme di chiave e marcatori di versione
+La cache delle didascalie ha due forme di chiave: l'hash SHA-256 dei byte (legacy) oppure l'hash seguito da `::language:` e lingua codificata. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-b.md §Cache di ingest, didascalie e checkpoint]
+
+La validità della cache Office `.cache` dipende dal marcatore `.txt.parser` con la versione del parser: senza marcatore valido, o con versione diversa, la cache Office non si usa. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-b.md §File e cartelle citati e non verificati]
+
+### LanceDB v1: chiamanti
+Nell'ambito cercato (sorgenti non di test sotto `src` e `src-tauri/src`; fuori `mcp-server`, `extension`, `scripts` e i test) né `vector_upsert` né `vector_delete` (v1) hanno chiamanti: nessuna invocazione per nome nel TS e, in Rust, solo definizioni e test di `vectorstore.rs` e registrazione nell'elenco dei comandi di `lib.rs` (`:672` e `:674`). Il comando è comunque esposto al frontend, quindi un chiamante esterno al sorgente cercato resta possibile. La cancellazione della tabella v1 avviene con `vector_drop_legacy` (`embedAllPages` `:632` letto; `EmbeddingSection` `:138` solo mappa). Lo zero vale per la stringa esatta. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-c.md §Vecchio formato vettoriale (v1): chiamanti]
+
+### Identificatore di pagina
+`removeLegacyVectorIdIfSafe` agisce solo se l'id contiene `/` e se una sola pagina possiede lo stem; usa `vector_delete_page`, quindi cancella righe con id legacy nella tabella v2, non nella v1. Parte da `removePageEmbedding` e anche dopo ogni `vectorUpsertPageChunks`; un tentativo per progetto e id (memoria di sessione), ripetibile se fallisce. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-c.md §Contraddizioni con la wiki]
+
+### Spostamento di sorgenti
+`migrateSourcePath` (rinomina o spostamento di una sorgente) riscrive `sources:` nelle pagine che la citano, sposta il riepilogo, la voce di `ingest-cache` e la copia in `raw/parsed`; rifiuta se la destinazione esiste; ha un rollback best effort per errori prima degli ultimi passi. `moveParsedMarkdown` (chiamato da `migrateSourcePath` secondo graphify) scrive la nuova copia in modo atomico e poi cancella la vecchia, tollerando l'errore di cancellazione. È una migrazione di percorsi, non di formato. Dettaglio in [[llm-wiki-cancellazione-pagine-e-sorgenti]]. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-c.md §Ciclo di vita delle sorgenti]
+
+## Contradictions
+- **Versioni di formato esplicite.** Prima (tesi della pagina): «le versioni di formato esplicite sono solo due (`version: 1` in `scheduled-import-db.json` e il suffisso `_v2`)». Ora (fetta B): altri campi `version` in `file-snapshot.json`, `file-change-queue.json`, `ingest-progress` e `ingest-generation` (vedi sopra). Il numero di versioni esplicite va rivisto; la stessa frase è in [[llm-wiki-schema-dati]] e nel sommario di [[llm-wiki-archivi-persistenza]]. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-b.md §Sincronizzazione e osservazione dei file]
+- **`.llm-wiki-imported`.** Prima (sezione `scheduled-import-db.json`): «Resta il riferimento a una cartella legacy `.llm-wiki-imported`». Ora (fetta B, letto): non esiste come archivio con campi; è un nome (`LEGACY_DB_DIR`) escluso dalla scansione dell'import pianificato; l'unico uso a riga 235 viene dalla sessione e l'origine legacy è dedotta dal nome. Dettaglio in [[llm-wiki-archivi-persistenza]]. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-b.md §Punto 7: `.llm-wiki-imported`]
+- **`vector_upsert` senza chiamanti.** Prima (quarto punto di «LanceDB v1 verso v2»): «Nel campione non ha chiamanti». Ora (fetta C): nessun chiamante nell'ambito cercato, comandi registrati e quindi esposti (evidenza più ampia dello stesso esito; per `vector_delete` e per la riga «Chiamate legacy» di `vector_upsert` vedi [[llm-wiki-operazioni-distruttive]]). [^src: raw/2026-11-20-repo-llm_wiki-persistenza-c.md §Contraddizioni con la wiki]

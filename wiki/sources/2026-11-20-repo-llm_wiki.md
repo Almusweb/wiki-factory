@@ -5,7 +5,7 @@ title: Specifiche estratte da code_repos/llm_wiki (repo-sync)
 status: draft
 created: 2026-11-20
 updated: 2026-11-20
-sources: ["raw/2026-11-20-repo-llm_wiki.md", "raw/images/2026-11-20-repo-llm_wiki-tree.md"]
+sources: ["raw/2026-11-20-repo-llm_wiki.md", "raw/images/2026-11-20-repo-llm_wiki-tree.md", "raw/2026-11-20-repo-llm_wiki-persistenza-b.md", "raw/2026-11-20-repo-llm_wiki-persistenza-c.md"]
 tags: [source, repo, llm-wiki]
 ---
 
@@ -76,3 +76,8 @@ Dalla sezione `### Gap` dell'aggiornamento sono stati aperti in [[gaps]]: `llm-w
 
 ### Correzione di percorso
 Dove il raw cita `fs.rs` come non letto, il percorso corretto segnalato dall'estrattore è `src-tauri/src/commands/fs.rs`. Il raw non è stato modificato; la correzione vale in wiki.
+
+### Estrazioni mirate successive (fette A, B e C)
+Sullo stesso commit `e08cfce` sono seguite tre estrazioni mirate sulla persistenza, ognuna con una propria pagina: [[2026-11-20-repo-llm_wiki-persistenza-a]] (store e configurazioni), [[2026-11-20-repo-llm_wiki-persistenza-b]] (scritture, sincronizzazione, log e indice) e [[2026-11-20-repo-llm_wiki-persistenza-c]] (cancellazioni e chiamanti). Il testo sopra non è modificato; i valori cumulativi dei file campionati sono riportati nelle pagine delle fette, con la riserva che sono un massimo non verificabile. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-c.md §Copertura del gap `llm-wiki-persistenza-codice-non-letto`]
+
+Due frasi sopra sono toccate dalle fette: «Non letto per limite di dimensione: `file_sync.rs` (70 KB)» (ora letto alle righe 1-444 e 1290-1409, vedi [[llm-wiki-sincronizzazione-file]]) e «inventario dei 17 archivi» (la fetta B trova archivi non presenti nell'inventario e non corregge né conferma il conteggio, vedi [[llm-wiki-archivi-persistenza]]). [^src: raw/2026-11-20-repo-llm_wiki-persistenza-b.md §Sincronizzazione e osservazione dei file]

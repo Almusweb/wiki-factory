@@ -5,7 +5,7 @@ title: llm-wiki — gestione dei file corrotti
 status: draft
 created: 2026-11-20
 updated: 2026-11-20
-sources: ["raw/2026-11-20-repo-llm_wiki.md"]
+sources: ["raw/2026-11-20-repo-llm_wiki.md", "raw/2026-11-20-repo-llm_wiki-persistenza-a.md", "raw/2026-11-20-repo-llm_wiki-persistenza-b.md"]
 tags: [llm-wiki, dati, persistenza, resilienza, db]
 ---
 
@@ -36,3 +36,28 @@ Pagina ricavata dalla seconda estrazione sulla persistenza (commit `e08cfce`), s
 - US-021 — Schema degli archivi per progetto
 - US-026 — Rischio 2: rigenerazione dell'identità del progetto
 - US-027 — Rischio 3: scritture non serializzate sul registro dei progetti
+
+## Aggiornamenti (v2026-11-20)
+Dalle fette A e B delle estrazioni mirate sulla persistenza ([[2026-11-20-repo-llm_wiki-persistenza-a]], [[2026-11-20-repo-llm_wiki-persistenza-b]]). Il testo sopra non è modificato. Archivi in [[llm-wiki-archivi-persistenza]]; qualificatori («osservato», «deduzione», «non verificato») come nel raw.
+
+### `app-state.json`: comportamento lato Rust (osservato)
+- Agente: su store illeggibile la lettura restituisce «assente»; configurazione di default e nessun progetto dal registro; un progetto non trovato produce l'errore «Unknown project». [^src: raw/2026-11-20-repo-llm_wiki-persistenza-a.md §Store applicativo (`app-state.json`)]
+- Proxy all'avvio: nessuna configurazione e log «requests go direct». [^src: raw/2026-11-20-repo-llm_wiki-persistenza-a.md §Store applicativo (`app-state.json`)]
+- API: se la rilettura fallisce si riusa l'ultimo valore in cache, senza valore precedente il risultato è «assente». Con stato assente il token manca (risposta 401 su ogni endpoint tranne `/health`) mentre il flag `enabled` vale vero per default. Vedi [[llm-wiki-api-locale]] e [[llm-wiki-sicurezza]]. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-a.md §Store applicativo (`app-state.json`)]
+- Per le conversioni in struct delle chiavi lette dal Rust l'esito scarta in silenzio i valori non deserializzabili: osservato per la copia in `api_server.rs`, deduzione per la copia in `lib.rs`. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-a.md §Punto 4: lettori di `app-state.json` in `api_server.rs`]
+
+### `app-state.json`: comportamento lato TS
+- Osservato: `loadRegistry` ha try/catch e restituisce un registro vuoto; gli altri caricamenti di `project-store.ts` non hanno gestione degli errori. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-a.md §Store applicativo (`app-state.json`)]
+- Deduzione dal codice, non osservata in esecuzione: l'inizializzazione di `App.tsx` è in un try con catch che ignora l'errore e finally che spegne il caricamento; se l'apertura dello store rifiuta, le altre configurazioni non vengono caricate e l'ultimo progetto non viene riaperto, senza avviso all'utente. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-a.md §Store applicativo (`app-state.json`)]
+- Non verificato: il comportamento del plugin store su file corrotto (sorgente e documentazione del plugin non disponibili offline). Il comportamento di tutte le chiavi lette via plugin lato TS resta quindi sconosciuto oltre a `loadRegistry`. Gap `llm-wiki-app-state-percorso` ancora aperto. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-a.md §Store applicativo (`app-state.json`)]
+
+### Archivi della fetta B
+- `file-snapshot.json` e `file-change-queue.json`: su JSON illeggibile `read_json` restituisce un errore (`Failed to parse`) invece del valore vuoto; se il file manca restituisce il default. È l'eccezione al ripiego silenzioso della maggior parte dei caricamenti TS. Vedi [[llm-wiki-sincronizzazione-file]]. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-b.md §Sincronizzazione e osservazione dei file]
+- `dedup-queue.json`: un file illeggibile dà una coda vuota; scrittura diretta con errori ignorati. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-b.md §Coda di dedup e lint]
+- `image-caption-cache.json` mancante o corrotto: mappa vuota con avviso in console. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-b.md §Cache di ingest, didascalie e checkpoint]
+- `ingest-cache.json` e `ingest-queue.json`: scritture dirette con errori ignorati (in `ingest-queue.ts` le scritture sono serializzate in processo da una coda di richieste); un crash in scrittura non è mitigato da file temporaneo e rinomina (osservato per la scrittura, impatto dedotto). [^src: raw/2026-11-20-repo-llm_wiki-persistenza-b.md §Atomicità per archivio]
+- Markdown estratto: `moveParsedMarkdown` tollera un errore di cancellazione della vecchia copia (preferisce un duplicato a una migrazione fallita); la cache Office `.cache` rimuove il marcatore `.txt.parser` prima di rimpiazzare il contenuto, così un crash può causare solo una ricostruzione in più. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-b.md §File e cartelle citati e non verificati]
+
+## Contradictions
+- **Chiavi diverse da `loadRegistry`.** Prima (voce `app-state.json`): «Per le altre chiavi dipende dal comportamento del plugin store, non verificato». Ora (fetta A): è osservato il comportamento lato Rust (agente, proxy, API ripiegano su assente, default o cache) e che gli altri caricamenti TS di `project-store.ts` non hanno gestione degli errori; il comportamento del plugin resta non verificato. Estensione del testo, nessuna contraddizione sul plugin. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-a.md §Store applicativo (`app-state.json`)]
+- **Regola generale.** Prima: «Quasi tutti i caricamenti ripiegano su un valore vuoto o di default senza segnale all'utente». Ora (fetta B): per `file-snapshot.json` e `file-change-queue.json` `read_json` su JSON illeggibile restituisce un errore e ripiega sul default solo se il file manca. È un'eccezione alla regola (la pagina dice «quasi»), non una smentita totale. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-b.md §Sincronizzazione e osservazione dei file]

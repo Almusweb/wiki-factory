@@ -15,6 +15,9 @@ Indice delle pagine di `wiki/`, aggiornato da `wiki-keeper` a ogni ingest.
 
 ## Sources
 - [[2026-11-20-repo-llm_wiki]] — specifiche estratte da `code_repos/llm_wiki` (`repo-sync`, estrazione partial; seconda estrazione sulla persistenza)
+- [[2026-11-20-repo-llm_wiki-persistenza-a]] — fetta A della persistenza: store `app-state.json`, cartella dati, tipi delle configurazioni, lettori backend
+- [[2026-11-20-repo-llm_wiki-persistenza-b]] — fetta B della persistenza: scritture e atomicità, sincronizzazione file, log e indice
+- [[2026-11-20-repo-llm_wiki-persistenza-c]] — fetta C della persistenza: chiamanti delle operazioni distruttive, cancellazioni, `append_turn`, v1
 - [[session-2026-11-20-16-3649aa67]] — sessione di bootstrap `wiki-factory` 2.48 su `llm_wiki` (in `wiki/sessions/`; indice delle sessioni: [sessions/index.md](sessions/index.md))
 
 ## Entities
@@ -35,6 +38,8 @@ Indice delle pagine di `wiki/`, aggiornato da `wiki-keeper` a ogni ingest.
 - [[llm-wiki-versioni-e-migrazioni]] — versioni di formato e migrazioni
 - [[llm-wiki-operazioni-distruttive]] — operazioni distruttive, innesco e salvaguardie
 - [[llm-wiki-gestione-file-corrotti]] — comportamento sui file corrotti
+- [[llm-wiki-sincronizzazione-file]] — watcher di progetto, snapshot e coda dei cambi file
+- [[llm-wiki-cancellazione-pagine-e-sorgenti]] — cascata di cancellazione di una pagina e ciclo di vita delle sorgenti
 - [[llm-wiki-rischi-persistenza]] — divergenze e rischi del layer di persistenza (deduzioni)
 - [[llm-wiki-licenza-e-standard]] — GPL v3 di terzi, anomalia MIT del server MCP
 - [[llm-wiki-test-e-ci]] — test e CI

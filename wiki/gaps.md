@@ -159,3 +159,63 @@ File append-only: le informazioni che servono e la wiki non ha. Formato e chiusu
 **Gap:** non è documentata la forma dei riferimenti fra archivi. Pagine: `affectedPages` di `review.json`, gli slug di `dedup-not-duplicates.json`, `ignorePages` di `lint-config.json`, `filesWritten` di `ingest-cache.json`, rispetto all'id di pagina v2 (percorso relativo sotto `wiki/` senza `.md`). Sorgenti: `sourcePath` di `ingest-queue.json` (relativo) e di `review.json`, il «nome sorgente» che indicizza `ingest-cache.json`, le chiavi di `files` in `scheduled-import-db.json`. Percorsi: la base del percorso relativo della cronologia; la forma del percorso di progetto in `projectRegistry`, `recentProjects`, `lastProject` e nella chiave `scheduledImportConfig:<percorso>`; come la chiave `default` di `sourceWatchConfig` e `projectFileSyncEnabled` conviva con le chiavi per id progetto. Hash: la codifica di `sha256(page_id)` nei nomi `.revision` e dell'hash FNV-1a nei nomi dei file di cronologia.
 **Sospetta fonte:** raw/2026-11-20-repo-llm_wiki.md (presente: verificare se lo riporta); altrimenti nuovo raw (`review-store.ts`, `dedup-storage.ts`, `lint-config.ts`, `ingest-cache.ts`, `ingest-queue.ts`, `scheduled-import.ts`, `project-store.ts`, `page_embedding.rs`, `file_history.rs`). Non bloccante.
 **Impatto:** l'indice di `db_schemas/` non può dire quali archivi condividano davvero l'id di pagina o il riferimento a sorgente: le relazioni R2 (in parte), R12 e R13 e gli identificatori I2, I6, I7, I10, I11 restano «non verificato».
+
+## 2026-11-20 21:12 — llm-wiki-import-id-duplicato
+**Origine:** wiki-keeper @ ingest 2026-11-20-repo-llm_wiki-persistenza-a
+**Gap:** dopo l'importazione di un archivio non è noto cosa accada se l'id in `.llm-wiki/project.json`, ripristinato dallo zip, coincide con uno già presente in `projectRegistry` o `recentProjects` (collisione, sovrascrittura o duplicato). Il flusso `import_project_archive`, `openProject` e `addToRecentProjects` è letto fino al chiamante UI, non oltre. Fonte del gap: raw/2026-11-20-repo-llm_wiki-persistenza-a.md §Punto 1: caso «importato».
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (lettura di `project-identity.ts`, in particolare `upsertProjectInfo`, e del flusso di apertura progetto). Non bloccante.
+**Impatto:** [[llm-wiki-archivi-persistenza]] e [[llm-wiki-operazioni-distruttive]] non possono descrivere l'esito dell'importazione; tocca i rischi 2 e 3 di [[llm-wiki-rischi-persistenza]].
+
+## 2026-11-20 21:12 — llm-wiki-serde-compat-config
+**Origine:** wiki-keeper @ ingest 2026-11-20-repo-llm_wiki-persistenza-a
+**Gap:** non è verificata la compatibilità serde tra `llmConfig` dello store e `agent::provider::LlmConfig`, né tra `searchApiConfig` e le struct `WebSearchConfig` e `AnyTxtConfig` (`agent/provider.rs` e `agent/tools.rs` non letti): non si sa se campi opzionali o sconosciuti vengano scartati in silenzio. Fonte del gap: raw/2026-11-20-repo-llm_wiki-persistenza-a.md §Gap evidenti.
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (lettura di `agent/provider.rs` e `agent/tools.rs`). Non bloccante.
+**Impatto:** [[llm-wiki-schema-dati]] e [[llm-wiki-agente]] non possono dire quali campi della configurazione arrivino davvero al runtime.
+
+## 2026-11-20 21:12 — llm-wiki-embedding-trasporto
+**Origine:** wiki-keeper @ ingest 2026-11-20-repo-llm_wiki-persistenza-a
+**Gap:** il trasporto effettivo dell'embedding non è letto: `fetch_embedding_once` e `fetch_embedding_batch` (`search.rs` oltre la riga 1200), l'uso della chiave API e l'uso di `SEARCH_EMBEDDING_TIMEOUT_SECS` (valore 8, uso non nel campione). Sottodomanda del gap `llm-wiki-persistenza-codice-non-letto`, tenuta a parte per l'impatto sulla sicurezza. Fonte del gap: raw/2026-11-20-repo-llm_wiki-persistenza-a.md §Gap evidenti.
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (lettura di `search.rs` dalla riga 1201). Non bloccante.
+**Impatto:** [[llm-wiki-sicurezza]] non può dire dove e come viaggia la chiave API dell'embedding; tocca il rischio 8 di [[llm-wiki-rischi-persistenza]].
+
+## 2026-11-20 21:12 — llm-wiki-ui-salvataggio-impostazioni
+**Origine:** wiki-keeper @ ingest 2026-11-20-repo-llm_wiki-persistenza-a
+**Gap:** il raw colloca nel salvataggio delle impostazioni (`settings-view.tsx`, finestra 505-540) solo proxy, API, MinerU e import pianificato; dove e come la UI salva le altre chiavi (`llmConfig`, `providerConfigs`, `searchApiConfig`, `embeddingConfig`, `multimodalConfig`, `generalConfig`) non è letto, così come il salvataggio effettivo della sezione embedding. Fonte del gap: raw/2026-11-20-repo-llm_wiki-persistenza-a.md §Punto 9: quando la UI invoca `set_proxy_env` e il reload.
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (lettura di `settings-view.tsx` fuori dalla finestra e di `embedding-section.tsx` dalla riga 201). Non bloccante.
+**Impatto:** [[llm-wiki-archivi-persistenza]] non può dire quando una modifica alle altre chiavi è scritta su disco, oltre al salvataggio automatico con debounce.
+
+## 2026-11-20 21:12 — llm-wiki-scritture-non-verificate
+**Origine:** wiki-keeper @ ingest 2026-11-20-repo-llm_wiki-persistenza-b (accorpa punti delle fette B e C)
+**Gap:** il meccanismo di scrittura di alcuni archivi o scrittori non è verificato: `history-settings.json` (di `file_history.rs` sono lette solo le righe 1-70), le scritture per progetti non attivi di `ingest-queue.ts` (`inactiveQueueWrite`, file letto solo in parte), `write_wiki_page_verified` (`agent/tools.rs`: cartelle ammesse, atomicità, aggiornamento di indice e log) e `read_raw_review_array` e `write_raw_review_array` (senza i quali non si può dire se l'auto-save possa sovrascrivere le modifiche fatte alle review via API). Fonte del gap: raw/2026-11-20-repo-llm_wiki-persistenza-b.md §Atomicità per archivio, §Gap evidenti; raw/2026-11-20-repo-llm_wiki-persistenza-c.md §Gap evidenti.
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (`file_history.rs` oltre la riga 70, `ingest-queue.ts`, `agent/tools.rs`, `api_server.rs` per i due helper di review). Non bloccante.
+**Impatto:** [[llm-wiki-archivi-persistenza]], [[llm-wiki-api-locale]] e [[llm-wiki-rischi-persistenza]] non possono dire con quale atomicità siano scritti questi archivi; tocca il rischio 4.
+
+## 2026-11-20 21:12 — llm-wiki-chiamanti-non-verificati
+**Origine:** wiki-keeper @ ingest 2026-11-20-repo-llm_wiki-persistenza-c (accorpa punti delle fette B e C)
+**Gap:** restano chiamanti non verificati o non classificati: l'elenco completo dei chiamanti di `writeFileAtomic` (da graphify a profondità 1, non da ricerca testuale), i chiamanti dei wrapper `copyFile` e `copyDirectory` (`fs.ts:98` e `:105`), il chiamante di `optimizeChunkVectorTableBestEffort`, le stringhe non classificate (`embedding.ts:705`, `:731`, `:745`, `auto-save.ts:12`, `:28`), i corpi di `removeTasks` e `cancelAllTasks`; inoltre `cleanupWrittenFiles` e `clearCompletedTasks` non hanno chiamanti nell'ambito cercato, mentre i commenti dei sorgenti li descrivono come usati: non è noto se siano codice morto o chiamati da fuori ambito (`mcp-server`, `extension`, `scripts`, test) o per nome dinamico. Fonte del gap: raw/2026-11-20-repo-llm_wiki-persistenza-c.md §Gap evidenti, §Contraddizioni con la wiki; raw/2026-11-20-repo-llm_wiki-persistenza-b.md §Punto 2: `writeFileAtomic` e il markdown estratto.
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (ricerca testuale e lettura dei punti indicati, comprese le cartelle fuori ambito). Non bloccante.
+**Impatto:** [[llm-wiki-operazioni-distruttive]] resta con righe «chiamante non verificato» (`copy_file`, `copy_directory`, `vector_optimize_chunks`) e con due operazioni «senza chiamanti nell'ambito cercato».
+
+## 2026-11-20 21:12 — llm-wiki-tipi-dedup-lint
+**Origine:** wiki-keeper @ ingest 2026-11-20-repo-llm_wiki-persistenza-b
+**Gap:** il tipo `DuplicateGroup` (`dedup.ts`) e i valori ammessi di `type` e `severity` di `LintResult` (`lint.ts`) non sono letti: il campo `group` di `dedup-queue.json` e `type` e `severity` di `lint.json` restano non descritti. Fonte del gap: raw/2026-11-20-repo-llm_wiki-persistenza-b.md §Coda di dedup e lint.
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (lettura di `dedup.ts` e `lint.ts`). Non bloccante.
+**Impatto:** [[llm-wiki-schema-dati]] e [[llm-wiki-archivi-persistenza]] non possono descrivere per intero i campi di `dedup-queue.json` e `lint.json`.
+
+## 2026-11-20 21:12 — llm-wiki-markdown-estratto-percorsi
+**Origine:** wiki-keeper @ ingest 2026-11-20-repo-llm_wiki-persistenza-b (accorpa due punti della fetta B)
+**Gap:** per le immagini MinerU, `mineruAssetRelPath` non è letta e la cartella assoluta `mediaDir` non è nella finestra letta di `mineru.ts`: che le immagini vadano sotto `wiki/media/` è una deduzione dal prefisso. Per il markdown estratto in `raw/parsed`, il legame tra l'opzione di disattivazione (commento a `parsed-source-output.ts:80`) e `persistExtractedMarkdown` è solo dedotto; default e punto di lettura non sono verificati. Fonte del gap: raw/2026-11-20-repo-llm_wiki-persistenza-b.md §Punto 3: immagini MinerU; §Punto 2: `writeFileAtomic` e il markdown estratto.
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (lettura di `mineruAssetRelPath` e di `mineru.ts` fuori dalle finestre, dei punti di lettura dell'opzione). Non bloccante.
+**Impatto:** [[llm-wiki-archivi-persistenza]] non può confermare la posizione delle immagini MinerU né il default della copia in `raw/parsed`.
+
+## 2026-11-20 21:12 — llm-wiki-cancellazione-controlli-confine
+**Origine:** wiki-keeper @ ingest 2026-11-20-repo-llm_wiki-persistenza-c
+**Gap:** non è noto se `delete_file` controlli che il percorso sia dentro il progetto: nelle righe lette di `fs.rs` (1660-1790) non c'è alcun controllo e `run_guarded` non è nella finestra. Restano ignorate l'origine delle stringhe di azione `delete:<percorso>` delle review (se generate dal modello) e la presenza di una conferma nella cancellazione di pagina orfana di `lint-view.tsx` (finestra 335-350, inizia a metà funzione). Fonte del gap: raw/2026-11-20-repo-llm_wiki-persistenza-c.md §Gap evidenti.
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (`run_guarded` e l'inizio del gestore di `delete_file` in `fs.rs`, `lint-view.tsx` prima della riga 335, generazione delle review in `ingest.ts` e `sweep-reviews.ts`). Non bloccante.
+**Impatto:** [[llm-wiki-operazioni-distruttive]] e [[llm-wiki-rischi-persistenza]] non possono dire se la cancellazione sia confinata al progetto.
+
+## 2026-11-20 21:12 — llm-wiki-cancellazione-file-orfani
+**Origine:** wiki-keeper @ ingest 2026-11-20-repo-llm_wiki-persistenza-c (accorpa due punti)
+**Gap:** non è noto se `vector_delete_page` (lato Rust) cancelli anche il file `embedding-revisions/<sha256>.revision`: la cascata di cancellazione di una pagina lo lascia non toccato nel codice TS letto. Non è stata cercata la cancellazione dei file `agent-sessions/`: non è noto se qualche codice li cancelli o li ripulisca oltre al troncamento a 40 messaggi di `append_turn`. Fonte del gap: raw/2026-11-20-repo-llm_wiki-persistenza-c.md §Cascata di cancellazione di una pagina; §Gap evidenti.
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (`vectorstore.rs` e `page_embedding.rs` per `vector_delete_page`; ricerca testuale su `agent-sessions` e funzioni di cancellazione di `session.rs`). Non bloccante.
+**Impatto:** [[llm-wiki-operazioni-distruttive]], [[llm-wiki-cancellazione-pagine-e-sorgenti]] e [[llm-wiki-archivi-persistenza]] non descrivono il ciclo di vita dei file di revisione e di sessione dopo una cancellazione.
