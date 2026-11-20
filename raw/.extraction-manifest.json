@@ -113,5 +113,22 @@
       "secrets_redacted": 0,
       "payload_truncated": false
     }
+  },
+  "raw/sessions/session-2026-11-20-22-0c0ab4bf": {
+    "source": "session",
+    "extracted_at": "2026-11-20T22:58:14Z",
+    "primary_artifact": "raw/sessions/session-2026-11-20-22-0c0ab4bf.md",
+    "extractor": "session-sync",
+    "extraction_metadata": {
+      "operator": "Alessandro Musio",
+      "context": "Sprint 01: estrazioni persistenza A/B/C e ingest, indice db_schemas, modello di report, code intelligence L3",
+      "outcome": "completed",
+      "outcome_source": "auto-derived",
+      "factory_version": "2.48",
+      "ingest_hint": "full-page",
+      "status": "success",
+      "secrets_redacted": 0,
+      "payload_truncated": false
+    }
   }
 }
