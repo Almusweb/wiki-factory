@@ -80,7 +80,13 @@ code_paths:
       remote_url: https://github.com/Almusweb/llm_wiki.git
       base_branch: develop
       branch_strategy: per-tsk
-      commit_coupling: pin
+      commit_coupling: float      # float: niente .factory-lock; il puntatore resta nel gitlink del submodule
+      branch_awareness:           # VCS Branch Awareness Layer (PATTERN §15, EP-034)
+        enabled: true
+        preflight: true           # tabella /vcs-status nel dashboard /run
+        dispatch_gate: warn       # gate Fase 0 dev-protocol: avvisa se il submodule non e' sul branch atteso
+        auto_align: propose       # propone il comando, mai checkout silenzioso (R.B8)
+        drift_check: true         # segnala gitlink del parent diverso dall'HEAD del submodule
 
 # Sorgente di alimentazione della wiki scelta al bootstrap (seed v2-12, G = existing-repo).
 wiki:
@@ -115,6 +121,10 @@ stack:
 ai_attribution_policy:
   suppress_ai_traces: true
   commit_tool: tools/vcs/sm_commit.py
+
+# Chiavi top-level della factory assenti dallo schema del master (check-config-schema-coverage
+# le riporta come INFO): ai_attribution_policy e' definita in PATTERN §23.9 ma non in schemas/.
+schema_local_keys: [ai_attribution_policy]
 
 # AI Policy Check (EP-068) — scansione detective del code_path cliente.
 ai_policy_check:
@@ -233,6 +243,12 @@ code_quality:
     path: ./code_quality/reports/
     retain_iterations: 5
     digest_cadence: weekly
+  trigger_default:                       # review di default (dev-protocol Fase 4-quater, dispatch-policy §12)
+    enabled: true
+    layer: [fe, be, qa]                  # i layer con routing agent
+    consumer: [agent]
+    review_status_field: review_status
+    review_status_default: pending
 
 
 # ===================================================================================
@@ -355,7 +371,12 @@ voice_channel:
 # Hybrid Wiki Search (v2.29, EP-042) — vector+FTS+RRF semantic search on wiki.
 # DAG: no flag dependency; REQUIRES lancedb + sentence-transformers (~120 MB) (hard).
 wiki_search:
-  enabled: false
+  enabled: true                          # attivato 2026-11-20
+  backend: auto                          # auto = hybrid se lancedb e sentence-transformers sono installati, altrimenti fts5 (SQLite, zero dipendenze)
+  fts_db: .wiki-search/fts.sqlite        # indice fts5 locale (gitignored)
+  mode: hybrid                           # in fts5 degrada a ricerca testuale
+  top_k: 5
+  exclude_types: [meta]
 
 # Capability Formativa (v2.32, EP-045) — adaptive tutoring Student Model SM-2.
 # DAG: no flag dependency; wiki_search_integration REQUIRES both enabled (hard).
@@ -370,3 +391,91 @@ content_share:
 
 kanban_dates:
   required_from: "2026-11-20"   # data d'installazione: Check 4be (ERROR) vale da qui in poi
+
+# ===================================================================================
+# === OPT-IN ATTIVATE IL 2026-11-20 =================================================
+# ===================================================================================
+
+# Check 4bk — lettori di contenuto non fidato con Bash: eccezioni motivate a scadenza
+# (stesse del master). Senza required_from il check resta WARNING.
+ingest_agent_tools:
+  agenti: []
+  exceptions:
+    - {agente: figma-sync, motivo: "chiama l'API Anthropic con mcp_servers verso il Figma MCP e ANTHROPIC_API_KEY da env (figma-extraction-protocol.md:70,110)", scade: "2027-05-16"}
+    - {agente: graphify-sync, motivo: "esegue la CLI graphify update <code_path> (graphify-extraction-protocol.md:42,100)", scade: "2027-05-16"}
+    - {agente: session-sync, motivo: "raccoglie i dati di sessione con python3 tools/session/close_collect.py (session-sync.md:47-49); non legge contenuto esterno", scade: "2027-05-16"}
+
+# Oracolo dei segreti (gitleaks 8.30.1) nel pre-commit della factory.
+# Hook installato con: python3 tools/vcs/install_factory_hooks.py
+secrets_guard:
+  enabled: true
+  required_from: "2026-11-20"     # da oggi un FAIL (segreto trovato) blocca il commit
+  deroghe: security/secrets-guard-deroghe.json
+  ref_protetto: origin/main
+
+# Submodule del cliente: doctor + hook §ai_policy (Layer-1 preventivo, locale al clone).
+# Hook installati con: python3 tools/vcs/install_submodule_hooks.py
+vcs_tooling:
+  submodule_doctor:
+    enabled: true         # hook post-merge/post-checkout: sm_doctor --align
+    auto_align: true      # solo su working tree pulito
+    quiet_on_hook: true
+  submodule_hooks:
+    enabled: true         # pre-commit/commit-msg in code_repos/llm_wiki (suppress_ai_traces: true)
+    force_reinstall: false
+
+# /repo-align — il lavoro locale e' sul remote? Solo git ls-remote, zero mutazione.
+repo_align:
+  enabled: true
+  status: active
+  triggers:
+    on_explicit: true
+    on_session_close: false
+    on_tsk_closed_count: 0
+  persist_yaml: false
+  log_to_wiki: false
+  auth_domains: []
+
+# Apertura e chiusura di sessione.
+session_start:
+  enabled: true
+  init_check_on_start: false
+  vcs_soft_warning_threshold: ~
+  auto_launch:
+    enabled: false                 # nessuna auto-apertura
+    idempotency_ttl_minutes: 1440
+    log_writes: false
+    mode_default: auto
+
+session_close:
+  enabled: true
+  status: active
+  output_dir: raw/sessions/
+  wiki_output_dir: wiki/sessions/
+  manifest_path: raw/.extraction-manifest.json
+  naming_pattern: "session-{date}-{uuid8}.md"
+  sources:
+    git_log: true
+    wiki_log: true
+    wiki_gaps: true
+    active_sessions: true
+    analytics_events: true
+    kanban_diff: true
+  git_log_limit: 30
+  log_entry_limit: 20
+  target_doc_kb: 8
+
+# Code Intelligence Stack (PATTERN §33) — solo L1 (universal-ctags 6.1.0 installato).
+# L2 (tree-sitter + lancedb) e L3 (graphify) spenti: dipendenze assenti.
+code_intelligence:
+  enabled: true
+  l1_ctags:
+    enabled: true
+    languages: [typescript, javascript, rust, python]
+    side_channel: .ctags-state             # gitignored
+    extra_flags: []
+  l2_semantic:
+    enabled: false
+  l3_impact:
+    enabled: false
+    auto_run_on_dev: false
