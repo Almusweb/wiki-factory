@@ -54,3 +54,7 @@ Dettaglio: W8-W13 via Aggiornamenti; W15 riga `project.json` corretta in-place s
 ## [2026-11-20] sweep | correzione esito iterazione 1: esito=stuck (non closed)
 La voce precedente dichiarava `esito=closed` senza rescan (il keeper non aveva Bash). Rescan eseguito: `wiki/lint/2026-11-20-sweep-rescan.md` (wiki-lint scoped, Check 2) e `python3 tools/lint/run-deterministic.py` (exit 0, 6 WARNING invariati, nessuno nuovo).
 Chiusi: W15-r28 (`project.json`, correzione autorizzata dall'utente). Ancora presenti: W8-W13 — le fonti nel blocco `## Aggiornamenti` in coda non rientrano nella finestra di 3 righe dell'euristica del Check 2. Citazioni nuove verificate: tutte puntano a file e sezioni esistenti.
+
+## [2026-11-21] sweep | iterazione 2: esito=regression (W8-W13 chiusi, 2 nuovi candidati di igiene)
+Categorie: unsupported-claim=6 | Iter 2: applied=6 (citazioni spostate in fondo alle righe 18, 37, 65, 79, 93 di master-difetti-rilevati e 49 di llm-wiki-archivi-persistenza; testo invariato, verificato con `git diff --word-diff`).
+Rescan: `wiki/lint/2026-11-20-sweep-rescan.md` §Iterazione 2 (wiki-lint scoped, Check 2): W8-W13 chiusi. Nuovi W17 (master-difetti-rilevati r.128) e W18 (llm-wiki-archivi-persistenza r.127): note di metodo del keeper negli Aggiornamenti v2026-11-21, senza citazione; WARNING di igiene, non affermazioni sul raw. Fix possibile: esenzione o wikilink nella riga.

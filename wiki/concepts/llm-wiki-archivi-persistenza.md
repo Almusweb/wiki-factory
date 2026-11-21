@@ -4,7 +4,7 @@ type: concept
 title: llm-wiki — archivi di persistenza
 status: draft
 created: 2026-11-20
-updated: 2026-11-20
+updated: 2026-11-21
 sources: ["raw/2026-11-20-repo-llm_wiki.md", "raw/2026-11-20-repo-llm_wiki-persistenza-a.md", "raw/2026-11-20-repo-llm_wiki-persistenza-b.md", "raw/2026-11-20-repo-llm_wiki-persistenza-c.md"]
 tags: [llm-wiki, dati, persistenza, db]
 ---
@@ -46,7 +46,7 @@ Fonte di tutte le righe della tabella: [^src: raw/2026-11-20-repo-llm_wiki.md §
 Elenco dai file `project-store.ts` e `project-identity.ts`. [^src: raw/2026-11-20-repo-llm_wiki.md §Schemi e campi]
 - `recentProjects` (massimo 10) e `lastProject`: oggetti con `id`, `name`, `path`.
 - `projectRegistry`: per id, `id`, `path`, `name`, `lastOpened`.
-- Configurazione LLM: `llmConfig`, `providerConfigs`, `activePresetId`, `taskModelRouting` (`chatPresetId`, `ingestPresetId`), `projectLlmOverrides` (per id progetto: `enabled`, `presetId`, `model`, `profile`), `customLlmPresets` (massimo 50, voci `id` con prefisso `custom-` e `label`).
+- Configurazione LLM: `llmConfig`, `providerConfigs`, `activePresetId`, `taskModelRouting` (`chatPresetId`, `ingestPresetId`), `projectLlmOverrides` (per id progetto: `enabled`, `presetId`, `model`, `profile`), `customLlmPresets` (massimo 50, voci `id` con prefisso `custom-` e `label`). [^src: raw/2026-11-20-repo-llm_wiki.md §Schemi e campi]
 - Servizi: `searchApiConfig`, `embeddingConfig`, `multimodalConfig`, `mineruConfig`, `proxyConfig`, `apiConfig`.
 - Interfaccia e comportamento: `generalConfig` (`autostart`, `closeBehavior` con valori ask, minimize, exit), `language`, `theme`, `outputLanguage`, `projectOutputLanguages`, `zoomLevel`, `updateCheckState` (`enabled`, `lastCheckedAt`, `dismissedVersion`).
 - Per progetto: `scheduledImportConfig:<percorso>`, `projectFileSyncEnabled` (con chiave `default`), `sourceWatchConfig` (con chiave `default`), `sourceWatchAllProjects`.
@@ -124,6 +124,7 @@ Il Rust legge `.llm-wiki/project.json` per ricavare l'id dei progetti recenti, c
 ### Esito di sweep-reviews (2026-11-20)
 - Riga 49 (Configurazione LLM, chiavi di `app-state.json`): fonte `[^src: raw/2026-11-20-repo-llm_wiki.md §Schemi e campi]` (finding W13, unsupported-claim per adiacenza; testo invariato).
 - Correzione in-place autorizzata dall'utente (deroga alla regola «mai in-place», finding W15, riga `project.json` dell'inventario, riga 28). Prima: «TS scrive e legge (`project-identity.ts`); RS non lo legge». Ora: «TS scrive e legge (`project-identity.ts`); RS lo legge per ricavare l'id dei progetti recenti, con ripiego sul percorso quando manca (`lib.rs:436-448`, `api_server.rs:877-884`)». [^src: raw/2026-11-20-repo-llm_wiki-persistenza-a.md §Cartella dati di progetto `.llm-wiki/`]
+- Aggiornamento (v2026-11-21), iterazione 2: la citazione della riga 49 è spostata in fondo alla riga stessa (finestra del Check 2); nessun cambio di testo.
 - Non toccati e rinviati: il conteggio «17 archivi» e la tesi «una sola versione di formato» (riga 13), in attesa di decisione sul criterio di conteggio.
 
 ## Contradictions

@@ -4,7 +4,7 @@ type: concept
 title: Difetti del master soli-multi-agents-factory rilevati il 2026-11-20
 status: draft
 created: 2026-11-20
-updated: 2026-11-20
+updated: 2026-11-21
 sources: ["raw/sessions/session-2026-11-20-16-3649aa67.md"]
 tags: [factory, master, difetti, kanban]
 ---
@@ -15,7 +15,7 @@ tags: [factory, master, difetti, kanban]
 ## Contesto
 **Questi difetti riguardano il meta-framework (il master e le sue derivate), non l'applicazione `llm_wiki`.** Sono stati rilevati durante il bootstrap della factory `wiki-factory` (PATTERN 2.48). Il documento di sessione li elenca con numerazione da 1 a 11, mantenuta qui; la decisione di tracciarli nel kanban con il product-manager e il tpm è in [[factory-decisioni-di-configurazione]] (decisione 10). Quadro della sessione: [[session-2026-11-20-16-3649aa67]]. [^src: raw/sessions/session-2026-11-20-16-3649aa67.md §Insight]
 
-**Come leggere lo stato di verifica.** «Osservato in sessione» indica un comando o un check di cui il raw riporta l'esito; il wiki-keeper non lo ha rieseguito. «Verificato dal keeper» indica un controllo sulla copia locale `.claude/` di questa factory, che è una copia del master e non il master stesso. «Dichiarato nel raw» indica un'affermazione senza comando né riga di evidenza nel raw: per la regola del protocollo di chiusura della factory è un'ipotesi finché non viene verificata. Il documento di sessione non contiene un'analisi di impatto né una priorità per i difetti.
+**Come leggere lo stato di verifica.** «Osservato in sessione» indica un comando o un check di cui il raw riporta l'esito; il wiki-keeper non lo ha rieseguito. «Verificato dal keeper» indica un controllo sulla copia locale `.claude/` di questa factory, che è una copia del master e non il master stesso. «Dichiarato nel raw» indica un'affermazione senza comando né riga di evidenza nel raw: per la regola del protocollo di chiusura della factory è un'ipotesi finché non viene verificata. Il documento di sessione non contiene un'analisi di impatto né una priorità per i difetti. [^src: raw/sessions/session-2026-11-20-16-3649aa67.md §Insight] [^code: CLAUDE.md:77]
 
 ## Dettaglio
 
@@ -34,7 +34,7 @@ tags: [factory, master, difetti, kanban]
 [^src: raw/sessions/session-2026-11-20-16-3649aa67.md §Insight]
 
 ### 3. L'hook `commit-msg` dei submodule riconosce solo ID con prefisso di namespace
-- **Sintomo.** L'hook `commit-msg` installato nei submodule con `suppress_ai_traces` riconosce solo gli ID con prefisso di namespace (`[A-Z]{2,4}-(TSK|US|EP)-[0-9]+`). Un messaggio con `TSK-042` passa (exit 0), mentre `tools/vcs/ai_policy.py` `find_factory_ids` lo rileva. `Co-Authored-By` è bloccato correttamente (exit 1).
+- **Sintomo.** L'hook `commit-msg` installato nei submodule con `suppress_ai_traces` riconosce solo gli ID con prefisso di namespace (`[A-Z]{2,4}-(TSK|US|EP)-[0-9]+`). Un messaggio con `TSK-042` passa (exit 0), mentre `tools/vcs/ai_policy.py` `find_factory_ids` lo rileva. `Co-Authored-By` è bloccato correttamente (exit 1). [^src: raw/sessions/session-2026-11-20-16-3649aa67.md §Insight]
 - **Evidenza dichiarata.** Test sull'hook del submodule, senza commit.
 - **Stato.** Osservato in sessione. Il CLAUDE.md della factory dice che in `ai_policy.py` il prefisso di namespace è opzionale, coerente con la parte su `find_factory_ids`.
 
@@ -62,7 +62,7 @@ tags: [factory, master, difetti, kanban]
 [^src: raw/sessions/session-2026-11-20-16-3649aa67.md §Insight]
 
 ### 7. L'installer copia tutti i dev-agent qualunque sia la topologia
-- **Sintomo.** Con la topologia `custom` l'installer imposta tutto il routing a human: Check 4c ERROR `orphan-dev-agent`. `factory-upgrade-apply.py` (non-destructive ADD) rimetterebbe un agente rimosso.
+- **Sintomo.** Con la topologia `custom` l'installer imposta tutto il routing a human: Check 4c ERROR `orphan-dev-agent`. `factory-upgrade-apply.py` (non-destructive ADD) rimetterebbe un agente rimosso. [^src: raw/sessions/session-2026-11-20-16-3649aa67.md §Insight]
 - **Evidenza dichiarata.** Check 4c ERROR. La parte su `factory-upgrade-apply.py` è espressa al condizionale.
 - **Stato.** Il check è osservato in sessione; la previsione su `factory-upgrade-apply.py` è un'**ipotesi**, non eseguita.
 
@@ -76,7 +76,7 @@ tags: [factory, master, difetti, kanban]
 [^src: raw/sessions/session-2026-11-20-16-3649aa67.md §Insight]
 
 ### 9. L'installer non copia le regole canonical
-- **Sintomo.** L'installer non copia le regole canonical di `code_quality/rules/`: con `trigger_default` attivo e il ruleset vuoto la review va in ABORT («Regole vuote per stack»).
+- **Sintomo.** L'installer non copia le regole canonical di `code_quality/rules/`: con `trigger_default` attivo e il ruleset vuoto la review va in ABORT («Regole vuote per stack»). [^src: raw/sessions/session-2026-11-20-16-3649aa67.md §Insight]
 - **Evidenza dichiarata.** Nessuna riga di evidenza nel raw oltre all'affermazione.
 - **Stato.** Dichiarato nel raw. Oggi `code_quality/rules/canonical/design-complexity.md` esiste, copiato a mano come da decisione 8.
 
@@ -90,7 +90,7 @@ tags: [factory, master, difetti, kanban]
 [^src: raw/sessions/session-2026-11-20-16-3649aa67.md §Insight]
 
 ### 11. Il Check 4ax suggerisce di modificare `.gitmodules`
-- **Sintomo.** Il Check 4ax suggerisce di modificare `.gitmodules` (`ignore = dirty`), mentre PATTERN-integration vieta agli agenti di modificare `.gitmodules` fuori da vcs-handoff.
+- **Sintomo.** Il Check 4ax suggerisce di modificare `.gitmodules` (`ignore = dirty`), mentre PATTERN-integration vieta agli agenti di modificare `.gitmodules` fuori da vcs-handoff. [^src: raw/sessions/session-2026-11-20-16-3649aa67.md §Insight]
 - **Evidenza dichiarata.** Nessuna riga di evidenza nel raw oltre all'affermazione.
 - **Stato.** Dichiarato nel raw; non verificato dal keeper.
 
@@ -123,3 +123,6 @@ Esito di sweep-reviews (categoria unsupported-claim, finding W8-W12 del lint run
 - Riga 65 (difetto 7): voce 7, con la previsione su `factory-upgrade-apply.py` al condizionale e non eseguita [^src: raw/sessions/session-2026-11-20-16-3649aa67.md §Insight]
 - Riga 79 (difetto 9): voce 9, affermazione senza evidenza di comando nel raw [^src: raw/sessions/session-2026-11-20-16-3649aa67.md §Insight]
 - Riga 93 (difetto 11): voce 11, affermazione senza evidenza di comando nel raw, non verificata dal keeper [^src: raw/sessions/session-2026-11-20-16-3649aa67.md §Insight]
+
+### Aggiornamento (v2026-11-21)
+Iterazione 2 di sweep-reviews: le citazioni sono state spostate nel corpo, in fondo alle righe 18, 37, 65, 79 e 93, per rientrare nella finestra di 3 righe del Check 2. Nessun cambio di testo.
