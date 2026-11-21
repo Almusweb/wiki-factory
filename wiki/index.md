@@ -32,6 +32,7 @@ Indice delle pagine di `wiki/`, aggiornato da `wiki-keeper` a ogni ingest.
 - [[2026-11-21-repo-llm_wiki-dossier-ep004-r5]] — dossier EP-004 r5 (2026-11-21): rischio 5, logica duplicata TS e Rust, chunking confermato diverso per lettura, pulizia id legacy non conclusiva, invalidazione dell'impronta confermata
 - [[2026-11-21-repo-llm_wiki-dossier-ep004-r6]] — dossier EP-004 r6 (2026-11-21): rischio 6, re-index senza rollback, confermato per lettura (tabella assente o parziale dopo lo svuotamento, rilancio da zero, un solo innesco), non conclusivo sullo stato su disco dopo errore parziale
 - [[2026-11-21-repo-llm_wiki-dossier-ep004-r7]] — dossier EP-004 r7 (2026-11-21): rischio 7, cambio di modello o dimensione dell'embedding, confermato per lettura (nessun confronto con la tabella, `embedAllPages` non rileva il cambio, nessun avviso al salvataggio, impronta con modello), non conclusivo sul comportamento di LanceDB
+- [[2026-11-21-repo-llm_wiki-dossier-ep004-r8]] — dossier EP-004 r8 (2026-11-21): rischio 8, segreti in chiaro nello store applicativo, confermato per lettura (15 campi sensibili scritti così come sono, nessuna cifratura né archivio protetto, token API in HTTP sulla LAN, chiave SerpApi nell'URL), non conclusivo su permessi del file, SerpApi negli errori e copie fuori dallo store
 - [[session-2026-11-20-16-3649aa67]] — sessione di bootstrap `wiki-factory` 2.48 su `llm_wiki` (in `wiki/sessions/`; indice delle sessioni: [sessions/index.md](sessions/index.md))
 
 ## Entities
