@@ -4,8 +4,8 @@ type: concept
 title: llm-wiki — gestione dei file corrotti
 status: draft
 created: 2026-11-20
-updated: 2026-11-20
-sources: ["raw/2026-11-20-repo-llm_wiki.md", "raw/2026-11-20-repo-llm_wiki-persistenza-a.md", "raw/2026-11-20-repo-llm_wiki-persistenza-b.md"]
+updated: 2026-11-21
+sources: ["raw/2026-11-20-repo-llm_wiki.md", "raw/2026-11-20-repo-llm_wiki-persistenza-a.md", "raw/2026-11-20-repo-llm_wiki-persistenza-b.md", "raw/2026-11-21-repo-llm_wiki-persistenza-d.md"]
 tags: [llm-wiki, dati, persistenza, resilienza, db]
 ---
 
@@ -58,6 +58,35 @@ Dalle fette A e B delle estrazioni mirate sulla persistenza ([[2026-11-20-repo-l
 - `ingest-cache.json` e `ingest-queue.json`: scritture dirette con errori ignorati (in `ingest-queue.ts` le scritture sono serializzate in processo da una coda di richieste); un crash in scrittura non è mitigato da file temporaneo e rinomina (osservato per la scrittura, impatto dedotto). [^src: raw/2026-11-20-repo-llm_wiki-persistenza-b.md §Atomicità per archivio]
 - Markdown estratto: `moveParsedMarkdown` tollera un errore di cancellazione della vecchia copia (preferisce un duplicato a una migrazione fallita); la cache Office `.cache` rimuove il marcatore `.txt.parser` prima di rimpiazzare il contenuto, così un crash può causare solo una ricostruzione in più. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-b.md §File e cartelle citati e non verificati]
 
+## Aggiornamenti (v2026-11-21, fetta D)
+Dalla fetta D ([[2026-11-21-repo-llm_wiki-persistenza-d]]). Il testo sopra non è modificato. «Osservato» = letto nel codice; «deduzione non testata» = mai eseguita. Le righe `store.rs` e `lib.rs` del plugin sono sorgenti della dipendenza `tauri-plugin-store` 2.4.3 da crates.io, **non codice del cliente**. Percorso del file per sistema operativo: [[llm-wiki-archivi-persistenza]].
+
+### Plugin store su `app-state.json` corrotto (osservato)
+- La costruzione dello store chiama il caricamento da disco e **ignora l'esito** (`let _ =`, `store.rs:218-224`): un errore di lettura o di deserializzazione non interrompe la creazione e non arriva al chiamante; il comando `load` ritorna solo l'identificativo di risorsa (`lib.rs:130-133`). [^src: raw/2026-11-21-repo-llm_wiki-persistenza-d.md §File corrotto: che cosa si legge nel plugin]
+- Il caricamento aggiunge le chiavi alla cache solo se la deserializzazione riesce (`store.rs:304-311`): nessuna unione parziale. La deserializzazione è JSON verso una mappa chiave-valore (`lib.rs:333-337`): file vuoto, JSON troncato o radice non oggetto sono errori. La cache parte dai default, vuoti dal TS (`store.rs:280-288`). [^src: raw/2026-11-21-repo-llm_wiki-persistenza-d.md §File corrotto: che cosa si legge nel plugin]
+- Il salvataggio scrive l'intera cache con `fs::write` sul percorso finale, senza temporaneo, rinomina o copia di riserva (`store.rs:291-299`); `set` e `delete` attivano il salvataggio automatico con debounce di 100 ms. [^src: raw/2026-11-21-repo-llm_wiki-persistenza-d.md §File corrotto: che cosa si legge nel plugin]
+
+### Conseguenze (deduzione non testata, mai eseguite)
+1. All'avvio con file corrotto lo store risulta vuoto, senza errore né avviso visibile al TS; i getter di `project-store.ts` rispondono `[]` o `null` (righe 16-26; gli altri getter non riletti).
+2. Il file corrotto resta su disco finché non c'è una scrittura; alla prima `set`, `delete` o `clear` viene riscritto con la sola cache corrente: contenuto corrotto e chiavi non ricaricate sono perse, senza copia.
+3. Un'interruzione a metà di `fs::write` può lasciare un file troncato (comportamento di `std`, non letto): via per arrivare al caso «corrotto».
+4. Una scrittura del plugin può sovrapporsi a una lettura dei lettori Rust, che vedrebbero un file troncato o vuoto; nessun lock condiviso nelle righe lette.
+[^src: raw/2026-11-21-repo-llm_wiki-persistenza-d.md §File corrotto: che cosa si legge nel plugin]
+
+### Lettori Rust su file mancante o JSON non valido (osservato)
+| Punto | Comportamento | Fonte |
+|---|---|---|
+| Runtime dell'agente | errore di lettura o analisi, «nessun valore», configurazione di default; nessun log | `src-tauri/src/lib.rs:405-414` |
+| Proxy all'avvio | «nessuno»; log «no proxyConfig in store, requests go direct»; nessun proxy applicato | `proxy.rs:61-69`, `lib.rs:581-589` |
+| Stato per l'API | analisi fallita: si tiene il valore precedente in cache, se c'è; altrimenti «nessun valore»; il risultato è messo in cache | `api_server.rs:727-753` |
+| Host di bind | errore: «nessun valore», si usa `DEFAULT_BIND_HOST` (valore non letto) | `server_bind.rs:22-31` |
+
+[^src: raw/2026-11-21-repo-llm_wiki-persistenza-d.md §File corrotto: i lettori Rust]
+- Non risulta un test su file corrotto in `proxy.rs:491-518` (righe 85-490 non lette). Deduzione non testata: con file corrotto il proxy è spento, l'agente parte con la configurazione di default, il bind torna al valore predefinito; solo l'API ha un ripiego sull'ultimo stato valido, e solo se la cache era già popolata. Effetti sul token dell'API non letti in questa fetta. Il Rust non scrive `app-state.json` nei punti letti. [^src: raw/2026-11-21-repo-llm_wiki-persistenza-d.md §File corrotto: i lettori Rust]
+- **Residuo:** pacchetto JavaScript del plugin, `tauri/src/path/mod.rs`, `dirs-sys` non letti; nessuna prova in esecuzione. [^src: raw/2026-11-21-repo-llm_wiki-persistenza-d.md §Gap evidenti]
+
 ## Contradictions
+- **Plugin store «non verificato» (fetta D).** Prima («`app-state.json`: comportamento lato TS» e voce `app-state.json`): comportamento del plugin su file corrotto «non verificato (sorgente e documentazione non disponibili offline)»; gap `llm-wiki-app-state-percorso` aperto. Ora (fetta D): il sorgente del plugin 2.4.3 è letto (errore ignorato, store vuoto, prima scrittura riscrive il file con la sola cache); le conseguenze restano deduzioni non testate. Il gap è chiuso con riserva, vedi [[gaps]]. [^src: raw/2026-11-21-repo-llm_wiki-persistenza-d.md §Esiti A, in breve]
+- **`loadRegistry` e «altre chiavi».** Prima: `loadRegistry` ripiega su registro vuoto, il resto dipende dal plugin. Ora: il plugin non propaga l'errore di caricamento, quindi `loadRegistry` non è l'unico percorso protetto; i getter restituiscono `[]` o `null` su chiave mancante (osservato per quelli letti). Estensione, non smentita. [^src: raw/2026-11-21-repo-llm_wiki-persistenza-d.md §File corrotto: che cosa si legge nel plugin]
 - **Chiavi diverse da `loadRegistry`.** Prima (voce `app-state.json`): «Per le altre chiavi dipende dal comportamento del plugin store, non verificato». Ora (fetta A): è osservato il comportamento lato Rust (agente, proxy, API ripiegano su assente, default o cache) e che gli altri caricamenti TS di `project-store.ts` non hanno gestione degli errori; il comportamento del plugin resta non verificato. Estensione del testo, nessuna contraddizione sul plugin. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-a.md §Store applicativo (`app-state.json`)]
 - **Regola generale.** Prima: «Quasi tutti i caricamenti ripiegano su un valore vuoto o di default senza segnale all'utente». Ora (fetta B): per `file-snapshot.json` e `file-change-queue.json` `read_json` su JSON illeggibile restituisce un errore e ripiega sul default solo se il file manca. È un'eccezione alla regola (la pagina dice «quasi»), non una smentita totale. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-b.md §Sincronizzazione e osservazione dei file]

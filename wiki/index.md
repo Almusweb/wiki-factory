@@ -24,6 +24,7 @@ Indice delle pagine di `wiki/`, aggiornato da `wiki-keeper` a ogni ingest.
 - [[2026-11-21-repo-llm_wiki-fs-lib-progetto]] — estrazione 2026-11-21 fetta C1: comandi FS, `lib.rs`, layout del progetto, identità e import
 - [[2026-11-21-repo-llm_wiki-ingest]] — estrazione 2026-11-21 fetta C2: pipeline di ingest, coda, cache, formati, cancellazione lato TypeScript
 - [[2026-11-21-repo-llm_wiki-ricerca-ui-residui]] — estrazione 2026-11-21 fetta E: embedding, i18n, CI e build, impostazioni, id, revisioni e sessioni
+- [[2026-11-21-repo-llm_wiki-persistenza-d]] — estrazione 2026-11-21 fetta D: percorso e file corrotto di `app-state.json` per sistema operativo, atomicità dei sette archivi senza riga di codice
 - [[session-2026-11-20-16-3649aa67]] — sessione di bootstrap `wiki-factory` 2.48 su `llm_wiki` (in `wiki/sessions/`; indice delle sessioni: [sessions/index.md](sessions/index.md))
 
 ## Entities

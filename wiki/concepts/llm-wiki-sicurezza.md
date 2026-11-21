@@ -5,7 +5,7 @@ title: llm-wiki — superficie di sicurezza
 status: draft
 created: 2026-11-20
 updated: 2026-11-21
-sources: ["raw/2026-11-20-repo-llm_wiki.md", "raw/2026-11-20-repo-llm_wiki-persistenza-a.md", "raw/2026-11-21-repo-llm_wiki-api-mcp.md", "raw/2026-11-21-repo-llm_wiki-agente-runtime.md", "raw/2026-11-21-repo-llm_wiki-agente-tools.md", "raw/2026-11-21-repo-llm_wiki-fs-lib-progetto.md", "raw/2026-11-21-repo-llm_wiki-ingest.md", "raw/2026-11-21-repo-llm_wiki-ricerca-ui-residui.md"]
+sources: ["raw/2026-11-20-repo-llm_wiki.md", "raw/2026-11-20-repo-llm_wiki-persistenza-a.md", "raw/2026-11-21-repo-llm_wiki-api-mcp.md", "raw/2026-11-21-repo-llm_wiki-agente-runtime.md", "raw/2026-11-21-repo-llm_wiki-agente-tools.md", "raw/2026-11-21-repo-llm_wiki-fs-lib-progetto.md", "raw/2026-11-21-repo-llm_wiki-ingest.md", "raw/2026-11-21-repo-llm_wiki-ricerca-ui-residui.md", "raw/2026-11-21-repo-llm_wiki-persistenza-d.md"]
 tags: [llm-wiki, sicurezza, cors, bind]
 ---
 
@@ -110,6 +110,15 @@ Dal giro di cinque fette del 2026-11-21 sullo stesso commit `e08cfce`: [[2026-11
 - Ipotesi di catena di cancellazione (etichetta `OPTIONS:` non validata, `delete:` senza conferma né confine, `delete_file` non confinato): **ipotesi non riprodotta**, in [[llm-wiki-rischi-persistenza]]. [^src: raw/2026-11-21-repo-llm_wiki-ingest.md §Gap evidenti]
 
 Correzione da lint (2026-11-21, W21): la riga 54 («Segreti in chiaro nello store», sezione v2026-11-20) va letta come **DEDUZIONE NON TESTATA**: nelle finestre lette non si vede alcuna cifratura e non è verificato che manchi altrove. [^src: raw/2026-11-21-repo-llm_wiki-fs-lib-progetto.md §Archivio dello stato app (gap 15)] Vedi gap `llm-wiki-token-cifratura` (aperto). Correzione in-place: riga 54, prima «Tra i campi in chiaro compaiono», ora «Tra i campi in chiaro (deduzione non testata) compaiono».
+
+## Aggiornamenti (v2026-11-21, fetta D)
+Dalla fetta D ([[2026-11-21-repo-llm_wiki-persistenza-d]]). Solo nomi di campi, nessun valore di segreto.
+
+### Store `app-state.json` corrotto: configurazione di sicurezza
+- Osservato: su file mancante o JSON non valido il proxy risulta «nessuno» (richieste dirette, con log), il bind torna a `DEFAULT_BIND_HOST` (valore non letto) e l'agente parte con la configurazione di default; l'API tiene il valore precedente in cache se presente, altrimenti «nessun valore». [^src: raw/2026-11-21-repo-llm_wiki-persistenza-d.md §File corrotto: i lettori Rust]
+- **Deduzione non testata** (mai eseguita): se `app-state.json` si corrompe, `apiConfig` (token) e le chiavi provider salvate come campi dello store si perdono alla prima scrittura successiva, perché il plugin riscrive il file con la sola cache vuota; l'utente dovrebbe riconfigurarli. L'effetto sul token dell'API (risposta 401 senza token, vedi sopra) non è stato letto in questa fetta. [^src: raw/2026-11-21-repo-llm_wiki-persistenza-d.md §File corrotto: che cosa si legge nel plugin] [^src: raw/2026-11-21-repo-llm_wiki-persistenza-d.md §Gap evidenti]
+- **Deduzione non testata**: con proxy spento per file corrotto, le richieste che l'utente intendeva instradare da un proxy partirebbero dirette; il log lo segnala, la UI non risulta avvisare. [^src: raw/2026-11-21-repo-llm_wiki-persistenza-d.md §File corrotto: i lettori Rust]
+- Il file sta nella cartella dati dell'utente (`<data_dir>/com.llmwiki.app/app-state.json`, percorso per OS in [[llm-wiki-archivi-persistenza]]); permessi del file e cifratura non letti, gap `llm-wiki-token-cifratura` resta aperto. [^src: raw/2026-11-21-repo-llm_wiki-persistenza-d.md §Catena di risoluzione del percorso]
 
 ## Contradictions
 - **Lettura di `apiConfig` e chiavi API nei tipi.** Prima (sezione «Aggiornamenti», tre voci): «il codice Rust che le legge (`api_server.rs`) non è letto»; «i tipi di `llmConfig`, `embeddingConfig`, `searchApiConfig` e `providerConfigs` sono in `wiki-store.ts`, non letto: la presenza di chiavi API non è verificata»; «`api_server.rs`, non letto». Ora (fetta A): i lettori di `apiConfig` sono letti (`api_server.rs` righe 586-753, con `api_server.rs` letto alle righe 1-1200 più quattro finestre) e i tipi di `wiki-store.ts` confermano campi sensibili (`apiKey`, `token`, `customHeaders`, `extraHeaders`; solo nomi). «Non letto» va quindi inteso come «letto solo in parte», non «assente». [^src: raw/2026-11-20-repo-llm_wiki-persistenza-a.md §File letti e non letti] [^src: raw/2026-11-20-repo-llm_wiki-persistenza-a.md §Configurazioni dello store: tipi e campi sensibili]
