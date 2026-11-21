@@ -1,0 +1,17 @@
+# .factory-branches.yaml — Branch Manifest per-sprint (EP-034, PATTERN §15 §Branch Awareness Layer)
+#
+# Source of truth "quale branch atteso per ogni target nello sprint corrente".
+# Vince su branch_strategy (branch-resolver Step 1). Target senza entry: branch atteso
+# derivato da code_paths[].vcs.branch_strategy (per-tsk) + base_branch (develop).
+#
+# Curato a mano. Non viene mai scritto da branch-resolver, vcs-preflight-protocol o vcs-handoff.
+# Da aggiornare a ogni cambio di sprint (il valore di `sprint` deve combaciare con quello dei TSK).
+#
+# Sprint 01: il submodule llm_wiki e' letto in sola lettura (analisi, repo-sync, dossier EP-004)
+# sul branch di riferimento develop. Nessun branch per-tsk finche' non c'e' lavoro di codice.
+
+sprint: "01"
+
+targets:
+  # <code_paths[].name>: <branch-atteso>
+  llm_wiki: develop

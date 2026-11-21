@@ -1,0 +1,48 @@
+# management/kanban/id-registry.yaml
+# Registro dei namespace kanban (EP-069 US-314). Manuale: tools/kanban/README-namespaces.md
+#
+# Usato da:
+#   tools/kanban/next-id.py --namespace <PREFIX>
+#   tools/kanban/id_registry_check.py
+#   tools/kanban/namespace_orphans.py
+#
+# Attivato da kanban_namespaces.enabled: true in factory.config.yaml.
+# A flag spento il file e' ignorato anche se presente.
+#
+# CONVENZIONE C-004 — un prefisso = un code_path
+#   - Il lavoro della factory (wiki/, raw/, management/) usa il namespace senza prefisso:
+#     EP-001, US-001, TSK-001, ... Non va in `namespaces` (che accetta solo prefissi di 2-4 lettere);
+#     le sue prenotazioni, se servono, usano `prefix: ""`.
+#   - Ogni repo in factory.config.yaml#code_paths[] ha una voce in `namespaces`. Nuovo repo in
+#     code_paths = nuova voce qui, prima di creare EP/US/TSK per quel repo.
+#   - Gli ID con prefisso hanno la forma <PREFIX>-EP-001, <PREFIX>-US-001, <PREFIX>-TSK-001.
+#
+# PROTOCOLLO DI PRENOTAZIONE (prima di creare i file EP/US/TSK)
+#   1. python3 tools/kanban/id_registry_check.py  -> il piu' alto `to` per prefisso e tipo.
+#   2. Aggiungi una voce in `reservations` con il range successivo.
+#   3. Committa la prenotazione PRIMA di creare i file, poi:
+#        python3 tools/kanban/next-id.py tsk <quanti> --namespace <PREFIX>
+#   Nota: `next-id.py --reserve` fa da solo commit e PUSH su origin/main. In questa factory
+#   commit e push si fanno solo con conferma esplicita di chi lavora.
+#
+# SCHEMA
+# ------
+# namespaces:
+#   - prefix:          stringa maiuscola di 2-4 lettere
+#     code_path:       path del code_path (relativo alla root della factory)
+#     description:     descrizione leggibile
+#
+# reservations:
+#   - prefix:          prefisso namespace ("" = namespace senza prefisso della factory)
+#     kind:            "tsk" | "us" | "ep"
+#     from:            primo ID del range (int, inclusivo)
+#     to:              ultimo ID del range (int, inclusivo)
+#     epic:            ID dell'epica che ha prenotato il range
+#     reserved_at:     data ISO 8601
+
+namespaces:
+  - prefix: "LLW"
+    code_path: "code_repos/llm_wiki"
+    description: "llm_wiki (Almusweb/llm_wiki, submodule su develop) — lavoro sul codice"
+
+reservations: []
