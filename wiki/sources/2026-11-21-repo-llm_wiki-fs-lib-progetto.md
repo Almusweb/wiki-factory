@@ -43,6 +43,9 @@ Aggiornate: [[llm-wiki-archivi-persistenza]], [[llm-wiki-schema-dati]], [[llm-wi
 
 Dettagli in [[gaps]]. [^src: raw/2026-11-21-repo-llm_wiki-fs-lib-progetto.md §Gap evidenti]
 
+## Aggiornamenti (v2026-11-21, dossier r2)
+Correzione di attribuzione, dal dossier [[2026-11-21-repo-llm_wiki-dossier-ep004-r2]]: il raw di questa fetta cita `src/lib/persist.ts` per l'apertura dello store `app-state.json` e per le chiavi (righe 9-10, 44-48, 158, 170 del raw, secondo il dossier); nel sorgente quelle righe e quelle chiavi sono in `src/lib/project-store.ts`, mentre `persist.ts` non contiene alcun accesso a `app-state.json`. Il contenuto riferito è corretto, il nome del file no. Il raw non è modificato. Anche il «chiamante UI di `import_project_archive` non trovato in `src/`» è superato: è `handleImportProject` in `maintenance-section.tsx:218-230`; la collisione di id dopo l'import resta non conclusiva (gap `llm-wiki-import-id-duplicato`, aperto). Vedi [[llm-wiki-rischi-persistenza]] `## Contradictions`. [^src: raw/2026-11-21-repo-llm_wiki-dossier-ep004-r2.md §Gap evidenti]
+
 ## Estratto non promosso a pagina
 Nessun contenuto del raw è stato scartato. Il testo del raw non è stato modificato.
 

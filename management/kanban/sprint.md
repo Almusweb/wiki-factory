@@ -16,9 +16,9 @@ updated: 2026-11-21
 | Epica | Titolo | Status epica | blocked | in_progress | review | todo |
 |---|---|---|---|---|---|---|
 | [EP-002](EP-002-conoscenza-layer-di-persistenza/EP-002.md) | Completare la conoscenza del layer di persistenza | defined | 0 | 0 | 0 | 1 |
-| [EP-004](EP-004-verifica-rischi-di-persistenza/EP-004.md) | Verificare i rischi di persistenza prima di correggerli | defined | 0 | 1 | 0 | 13 |
+| [EP-004](EP-004-verifica-rischi-di-persistenza/EP-004.md) | Verificare i rischi di persistenza prima di correggerli | defined | 0 | 0 | 0 | 11 |
 
-Totale TSK aperti: 15 (sprint corrente 8, lookahead 7).
+Totale TSK aperti: 12 (sprint corrente 5, lookahead 7).
 
 ## Sprint corrente
 
@@ -26,9 +26,6 @@ Totale TSK aperti: 15 (sprint corrente 8, lookahead 7).
 
 | TSK | Titolo | US | Layer | Pri | Status | Owner | Dipende da |
 |---|---|---|---|---|---|---|---|
-| [TSK-014](EP-004-verifica-rischi-di-persistenza/US-026-rischio-identita-progetto/TSK-014.md) | Dossier EP-004, rischio 2: lettura della rigenerazione dell'identità del progetto (repo-sync) | US-026 | docs | P1 | in_progress | — | TSK-011, TSK-012 |
-| [TSK-015](EP-004-verifica-rischi-di-persistenza/US-026-rischio-identita-progetto/TSK-015.md) | Ingerire il dossier r2 e registrare in wiki l'esito del rischio 2 (identità del progetto) | US-026 | docs | P1 | todo | — | TSK-014 |
-| [TSK-016](EP-004-verifica-rischi-di-persistenza/US-027-rischio-scritture-registro/TSK-016.md) | Dossier EP-004, rischio 3: lettura delle scritture sul registro dei progetti (repo-sync) | US-027 | docs | P1 | todo | — | TSK-011, TSK-014 |
 | [TSK-017](EP-004-verifica-rischi-di-persistenza/US-027-rischio-scritture-registro/TSK-017.md) | Ingerire il dossier r3 e registrare in wiki l'esito del rischio 3 (registro dei progetti) | US-027 | docs | P1 | todo | — | TSK-016 |
 | [TSK-020](EP-004-verifica-rischi-di-persistenza/US-030-rischio-reindex-senza-rollback/TSK-020.md) | Dossier EP-004, rischio 6: lettura dell'ordine delle operazioni di ricostruzione dell'indice (repo-sync) | US-030 | docs | P1 | todo | — | TSK-011, TSK-018 |
 | [TSK-021](EP-004-verifica-rischi-di-persistenza/US-030-rischio-reindex-senza-rollback/TSK-021.md) | Ingerire il dossier r6 e registrare in wiki l'esito del rischio 6 (re-index senza rollback) | US-030 | docs | P1 | todo | — | TSK-020 |
