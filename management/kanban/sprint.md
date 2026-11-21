@@ -16,9 +16,9 @@ updated: 2026-11-21
 | Epica | Titolo | Status epica | blocked | in_progress | review | todo |
 |---|---|---|---|---|---|---|
 | [EP-002](EP-002-conoscenza-layer-di-persistenza/EP-002.md) | Completare la conoscenza del layer di persistenza | defined | 0 | 0 | 0 | 1 |
-| [EP-004](EP-004-verifica-rischi-di-persistenza/EP-004.md) | Verificare i rischi di persistenza prima di correggerli | defined | 0 | 0 | 0 | 11 |
+| [EP-004](EP-004-verifica-rischi-di-persistenza/EP-004.md) | Verificare i rischi di persistenza prima di correggerli | defined | 0 | 1 | 0 | 9 |
 
-Totale TSK aperti: 12 (sprint corrente 5, lookahead 7).
+Totale TSK aperti: 11 (sprint corrente 5, lookahead 6).
 
 ## Sprint corrente
 
@@ -26,7 +26,7 @@ Totale TSK aperti: 12 (sprint corrente 5, lookahead 7).
 
 | TSK | Titolo | US | Layer | Pri | Status | Owner | Dipende da |
 |---|---|---|---|---|---|---|---|
-| [TSK-017](EP-004-verifica-rischi-di-persistenza/US-027-rischio-scritture-registro/TSK-017.md) | Ingerire il dossier r3 e registrare in wiki l'esito del rischio 3 (registro dei progetti) | US-027 | docs | P1 | todo | — | TSK-016 |
+| [TSK-018](EP-004-verifica-rischi-di-persistenza/US-029-rischio-logica-duplicata/TSK-018.md) | Dossier EP-004, rischio 5: confronto per lettura delle logiche duplicate TS e Rust (repo-sync) | US-029 | docs | P2 | in_progress | — | TSK-011, TSK-016 |
 | [TSK-020](EP-004-verifica-rischi-di-persistenza/US-030-rischio-reindex-senza-rollback/TSK-020.md) | Dossier EP-004, rischio 6: lettura dell'ordine delle operazioni di ricostruzione dell'indice (repo-sync) | US-030 | docs | P1 | todo | — | TSK-011, TSK-018 |
 | [TSK-021](EP-004-verifica-rischi-di-persistenza/US-030-rischio-reindex-senza-rollback/TSK-021.md) | Ingerire il dossier r6 e registrare in wiki l'esito del rischio 6 (re-index senza rollback) | US-030 | docs | P1 | todo | — | TSK-020 |
 | [TSK-026](EP-004-verifica-rischi-di-persistenza/US-032-rischio-segreti-in-chiaro/TSK-026.md) | Dossier EP-004, rischio 8: lettura dei campi sensibili dello store applicativo, senza valori (repo-sync) | US-032 | docs | P1 | todo | — | TSK-011, TSK-024 |
@@ -44,7 +44,6 @@ Totale TSK aperti: 12 (sprint corrente 5, lookahead 7).
 
 | TSK | Titolo | US | Layer | Pri | Status | Owner | Dipende da |
 |---|---|---|---|---|---|---|---|
-| [TSK-018](EP-004-verifica-rischi-di-persistenza/US-029-rischio-logica-duplicata/TSK-018.md) | Dossier EP-004, rischio 5: confronto per lettura delle logiche duplicate TS e Rust (repo-sync) | US-029 | docs | P2 | todo | — | TSK-011, TSK-016 |
 | [TSK-019](EP-004-verifica-rischi-di-persistenza/US-029-rischio-logica-duplicata/TSK-019.md) | Ingerire il dossier r5 e registrare in wiki l'esito del rischio 5 (logica duplicata) | US-029 | docs | P2 | todo | — | TSK-018 |
 | [TSK-022](EP-004-verifica-rischi-di-persistenza/US-028-rischio-atomicita-eterogenea/TSK-022.md) | Dossier EP-004, rischio 4: lettura dell'atomicità di scrittura per archivio (repo-sync) | US-028 | docs | P2 | todo | — | TSK-011, TSK-020 |
 | [TSK-023](EP-004-verifica-rischi-di-persistenza/US-028-rischio-atomicita-eterogenea/TSK-023.md) | Ingerire il dossier r4 e registrare in wiki l'esito del rischio 4 (atomicità eterogenea) | US-028 | docs | P2 | todo | — | TSK-022 |

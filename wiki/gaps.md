@@ -411,3 +411,21 @@ File append-only: le informazioni che servono e la wiki non ha. Formato e chiusu
 **Gap:** non sono letti i valori predefiniti di `sourceWatchConfig` (`source-watch-config.ts`, `DEFAULT_SOURCE_WATCH_CONFIG`): con l'id nuovo `projectFileSyncEnabled` ripiega su `true` e `sourceWatchConfig` sul `default` o sul legacy, ma non è noto se questo riattivi davvero l'osservazione dei sorgenti. Fonte del gap: raw/2026-11-21-repo-llm_wiki-dossier-ep004-r2.md §Gap evidenti.
 **Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (`src/lib/source-watch-config.ts`). Non bloccante.
 **Impatto:** [[llm-wiki-rischi-persistenza]] non può quantificare il reset silenzioso delle impostazioni di osservazione nel rischio 2.
+
+## 2026-11-21 20:50 — llm-wiki-registro-concorrenza-reale
+**Origine:** wiki-keeper @ ingest 2026-11-21-repo-llm_wiki-dossier-ep004-r3
+**Gap:** non è determinabile per lettura se due `upsertProjectInfo` si sovrappongano davvero (tempi di IPC, azioni utente) né come il plugin `@tauri-apps/plugin-store` (JS) e `tauri-plugin-store` (Rust) ordinino `get` e `set` e se due `load()` con lo stesso nome condividano l'istanza: pacchetto JS e `src/lib.rs`, `src/store.rs` del plugin non letti dal dossier. Se `get`+`set` fossero atomici lato Rust l'interleaving non cambierebbe, perché il difetto è nel RMW lato TS. Fonte del gap: raw/2026-11-21-repo-llm_wiki-dossier-ep004-r3.md §4. Rischio di aggiornamento perso (AC5, AC6).
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (sorgente del plugin store, non disponibile offline per `repo-sync`); la sovrapposizione reale richiede esecuzione, fuori dal metodo di EP-004 (Q_003). Non bloccante.
+**Impatto:** [[llm-wiki-rischi-persistenza]] dichiara l'esito del rischio 3 «non conclusivo» sulla concorrenza reale e non può dire se o con quale frequenza il registro perda voci.
+
+## 2026-11-21 20:50 — llm-wiki-registro-lettura-fallita-frequenza
+**Origine:** wiki-keeper @ ingest 2026-11-21-repo-llm_wiki-dossier-ep004-r3
+**Gap:** non è determinabile per lettura con quale frequenza `store.get` rifiuti mentre `store.set` riesce (unico caso in cui `loadRegistry` porterebbe a un registro di una voce senza avviso, `project-identity.ts:80-83, 107`); con `getStore()` rotto in modo persistente fallirebbe anche la scrittura. Fonte del gap: raw/2026-11-21-repo-llm_wiki-dossier-ep004-r3.md §Gap evidenti.
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (sorgente del plugin store e prova in esecuzione). Non bloccante.
+**Impatto:** [[llm-wiki-rischi-persistenza]] non può quantificare il percorso «lettura fallita, poi scrittura» del rischio 3.
+
+## 2026-11-21 20:50 — llm-wiki-registro-rientro-aperture
+**Origine:** wiki-keeper @ ingest 2026-11-21-repo-llm_wiki-dossier-ep004-r3
+**Gap:** restano non verificati: se il pulsante di importazione sia legato a `projectToolBusy` e se esista una guardia fra import e apertura (`maintenance-section.tsx`, binding non riletto); se `React.StrictMode` (`main.tsx:23-27`) raddoppi `init` anche in produzione; la dimensione reale della finestra fra due aperture ravvicinate (`handleSelectRecent`, `handleOpenProject` senza guardia di rientro, `App.tsx:595-617`). Chiusi dalla ricerca globale della sessione principale: elenco dei chiamanti di `openProject(` e `createProject(`, scrittore unico del registro, nessuna `WebviewWindow`. Fonte del gap: raw/2026-11-21-repo-llm_wiki-dossier-ep004-r3.md §Gap evidenti; management/kanban/EP-004-verifica-rischi-di-persistenza/US-027-rischio-scritture-registro/TSK-016.md §Chiusura.
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (rilettura di `maintenance-section.tsx` e della configurazione di build). Non bloccante.
+**Impatto:** [[llm-wiki-rischi-persistenza]] non può dire se le sovrapposizioni fra azioni utente indicate come deduzione non testata siano raggiungibili dall'interfaccia.

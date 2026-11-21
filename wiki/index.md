@@ -27,6 +27,7 @@ Indice delle pagine di `wiki/`, aggiornato da `wiki-keeper` a ogni ingest.
 - [[2026-11-21-repo-llm_wiki-persistenza-d]] — estrazione 2026-11-21 fetta D: percorso e file corrotto di `app-state.json` per sistema operativo, atomicità dei sette archivi senza riga di codice
 - [[2026-11-21-repo-llm_wiki-dossier-ep004-r1]] — dossier EP-004 r1 (2026-11-21): rischio 1, percorso cancella-salva-carica delle chat, esito non conclusivo per lettura
 - [[2026-11-21-repo-llm_wiki-dossier-ep004-r2]] — dossier EP-004 r2 (2026-11-21): rischio 2, rigenerazione dell'identità del progetto, esito confermato per lettura
+- [[2026-11-21-repo-llm_wiki-dossier-ep004-r3]] — dossier EP-004 r3 (2026-11-21): rischio 3, scritture sul registro dei progetti, esito confermato per lettura sul meccanismo e non conclusivo sulla concorrenza reale
 - [[session-2026-11-20-16-3649aa67]] — sessione di bootstrap `wiki-factory` 2.48 su `llm_wiki` (in `wiki/sessions/`; indice delle sessioni: [sessions/index.md](sessions/index.md))
 
 ## Entities
