@@ -44,7 +44,7 @@ Nel v2 è il percorso relativo sotto `wiki/` senza `.md` (funzione `wikiPageIdFr
 - `loadQueue` assegna ai task senza `projectId` quello del progetto aperto. [^src: raw/2026-11-20-repo-llm_wiki.md §Versioni di formato e migrazioni]
 
 ## Pagine collegate
-[[llm-wiki-archivi-persistenza]], [[llm-wiki-operazioni-distruttive]], [[llm-wiki-rischi-persistenza]], [[llm-wiki-schema-dati]]. Gap aperti: [[gaps]] (`llm-wiki-file-citati-non-verificati`, `llm-wiki-vector-v1-chiamanti`).
+[[llm-wiki-archivi-persistenza]], [[llm-wiki-operazioni-distruttive]], [[llm-wiki-rischi-persistenza]], [[llm-wiki-schema-dati]]. Gap: [[gaps]] (`llm-wiki-file-citati-non-verificati` e `llm-wiki-vector-v1-chiamanti` chiusi con riserva il 2026-11-21).
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
