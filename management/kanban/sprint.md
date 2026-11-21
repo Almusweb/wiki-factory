@@ -16,9 +16,9 @@ updated: 2026-11-21
 | Epica | Titolo | Status epica | blocked | in_progress | review | todo |
 |---|---|---|---|---|---|---|
 | [EP-002](EP-002-conoscenza-layer-di-persistenza/EP-002.md) | Completare la conoscenza del layer di persistenza | defined | 0 | 2 | 0 | 1 |
-| [EP-004](EP-004-verifica-rischi-di-persistenza/EP-004.md) | Verificare i rischi di persistenza prima di correggerli | defined | 0 | 0 | 0 | 11 |
+| [EP-004](EP-004-verifica-rischi-di-persistenza/EP-004.md) | Verificare i rischi di persistenza prima di correggerli | defined | 0 | 0 | 0 | 10 |
 
-Totale TSK aperti: 14 (sprint corrente 11, lookahead 3).
+Totale TSK aperti: 13 (sprint corrente 10, lookahead 3).
 
 ## Sprint corrente
 
@@ -33,7 +33,6 @@ Totale TSK aperti: 14 (sprint corrente 11, lookahead 3).
 
 | TSK | Titolo | US | Layer | Pri | Status | Owner | Dipende da |
 |---|---|---|---|---|---|---|---|
-| [TSK-011](EP-004-verifica-rischi-di-persistenza/US-025-rischio-chat-cancellate/TSK-011.md) | Inizializzare il submodule code_repos/llm_wiki al commit e08cfce, in sola lettura, per i dossier di EP-004 | US-025 | infra | P1 | todo | — | — |
 | [TSK-012](EP-004-verifica-rischi-di-persistenza/US-025-rischio-chat-cancellate/TSK-012.md) | Dossier EP-004, rischio 1: lettura del percorso cancella-salva-carica delle chat (repo-sync) | US-025 | docs | P1 | todo | — | TSK-011 |
 | [TSK-013](EP-004-verifica-rischi-di-persistenza/US-025-rischio-chat-cancellate/TSK-013.md) | Ingerire il dossier r1 e registrare in wiki l'esito del rischio 1 (chat cancellate) | US-025 | docs | P1 | todo | — | TSK-012 |
 | [TSK-014](EP-004-verifica-rischi-di-persistenza/US-026-rischio-identita-progetto/TSK-014.md) | Dossier EP-004, rischio 2: lettura della rigenerazione dell'identità del progetto (repo-sync) | US-026 | docs | P1 | todo | — | TSK-011, TSK-012 |
