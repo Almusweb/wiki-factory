@@ -266,5 +266,26 @@
       "status": "partial",
       "secrets_redacted": 0
     }
+  },
+  "2026-11-21-repo-llm_wiki-dossier-ep004-r1": {
+    "source": "repo",
+    "extracted_at": "2026-11-21T20:12:31Z",
+    "primary_artifact": "raw/2026-11-21-repo-llm_wiki-dossier-ep004-r1.md",
+    "secondary_artifacts": [],
+    "extractor_version": "repo-sync@2.12.0",
+    "extraction_metadata": {
+      "source_path": "/home/user/wiki-factory/code_repos/llm_wiki",
+      "git_commit": "e08cfce65aad8b76b13546a081c1a8d4422b70c3",
+      "git_branch": "HEAD",
+      "stack": {
+        "language": "typescript",
+        "framework": "react",
+        "confidence": 0.7
+      },
+      "files_sampled": 9,
+      "files_total_in_repo": 476,
+      "status": "partial",
+      "secrets_redacted": 0
+    }
   }
 }
