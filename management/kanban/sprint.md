@@ -16,9 +16,9 @@ updated: 2026-11-21
 | Epica | Titolo | Status epica | blocked | in_progress | review | todo |
 |---|---|---|---|---|---|---|
 | [EP-002](EP-002-conoscenza-layer-di-persistenza/EP-002.md) | Completare la conoscenza del layer di persistenza | defined | 0 | 0 | 0 | 1 |
-| [EP-004](EP-004-verifica-rischi-di-persistenza/EP-004.md) | Verificare i rischi di persistenza prima di correggerli | defined | 0 | 1 | 0 | 2 |
+| [EP-004](EP-004-verifica-rischi-di-persistenza/EP-004.md) | Verificare i rischi di persistenza prima di correggerli | defined | 0 | 1 | 0 | 1 |
 
-Totale TSK aperti: 4 (sprint corrente 2, lookahead 2).
+Totale TSK aperti: 3 (sprint corrente 2, lookahead 1).
 
 ## Sprint corrente
 
@@ -36,9 +36,3 @@ Totale TSK aperti: 4 (sprint corrente 2, lookahead 2).
 | TSK | Titolo | US | Layer | Pri | Status | Owner | Dipende da |
 |---|---|---|---|---|---|---|---|
 | [TSK-009](EP-002-conoscenza-layer-di-persistenza/US-017-formato-log-e-index-progetto/TSK-009.md) | Chiudere i punti di US-017 sul raw ingerito: formato di log e index del progetto wiki | US-017 | docs | P2 | todo | — | TSK-005 |
-
-### EP-004 — Verificare i rischi di persistenza prima di correggerli
-
-| TSK | Titolo | US | Layer | Pri | Status | Owner | Dipende da |
-|---|---|---|---|---|---|---|---|
-| [TSK-025](EP-004-verifica-rischi-di-persistenza/US-031-rischio-cambio-modello-embedding/TSK-025.md) | Ingerire il dossier r7 e registrare in wiki l'esito del rischio 7 (cambio modello embedding) | US-031 | docs | P2 | todo | — | TSK-024 |
