@@ -4,7 +4,7 @@ type: source
 title: Specifiche estratte da code_repos/llm_wiki, persistenza fetta A (repo-sync)
 status: draft
 created: 2026-11-20
-updated: 2026-11-20
+updated: 2026-11-21
 sources: ["raw/2026-11-20-repo-llm_wiki-persistenza-a.md"]
 tags: [source, repo, llm-wiki, persistenza]
 ---
@@ -45,3 +45,6 @@ Nessun contenuto del raw è stato scartato. Il testo del raw non è stato modifi
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+
+## Aggiornamenti (v2026-11-21)
+Nota sul ramo del checkout (non una contraddizione di contenuto): questa source page indica il commit `e08cfce` sul ramo `develop`, mentre i raw del giro del 2026-11-21 ([[2026-11-21-repo-llm_wiki-agente-tools]] e le altre cinque fette) lo indicano su HEAD detached. È lo stesso commit `e08cfce65aad8b76b13546a081c1a8d4422b70c3`; la differenza è un artefatto del checkout del submodule. Le conferme e i superamenti di quanto qui riportato sono nelle pagine concept aggiornate in `## Aggiornamenti (v2026-11-21)`. [^src: raw/2026-11-21-repo-llm_wiki-agente-tools.md §Specifiche estratte: llm_wiki, agente tools e provider (fetta B2)]

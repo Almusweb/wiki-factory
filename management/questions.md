@@ -1,12 +1,27 @@
 ---
 created: 2026-11-20
-updated: 2026-11-20
+updated: 2026-11-21
 status: open
 ---
 
 # Questions — wiki-factory
 
 ## [APERTE]
+
+### Q_006 — Criterio di conteggio di archivi e versioni di formato
+**Origine:** [[llm-wiki-archivi-persistenza]], [[llm-wiki-versioni-e-migrazioni]], [[llm-wiki-schema-dati]] (lint 2026-11-20 run 3, W15)
+**Tipo:** Requisito incompleto
+**Impatto:** MEDIO
+**Bloccante:** soft
+**Domanda:** (a) cosa conta come «archivio per progetto»: le 16 righe dell'inventario più lo store `app-state.json` (criterio già adottato dall'utente il 2026-11-20 per `design_&_architecture/db_schemas/README.md`), anche i 7 archivi aggiunti dalla tabella D della fetta B dentro `.llm-wiki/`, oppure anche `raw/parsed` e le immagini MinerU fuori da `.llm-wiki/`? (b) cosa conta come «versione di formato esplicita»: ogni campo `version` presente nei file (`scheduled-import-db`, `file-snapshot`, `file-change-queue`, `ingest-progress`, `ingest-generation`) o solo un versionamento con migrazione, e il suffisso `_v2` di LanceDB entra nella conta? La risposta permette di correggere nel corpo «17 archivi... una sola versione» e «solo due» versioni, oggi smentiti dalle rispettive `## Contradictions`.
+**Epiche bloccate:** EP-003
+**Storie bloccate:** US-019, US-024
+[^src: wiki/gaps.md §2026-11-20 18:23 — llm-wiki-archivi-sommario-conteggi]
+[^src: wiki/lint/2026-11-20-lint-report.md §W15]
+
+---
+
+## [CHIUSE]
 
 ### Q_004 — Dati per misurare dimensioni e crescita degli archivi
 **Origine:** [[llm-wiki-archivi-persistenza]]
@@ -16,11 +31,13 @@ status: open
 **Domanda:** su quali progetti si misurano dimensioni e crescita degli archivi? I dati reali del cliente sono utilizzabili, con quale autorizzazione, oppure serve un progetto sintetico?
 **Epiche bloccate:** EP-002
 **Storie bloccate:** US-018
+**Data risoluzione:** 2026-11-21
+**Risposto da:** l'utente
+**Decisione:** progetto sintetico creato apposta dall'utente. Nessun dato reale del cliente: le misure di dimensione e crescita si prendono su un progetto di prova dedicato, preparato dall'utente.
+**Epiche/Storie sbloccate:** EP-002; US-018 (`pending_clarification` svuotato). I TSK di US-018 restano da generare (`tpm`) e dipendono dalla disponibilità del progetto sintetico.
 [^src: wiki/gaps.md §2026-11-20 17:06 — llm-wiki-archivi-dimensioni]
 
 ---
-
-## [CHIUSE]
 
 ### Q_001 — Canale e destinatario della segnalazione al master, e dove conservare l'esito
 **Origine:** [[master-difetti-rilevati]]
@@ -89,6 +106,7 @@ status: open
 - **US-033:** la sintesi dei rischi e degli interventi è scritta da `wiki-keeper` come pagina `syntheses/` a partire dai dossier ingeriti, senza raw aggiuntivo.
 - **Origine dell'idea:** il «dossier» riprende la Fase 2 della guida del master `wiki/guides/protocollo-analisi-funzionale.md` (bozza 2026-11-19, non distribuita alle derivate): una base fattuale unica, identica per tutti. Qui è adattata: lo scrive un Sync e non la sessione principale (PATTERN §7 r.1: L1 si scrive solo dai Sync; chi legge codice non fidato non ha Bash) e si ottiene con la sola lettura del codice (Q_003), non misurando l'app in esecuzione.
 **Epiche/Storie sbloccate:** EP-004; US-025, US-026, US-027, US-028, US-029, US-030, US-031, US-032, US-033 (`pending_clarification` svuotato; criteri e Business Rules adeguati al meccanismo del dossier)
+**Addendum (2026-11-21, risposta dell'utente):** dossier separati, uno per rischio (`raw/<data>-repo-llm_wiki-dossier-ep004-rN.md`, `N` = numero del rischio), come generati dal `tpm` in TSK-012..TSK-020. Applica la clausola «si divide in più dossier con slug distinti» della decisione sopra; resto invariato.
 [^src: wiki/concepts/llm-wiki-rischi-persistenza.md §Contesto]
 
 ---

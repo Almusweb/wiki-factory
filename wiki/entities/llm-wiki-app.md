@@ -4,8 +4,8 @@ type: entity
 title: llm-wiki (applicazione)
 status: draft
 created: 2026-11-20
-updated: 2026-11-20
-sources: ["raw/2026-11-20-repo-llm_wiki.md"]
+updated: 2026-11-21
+sources: ["raw/2026-11-20-repo-llm_wiki.md", "raw/2026-11-21-repo-llm_wiki-ingest.md", "raw/2026-11-21-repo-llm_wiki-ricerca-ui-residui.md"]
 tags: [llm-wiki, entity, prodotto]
 ---
 
@@ -53,3 +53,21 @@ La README dice «English + Chinese» per l'i18n, ma in `src/i18n/` esistono `en.
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+
+## Aggiornamenti (v2026-11-21)
+Dalle fette C2 ed E del giro del 2026-11-21 ([[2026-11-21-repo-llm_wiki-ingest]], [[2026-11-21-repo-llm_wiki-ricerca-ui-residui]], commit `e08cfce`). Il testo sopra non è modificato; dove è superato lo dice `## Contradictions` in coda. Chiusi in [[gaps]]: `llm-wiki-multimodale-stato` e `llm-wiki-i18n-lingue`; `llm-wiki-requisiti-funzionali` resta aperto in parte. Le sezioni sopra riportano il ramo `develop` per il commit `e08cfce`; i raw del 2026-11-21 lo indicano su HEAD detached: è lo stesso commit e la differenza è un artefatto del checkout del submodule (nota, non contraddizione di contenuto).
+
+### Stato dell'ingest multimodale
+- L'ingest multimodale è implementato: estrazione immagini da sorgente e dal markdown, riuso delle immagini MinerU, didascalie con modello di visione (cache per hash dei byte, concorrenza configurabile), sezione «Embedded Images» in `wiki/sources/<slug>.md` tra marcatori `llm-wiki:embedded-images` (idempotente, stub se la pagina manca), nuovo embedding della pagina sorgente dopo le didascalie. [^src: raw/2026-11-21-repo-llm_wiki-ingest.md §Multimodale: stato reale (gap 9)]
+- Con `multimodalConfig.enabled` spento i riferimenti immagine sono tolti dal testo dato al modello e la sezione non viene iniettata, ma le immagini restano sul disco. Il provider `codex-cli` non supporta l'input immagine: le didascalie sono saltate e contate come fallite. Il percorso chat (`executeIngestWrites`) inietta le immagini solo se multimodale è attivo. [^src: raw/2026-11-21-repo-llm_wiki-ingest.md §Multimodale: stato reale (gap 9)]
+- Lo stato «Spec, not started» di `plans/multimodal-images.md` risulta superato; il testo del piano non è stato riletto, lo stato è quello riportato dal gap. Non verificati: il default di `multimodalConfig.enabled` e il modulo Rust di estrazione (gap `llm-wiki-default-store-config`). [^src: raw/2026-11-21-repo-llm_wiki-ingest.md §Multimodale: stato reale (gap 9)]
+- L'ingest in due stadi, la cache, la coda e gli altri requisiti confermati dal codice sono in [[llm-wiki-pipeline-ingest]]; chat, ricerca, deep research e API non sono coperti da quella fetta. [^src: raw/2026-11-21-repo-llm_wiki-ingest.md §Requisiti funzionali confermati sull'ingest (gap 11, parte)]
+
+### Lingue dell'interfaccia
+- L'interfaccia registra quattro lingue: `en`, `it`, `zh`, `ru`; lingua iniziale e di ripiego `en`. La sezione Interface offre English, Italiano, 中文, Русский; al salvataggio, se la lingua cambia, si chiamano `i18n.changeLanguage` e `saveLanguage`. [^src: raw/2026-11-21-repo-llm_wiki-ricerca-ui-residui.md §Lingue dell'interfaccia (gap i18n-lingue)]
+- La lingua di output delle pagine (`outputLanguage`, default `auto`) è un'impostazione distinta dalla lingua UI. Non verificato: dove la lingua salvata viene riletta all'avvio. [^src: raw/2026-11-21-repo-llm_wiki-ricerca-ui-residui.md §Lingue dell'interfaccia (gap i18n-lingue)]
+
+## Contradictions
+- **Ingest multimodale: stato del piano contro codice.** Prima (sezione «Stato dell'ingest multimodale»): `plans/multimodal-images.md` ha stato «Spec, not started», mentre la README descrive come già presente l'ingest multimodale. Ora (fetta C2): il codice implementa l'ingest multimodale; la README è coerente con il codice e lo stato del piano è superato (testo del piano non riletto). [^src: raw/2026-11-21-repo-llm_wiki-ingest.md §Multimodale: stato reale (gap 9)]
+- **Lingue dell'interfaccia: README «English + Chinese» contro codice.** Prima (sezione «Lingue dell'interfaccia»): la README dice «English + Chinese», ma `src/i18n/` contiene `en.json`, `it.json`, `ru.json`, `zh.json`. Ora (fetta E): il codice registra `en`, `it`, `zh`, `ru`; la README è indietro rispetto al codice. [^src: raw/2026-11-21-repo-llm_wiki-ricerca-ui-residui.md §Lingue dell'interfaccia (gap i18n-lingue)]
+- **Funzioni «non confermate dal codice letto».** Prima: ingest in due passi, cache, coda persistente, agente di chat nel backend, API locale e server MCP sono «dichiarate in README, non confermate dal codice letto». Ora: ingest, cache, coda ([[llm-wiki-pipeline-ingest]]), agente ([[llm-wiki-agente]]), API ([[llm-wiki-api-locale]]) e server MCP ([[llm-wiki-mcp-server]]) sono descritti dal codice letto dalle fette del 2026-11-21; grafo, ricerca semantica, deep research e web clipping restano da confermare. Il gap `llm-wiki-requisiti-funzionali` resta aperto in parte. [^src: raw/2026-11-21-repo-llm_wiki-ingest.md §Requisiti funzionali confermati sull'ingest (gap 11, parte)]
