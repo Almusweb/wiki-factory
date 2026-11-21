@@ -4,8 +4,8 @@ type: entity
 title: llm-wiki — server MCP
 status: draft
 created: 2026-11-20
-updated: 2026-11-20
-sources: ["raw/2026-11-20-repo-llm_wiki.md"]
+updated: 2026-11-21
+sources: ["raw/2026-11-20-repo-llm_wiki.md", "raw/2026-11-21-repo-llm_wiki-api-mcp.md"]
 tags: [llm-wiki, mcp, entity]
 ---
 
@@ -53,3 +53,19 @@ Versione del package `0.4.26`; dipendenze `@modelcontextprotocol/sdk@^1.29.0` (d
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+
+## Aggiornamenti (v2026-11-21)
+Dalla fetta A del giro del 2026-11-21 ([[2026-11-21-repo-llm_wiki-api-mcp]]): letti per intero `mcp-server/src/api-client.ts`, `mcp-server/src/index.ts` e `mcp-server/README.md`, in confronto con `api_server.rs`. Il testo sopra non è modificato; il gap `llm-wiki-mcp-readme-vs-codice` è chiuso in [[gaps]]. Il contratto delle route raggiunte è in [[llm-wiki-api-locale]], la matrice di autenticazione in [[llm-wiki-sicurezza]].
+
+- Il server MCP è un processo Node su stdio (`@modelcontextprotocol/sdk`), nome `llm-wiki`; la base URL viene da `LLM_WIKI_API_BASE_URL` (default `http://127.0.0.1:19828`) e il token da `LLM_WIKI_API_TOKEN`, inviato come `Authorization: Bearer` tranne per `/health`. [^src: raw/2026-11-21-repo-llm_wiki-api-mcp.md §Server MCP]
+- Gli strumenti sono 12: `llm_wiki_status` (`GET /health` e `/projects`, non richiede MCP abilitato), `projects`, `set_project` (pin locale), `files`, `read_file` (output troncato a 120.000 byte), `reviews`, `search`, `chat` (non streaming), `graph` (`edgeScope` default `filtered` se c'è `offset`, altrimenti `page`), `rescan_sources`, `embed_page` e `write_page`. [^src: raw/2026-11-21-repo-llm_wiki-api-mcp.md §Server MCP]
+- Tutti gli strumenti tranne `status` chiamano prima `GET /health` e rifiutano se `mcpEnabled === false`. [^src: raw/2026-11-21-repo-llm_wiki-api-mcp.md §Server MCP]
+- `write_page` valida lato client path (canonico, sotto `wiki/`, `.md`, senza componenti nascosti, max 4096 byte) e content (max 2 MiB); il client richiede `result.verified === true`, altrimenti lancia errore. [^src: raw/2026-11-21-repo-llm_wiki-api-mcp.md §Server MCP]
+- Il client non espone `PATCH`/`DELETE` review né `reviews/resolve`: il tipo del metodo è `"GET" | "POST"` e non esistono strumenti corrispondenti. [^src: raw/2026-11-21-repo-llm_wiki-api-mcp.md §Server MCP]
+- Un agente MCP con token può scrivere pagine wiki e creare indici vettoriali, perché le route `pages/embed` e `pages/write` sono raggiunte dal client. [^src: raw/2026-11-21-repo-llm_wiki-api-mcp.md §Server MCP]
+- README contro codice: il README elenca 10 strumenti contro i 12 del codice (mancano `llm_wiki_embed_page` e `llm_wiki_write_page`). Presenta «Allow access without a token» come alternativa al token, ma embed, write e chat richiedono sempre il token: senza token funzionano solo gli strumenti di lettura e review/rescan. [^src: raw/2026-11-21-repo-llm_wiki-api-mcp.md §README MCP vs codice]
+- Coerenti col codice: i prerequisiti «Enable local HTTP API» ed «Enable MCP access», il fatto che `llm_wiki_status` funzioni con MCP disabilitato e il default `127.0.0.1`. Il README non menziona la modalità LAN (`allowLanAccess`) né che il client MCP assume l'host loopback salvo override con `LLM_WIKI_API_BASE_URL`. [^src: raw/2026-11-21-repo-llm_wiki-api-mcp.md §README MCP vs codice]
+- Restano non letti `mcp-server/src/project-binding.ts` e `version.ts` (gap `llm-wiki-api-ui-token-non-letti`). [^src: raw/2026-11-21-repo-llm_wiki-api-mcp.md §Provenienza e copertura]
+
+## Contradictions
+- **README e codice: strumenti e accesso senza token.** Prima (sezione «Discrepanza README e codice»): il README dichiara 10 strumenti, il codice ne registra 12, il suo paragrafo di sicurezza parla solo di letture; non è chiaro se il README sia indietro. Ora (fetta A): il README è indietro su `embed_page` e `write_page` e presenta «Allow access without a token» come alternativa al token, mentre `chat`, `embed` e `write` richiedono sempre il token; il testo UI per «Agent chat» omette embed e write. Il codice conferma le scritture. [^src: raw/2026-11-21-repo-llm_wiki-api-mcp.md §README MCP vs codice]

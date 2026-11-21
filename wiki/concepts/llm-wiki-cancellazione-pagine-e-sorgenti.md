@@ -4,8 +4,8 @@ type: concept
 title: llm-wiki — cascata di cancellazione di una pagina e ciclo di vita delle sorgenti
 status: draft
 created: 2026-11-20
-updated: 2026-11-20
-sources: ["raw/2026-11-20-repo-llm_wiki-persistenza-c.md"]
+updated: 2026-11-21
+sources: ["raw/2026-11-20-repo-llm_wiki-persistenza-c.md", "raw/2026-11-21-repo-llm_wiki-ingest.md", "raw/2026-11-21-repo-llm_wiki-ricerca-ui-residui.md"]
 tags: [llm-wiki, dati, persistenza, db]
 ---
 
