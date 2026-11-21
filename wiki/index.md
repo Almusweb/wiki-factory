@@ -25,6 +25,7 @@ Indice delle pagine di `wiki/`, aggiornato da `wiki-keeper` a ogni ingest.
 - [[2026-11-21-repo-llm_wiki-ingest]] — estrazione 2026-11-21 fetta C2: pipeline di ingest, coda, cache, formati, cancellazione lato TypeScript
 - [[2026-11-21-repo-llm_wiki-ricerca-ui-residui]] — estrazione 2026-11-21 fetta E: embedding, i18n, CI e build, impostazioni, id, revisioni e sessioni
 - [[2026-11-21-repo-llm_wiki-persistenza-d]] — estrazione 2026-11-21 fetta D: percorso e file corrotto di `app-state.json` per sistema operativo, atomicità dei sette archivi senza riga di codice
+- [[2026-11-21-repo-llm_wiki-dossier-ep004-r1]] — dossier EP-004 r1 (2026-11-21): rischio 1, percorso cancella-salva-carica delle chat, esito non conclusivo per lettura
 - [[session-2026-11-20-16-3649aa67]] — sessione di bootstrap `wiki-factory` 2.48 su `llm_wiki` (in `wiki/sessions/`; indice delle sessioni: [sessions/index.md](sessions/index.md))
 
 ## Entities
@@ -48,7 +49,7 @@ Indice delle pagine di `wiki/`, aggiornato da `wiki-keeper` a ogni ingest.
 - [[llm-wiki-sincronizzazione-file]] — watcher di progetto, snapshot e coda dei cambi file
 - [[llm-wiki-cancellazione-pagine-e-sorgenti]] — cascata di cancellazione di una pagina e ciclo di vita delle sorgenti
 - [[llm-wiki-pipeline-ingest]] — pipeline di ingest (due stadi), coda, cache e guardie di percorso
-- [[llm-wiki-rischi-persistenza]] — divergenze e rischi del layer di persistenza (deduzioni)
+- [[llm-wiki-rischi-persistenza]] — divergenze e rischi del layer di persistenza (deduzioni; esito del rischio 1 da US-025: non conclusivo per lettura)
 - [[llm-wiki-licenza-e-standard]] — GPL v3 di terzi, anomalia MIT del server MCP
 - [[llm-wiki-test-e-ci]] — test e CI
 

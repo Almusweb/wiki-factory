@@ -5,7 +5,7 @@ title: llm-wiki — divergenze e rischi del layer di persistenza
 status: draft
 created: 2026-11-20
 updated: 2026-11-21
-sources: ["raw/2026-11-20-repo-llm_wiki.md", "raw/2026-11-20-repo-llm_wiki-persistenza-a.md", "raw/2026-11-20-repo-llm_wiki-persistenza-b.md", "raw/2026-11-20-repo-llm_wiki-persistenza-c.md", "raw/2026-11-21-repo-llm_wiki-api-mcp.md", "raw/2026-11-21-repo-llm_wiki-agente-runtime.md", "raw/2026-11-21-repo-llm_wiki-agente-tools.md", "raw/2026-11-21-repo-llm_wiki-fs-lib-progetto.md", "raw/2026-11-21-repo-llm_wiki-ingest.md", "raw/2026-11-21-repo-llm_wiki-ricerca-ui-residui.md", "raw/2026-11-21-repo-llm_wiki-persistenza-d.md"]
+sources: ["raw/2026-11-20-repo-llm_wiki.md", "raw/2026-11-20-repo-llm_wiki-persistenza-a.md", "raw/2026-11-20-repo-llm_wiki-persistenza-b.md", "raw/2026-11-20-repo-llm_wiki-persistenza-c.md", "raw/2026-11-21-repo-llm_wiki-api-mcp.md", "raw/2026-11-21-repo-llm_wiki-agente-runtime.md", "raw/2026-11-21-repo-llm_wiki-agente-tools.md", "raw/2026-11-21-repo-llm_wiki-fs-lib-progetto.md", "raw/2026-11-21-repo-llm_wiki-ingest.md", "raw/2026-11-21-repo-llm_wiki-ricerca-ui-residui.md", "raw/2026-11-21-repo-llm_wiki-persistenza-d.md", "raw/2026-11-21-repo-llm_wiki-dossier-ep004-r1.md"]
 tags: [llm-wiki, dati, persistenza, rischi, db]
 ---
 
@@ -125,7 +125,46 @@ File corrotto e perdita di dati (indizio per i rischi 1 e 4; **deduzione non tes
 - Lettura corrotta e scrittura successiva: cronologia (array vuoto, poi sostituzione con la sola voce nuova) e sessione agente (sessione vuota, poi sostituzione del file); per `app-state.json` il plugin ignora l'errore di caricamento e la prima `set` riscrive il file con la sola cache, perdendo le chiavi non ricaricate, senza copia di riserva. [^src: raw/2026-11-21-repo-llm_wiki-persistenza-d.md §File corrotto: che cosa si legge nel plugin] [^src: raw/2026-11-21-repo-llm_wiki-persistenza-d.md §Parte B. Atomicità dei sette archivi senza riga di codice (US-015 AC1)]
 - Scrittura non atomica del plugin e lettori Rust senza lock condiviso: un lettore potrebbe vedere un file troncato (deduzione non testata). [^src: raw/2026-11-21-repo-llm_wiki-persistenza-d.md §File corrotto: che cosa si legge nel plugin]
 
+## Esito della verifica di US-025
+Esito del **rischio 1** (chat cancellate che ricompaiono) dal dossier [[2026-11-21-repo-llm_wiki-dossier-ep004-r1]], commit `e08cfce`, sola lettura del codice (Q_003), 9 file letti. Il testo del §Dettaglio non è riscritto. Qualificatori: «osservato» = letto nel codice; «deduzione non testata» = mai eseguita. Nessun valore di segreto: solo nomi di simboli e percorsi.
+
+**Esito: NON CONCLUSIVO per lettura.** Il meccanismo di ricomparsa esiste nel codice, ma l'innesco (un file orfano) dipende dall'esito a runtime di una cancellazione che il codice dà per riuscita senza controllarla. Smentita parziale: la premessa «il salvataggio non elimina gli orfani, quindi restano» è vera per il salvataggio, non per il percorso normale, dove il cestino rimuove il file. Conferma parziale: con un orfano e indice vuoto o assente la ricomparsa è certa per lettura. [^src: raw/2026-11-21-repo-llm_wiki-dossier-ep004-r1.md §Esito proposto: NON CONCLUSIVO per lettura]
+
+**Motivo del «non conclusivo».** Che `delete_file` fallisca in silenzio (file bloccato, permessi), che l'app chiuda prima della chiamata o che un salvataggio in corsa riscriva il file non è osservabile per lettura; il corpo di `delete_file` in Rust non è letto e non sono stati eseguiti né l'app né i test. [^src: raw/2026-11-21-repo-llm_wiki-dossier-ep004-r1.md §Esito proposto: NON CONCLUSIVO per lettura]
+
+**Impatto se si verifica (deduzione non testata): divergenza, non perdita.** Riappaiono conversazioni cancellate, anche vecchie (orfani lasciati quando l'indice non era vuoto), e il salvataggio successivo le riscrive nell'indice. Nessuna perdita di dati di chat osservata in questo percorso. Divergenza minore e separata: `agent-sessions/<id>.json` sopravvive alla cancellazione (memoria dell'agente, non lista chat). [^src: raw/2026-11-21-repo-llm_wiki-dossier-ep004-r1.md §Esito proposto: NON CONCLUSIVO per lettura]
+
+### Dove e con quale innesco i file di chat sono cancellati fisicamente
+| Dove | Innesco | Stato |
+|---|---|---|
+| Cestino di `ConversationSidebar` (`chat-panel.tsx:240-255`, chiamata a 249) | clic dell'utente sul cestino di una conversazione (visibile al passaggio del mouse) | osservato; `deleteFile` senza `await`, errore ignorato |
+| `saveChatHistory` (`persist.ts:79-112`) | salvataggio automatico o forzato | osservato: non cancella |
+| `deleteConversation` (`chat-store.ts:150-164`) | — | osservato: solo store |
+| `resetProjectState` (`reset-project-state.ts`) | cambio o apertura progetto | osservato: solo store e cache |
+
+[^src: raw/2026-11-21-repo-llm_wiki-dossier-ep004-r1.md §Dove e con quale innesco i `chats/<id>.json` sono cancellati fisicamente]
+
+**Ricerca testuale globale (restringe la riserva del dossier).** Il dossier dichiara «nessun altro punto di cancellazione nei file letti» senza ricerca globale (l'agente non aveva `Grep`). La sessione principale ha eseguito `grep -rn "chats/" src` (TS/TSX, esclusi test): l'unica cancellazione di `chats/<id>.json` è `chat-panel.tsx:249`; gli altri usi sono scrittura (`persist.ts:108`) e lettura (`persist.ts:124`); nessun riferimento a `chats` in `src-tauri/src`. La riserva si restringe: **nessun'altra cancellazione esplicita di `chats/` nel codice TS/Rust** (ambito `src` e `src-tauri/src`, stringa `chats/`). Restano possibili le cancellazioni generiche di percorso arbitrario (`deleteFile` in `agent-file-activity.tsx:41` e `review-view.tsx:195`; `delete_file` Rust), non legate a `chats/`: non escluse per lettura. Con `grep -rn "agent-sessions"` su `src`, `src-tauri/src`, `mcp-server`, `extension` risultano solo `session.rs:107, 182` e un test (`session.rs:261`): nessuna cancellazione di `agent-sessions/`, divergenza confermata nell'ambito cercato. [^src: management/kanban/EP-004-verifica-rischi-di-persistenza/US-025-rischio-chat-cancellate/TSK-012.md §Chiusura]
+
+### Percorso cancella-salva-carica (osservato, salvo dove indicato)
+1. **Cancella tutte:** nessun comando unico, è il cestino ripetuto per ogni conversazione; `deleteConversation` toglie dallo store e il cestino chiama `deleteFile` su `chats/<id>.json` (`chat-store.ts:150-164`; `chat-panel.tsx:240-255`).
+2. **Salva:** il timer di 2 s riarma a ogni modifica; `saveChatHistory` scrive `conversations.json` con l'elenco corrente (`[]` se vuoto) e un `chats/<id>.json` solo per le conversazioni con messaggi; non elimina file (`auto-save.ts:108-129`; `persist.ts:79-112`).
+3. **Carica:** i file orfani **sono letti per ricostruire l'indice** solo se `conversations.json` è `[]` (indice e messaggi vuoti), mancante o non valido; con indice non vuoto i file non indicizzati non sono letti (`persist.ts:114-175`, `205-242`). Un orfano `[]` non viene ricostruito. L'app attiva le conversazioni ricostruite (`App.tsx:51-71`). La ricostruzione è intenzionale (gara all'avvio, `persist.ts:136-139`) e coperta da test con `realFs`, non dal confine Tauri; non c'è un test che cancelli dall'interfaccia e ricarichi (`persist.integration.test.ts:391-425`).
+
+[^src: raw/2026-11-21-repo-llm_wiki-dossier-ep004-r1.md §Tracciamento cancella-tutte, salvataggio, caricamento]
+
+### Condizioni di ricomparsa (deduzione non testata)
+Un orfano nasce solo se la rimozione del cestino non si compie: (1) `delete_file` fallisce e l'errore è ignorato; (2) l'app chiude prima della chiamata senza `await`; (3) un `saveChatHistory` già avviato riscrive il file dopo la rimozione (finestra stretta, non provata); (4) orfani vecchi tornano quando si cancella l'ultima conversazione (indice `[]`); (5) il salvataggio successivo riscrive l'indice con le chat risorte. [^src: raw/2026-11-21-repo-llm_wiki-dossier-ep004-r1.md §Condizioni di ricomparsa (deduzione dal codice letto, non testata)]
+
+### Non letto
+Corpo di `delete_file` e `run_guarded` (`fs.rs`); `chat-panel.tsx` oltre la riga 1829; `test-helpers/fs-temp.ts`; `chat-store.test.ts`; altri chiamanti di `loadChatHistory`, `saveChatHistory`, `deleteConversation`; comandi Rust che potrebbero cancellare `.llm-wiki/`; regole di visibilità di `list_directory` in `.llm-wiki`; default di `persistSession` nel percorso in streaming. [^src: raw/2026-11-21-repo-llm_wiki-dossier-ep004-r1.md §File letti e non letti]
+
+### Verifica degli AC di US-025
+Tutti gli AC sono verificati contro questa sezione; l'AC5 è soddisfatto dall'esito «non conclusivo» con motivo dichiarato. La tabella `AC | Esito | Evidenza` è nella Chiusura di TSK-013.
+
 ## Contradictions
+- **Rischio 1: «esiste una cancellazione fisica solo nel cestino» e «forma generale».** Prima (§Dettaglio e Aggiornamenti v2026-11-20): se l'utente cancella tutte le conversazioni, il caricamento successivo potrebbe resuscitarle, rimozione fisica forse in codice non letto. Ora (dossier r1): nel caso ordinario il cestino rimuove il file e le chat non ricompaiono; la ricomparsa richiede un orfano (fallimento silenzioso, chiusura anticipata, scrittura in corsa), non osservabile per lettura. Esito: non conclusivo; il testo del §Dettaglio non è modificato. [^src: raw/2026-11-21-repo-llm_wiki-dossier-ep004-r1.md §Esito proposto: NON CONCLUSIVO per lettura]
+- **Rischio 1: «nessun altro punto di cancellazione» (riserva del dossier).** Prima: valida solo per i file letti, senza ricerca globale. Ora: ristretta dalla ricerca testuale globale della sessione principale (`grep -rn "chats/" src`; nessun riferimento a `chats` in `src-tauri/src`), a «nessun'altra cancellazione esplicita di `chats/` nel codice TS/Rust». [^src: management/kanban/EP-004-verifica-rischi-di-persistenza/US-025-rischio-chat-cancellate/TSK-012.md §Chiusura]
 - **Rischio 4: store `app-state.json` «non verificato» (fetta D).** Prima (voci dei rischi e `llm-wiki-archivi-persistenza`): atomicità del plugin non verificata; righe 1, 2, 3, 13, 14, 15, 16 senza riga di codice. Ora: riga di codice per tutte e plugin diretto; l'esito del rischio resta una deduzione da verificare in EP-004. [^src: raw/2026-11-21-repo-llm_wiki-persistenza-d.md §Esiti B, in breve]
 - **Rischio 4: `writeFile` «non letta».** Prima: «Per gli altri file TS dipende dall'implementazione di `writeFile` in `src/commands/fs.ts` e `src-tauri/src/commands/fs.rs`, non letta». Ora (fetta B): `write_file` Rust e il wrapper TS sono letti e sono diretti; compaiono altri archivi atomici e la divergenza commento/codice sopra. È un aggiornamento del dato, non dell'esito: il rischio resta una deduzione da verificare in EP-004. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-b.md §Atomicità per archivio]
 - **Rischio 1: «potrebbe stare in codice non letto».** Prima: «Non verificato: la rimozione fisica dei file potrebbe stare in codice non letto (ad esempio `chat-panel.tsx`)». Ora (fetta C): la rimozione esiste in `chat-panel.tsx:235-265`, nel solo gestore del cestino (vedi sopra). Esito del rischio invariato; lo verifica EP-004. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-c.md §File di chat: dove e quando si cancellano]
