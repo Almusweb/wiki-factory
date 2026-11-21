@@ -33,6 +33,7 @@ Indice delle pagine di `wiki/`, aggiornato da `wiki-keeper` a ogni ingest.
 - [[2026-11-21-repo-llm_wiki-dossier-ep004-r6]] — dossier EP-004 r6 (2026-11-21): rischio 6, re-index senza rollback, confermato per lettura (tabella assente o parziale dopo lo svuotamento, rilancio da zero, un solo innesco), non conclusivo sullo stato su disco dopo errore parziale
 - [[2026-11-21-repo-llm_wiki-dossier-ep004-r7]] — dossier EP-004 r7 (2026-11-21): rischio 7, cambio di modello o dimensione dell'embedding, confermato per lettura (nessun confronto con la tabella, `embedAllPages` non rileva il cambio, nessun avviso al salvataggio, impronta con modello), non conclusivo sul comportamento di LanceDB
 - [[2026-11-21-repo-llm_wiki-dossier-ep004-r8]] — dossier EP-004 r8 (2026-11-21): rischio 8, segreti in chiaro nello store applicativo, confermato per lettura (15 campi sensibili scritti così come sono, nessuna cifratura né archivio protetto, token API in HTTP sulla LAN, chiave SerpApi nell'URL), non conclusivo su permessi del file, SerpApi negli errori e copie fuori dallo store
+- [[2026-11-21-issues-llm_wiki-chiuse]] — issue chiuse di `nashsu/llm_wiki` (2026-11-21, `github-issues`): dichiarazioni di segnalatori e maintainer con la versione, più controlli puntuali su v0.6.13; Clip server (bind, CORS e token osservati, corpo senza limite, `projectPath` non confrontato col registro, loopback senza token), misure di terzi sulle dimensioni, regole di `page_id` e confronto degli id TS e Rust, stato dei sei punti di #318
 - [[session-2026-11-20-16-3649aa67]] — sessione di bootstrap `wiki-factory` 2.48 su `llm_wiki` (in `wiki/sessions/`; indice delle sessioni: [sessions/index.md](sessions/index.md))
 
 ## Entities
@@ -47,7 +48,7 @@ Indice delle pagine di `wiki/`, aggiornato da `wiki-keeper` a ogni ingest.
 - [[llm-wiki-stack-e-dipendenze]] — i tre descriptor, dipendenze, toolchain
 - [[llm-wiki-api-locale]] — API HTTP locale, clip server, comandi Tauri
 - [[llm-wiki-agente]] — modulo agente, permessi e router
-- [[llm-wiki-sicurezza]] — bind, CORS, estensione Chrome, Tauri, segreti nello store
+- [[llm-wiki-sicurezza]] — bind, CORS, estensione Chrome, Tauri, segreti nello store, Clip server (token solo da rete locale, corpo senza limite, `projectPath` non confrontato)
 - [[llm-wiki-schema-dati]] — dati su file, tipi condivisi, schemi LanceDB
 - [[llm-wiki-archivi-persistenza]] — i 17 archivi di `.llm-wiki/` e le chiavi di `app-state.json`
 - [[llm-wiki-versioni-e-migrazioni]] — versioni di formato e migrazioni

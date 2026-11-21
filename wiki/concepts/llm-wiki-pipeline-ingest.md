@@ -5,7 +5,7 @@ title: llm-wiki — pipeline di ingest, coda e cache
 status: draft
 created: 2026-11-21
 updated: 2026-11-21
-sources: ["raw/2026-11-21-repo-llm_wiki-ingest.md"]
+sources: ["raw/2026-11-21-repo-llm_wiki-ingest.md", "raw/2026-11-21-issues-llm_wiki-chiuse.md"]
 tags: [llm-wiki, ingest, pipeline, coda, cache]
 ---
 
@@ -46,3 +46,9 @@ Ingest a due stadi con review facoltativa, analisi a blocchi per sorgenti lunghe
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+
+## Aggiornamenti (v2026-11-21, issue chiuse)
+Dalla source page [[2026-11-21-issues-llm_wiki-chiuse]] (upstream v0.6.13, commit `e08cfce`, branch `develop` coincidente con `main`). Il testo sopra non è modificato.
+
+- **Coda dopo il riavvio.** **Dichiarato (maintainer), #758, v0.6.12:** i task `pending` e `processing` persistiti riprendono al riavvio, con recupero degli eventi mancati del monitoraggio. È una dichiarazione, non un'osservazione. Precisazione dalla wiki: `restoreQueue` tiene solo i task con l'id di progetto corrente e riscrive il file senza gli scartati (vedi [[llm-wiki-rischi-persistenza]], rischio 2), quindi «riprendono» non vale per i task di un id diverso. [^src: raw/2026-11-21-issues-llm_wiki-chiuse.md §6. Altre dichiarazioni pertinenti (non chiudono)]
+- **Guardia dei percorsi nelle scritture dell'ingest.** **Osservato v0.6.13:** `executeIngestWrites` scarta i percorsi non sicuri o gestiti dall'app (`isSafeIngestPath`, `ingest.ts:3719, 3849-3851`); il punto 3 di #318 (scritture dell'ingest senza questo controllo), dichiarato nel 2026-06-01, risulta corretto. Riguarda le scritture, non la cancellazione di file. [^src: raw/2026-11-21-issues-llm_wiki-chiuse.md §6. Altre dichiarazioni pertinenti (non chiudono)]

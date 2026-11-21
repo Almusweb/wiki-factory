@@ -451,5 +451,20 @@
       "status": "partial",
       "secrets_redacted": 0
     }
+  },
+  "2026-11-21-issues-llm_wiki-chiuse": {
+    "source": "github-issues",
+    "extracted_at": "2026-11-21T23:40:00+01:00",
+    "primary_artifact": "raw/2026-11-21-issues-llm_wiki-chiuse.md",
+    "secondary_artifacts": [],
+    "extractor_version": "sessione-principale (gh 2.101.0)",
+    "extraction_metadata": {
+      "source_path": "https://github.com/nashsu/llm_wiki/issues?q=is%3Aissue+is%3Aclosed",
+      "issues_total_closed": 362,
+      "issues_read_in_full": 40,
+      "code_check_commit": "e08cfce65aad8b76b13546a081c1a8d4422b70c3",
+      "secrets_redacted": 0,
+      "status": "partial"
+    }
   }
 }

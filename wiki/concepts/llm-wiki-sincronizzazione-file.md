@@ -4,8 +4,8 @@ type: concept
 title: llm-wiki — sincronizzazione e osservazione dei file
 status: draft
 created: 2026-11-20
-updated: 2026-11-20
-sources: ["raw/2026-11-20-repo-llm_wiki-persistenza-b.md"]
+updated: 2026-11-21
+sources: ["raw/2026-11-20-repo-llm_wiki-persistenza-b.md", "raw/2026-11-21-issues-llm_wiki-chiuse.md"]
 tags: [llm-wiki, dati, persistenza, sync, db]
 ---
 
@@ -48,3 +48,9 @@ Non scrive file direttamente. Ascolta `file-sync://queue-updated` e `file-sync:/
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+
+## Aggiornamenti (v2026-11-21, issue chiuse)
+Dalla source page [[2026-11-21-issues-llm_wiki-chiuse]] (issue chiuse di `nashsu/llm_wiki`). Il testo sopra non è modificato. Solo dichiarazioni, nessuna osservazione sul codice di questo punto.
+
+- **Monitoraggio delle cartelle con più progetti, dichiarazioni in contrasto (#648, issue rimasta chiusa).** **Dichiarato (maintainer), v0.6.9:** il monitoraggio elabora tutti i progetti configurati. **Dichiarato (segnalatore), 2026-08-25:** con due progetti configurati viene ancora elaborato solo quello aperto. Non è noto per lettura quale delle due descriva v0.6.13: gap `llm-wiki-monitoraggio-piu-progetti`. [^src: raw/2026-11-21-issues-llm_wiki-chiuse.md §6. Altre dichiarazioni pertinenti (non chiudono)]
+- **Coda dei cambi dopo il riavvio.** **Dichiarato (maintainer), #758, v0.6.12:** recupero degli eventi mancati del monitoraggio al riavvio; i task di ingest `pending` e `processing` persistiti riprendono (vedi [[llm-wiki-pipeline-ingest]]). [^src: raw/2026-11-21-issues-llm_wiki-chiuse.md §6. Altre dichiarazioni pertinenti (non chiudono)]

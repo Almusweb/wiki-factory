@@ -5,7 +5,7 @@ title: llm-wiki — test e CI
 status: draft
 created: 2026-11-20
 updated: 2026-11-21
-sources: ["raw/2026-11-20-repo-llm_wiki.md", "raw/2026-11-21-repo-llm_wiki-ricerca-ui-residui.md"]
+sources: ["raw/2026-11-20-repo-llm_wiki.md", "raw/2026-11-21-repo-llm_wiki-ricerca-ui-residui.md", "raw/2026-11-21-issues-llm_wiki-chiuse.md"]
 tags: [llm-wiki, test, ci]
 ---
 
@@ -43,6 +43,13 @@ Dalla fetta E del giro del 2026-11-21 ([[2026-11-21-repo-llm_wiki-ricerca-ui-res
 - I job `package-extension` (zip di `extension/` con la versione di `package.json`) e `publish-release` (toglie lo stato di bozza dopo build e `package-extension`) completano il workflow. [^src: raw/2026-11-21-repo-llm_wiki-ricerca-ui-residui.md §CI e build (gap ci-test-build)]
 - Secret referenziati per nome (valori non letti): `GITHUB_TOKEN`, `APPLE_CERTIFICATE`, `APPLE_CERTIFICATE_PASSWORD`, `APPLE_SIGNING_IDENTITY`, `APPLE_ID`, `APPLE_PASSWORD`, `APPLE_TEAM_ID`. [^src: raw/2026-11-21-repo-llm_wiki-ricerca-ui-residui.md §CI e build (gap ci-test-build)]
 - Non verificato: se i test Rust (`#[cfg(test)]`) o TypeScript girino in altro modo fuori dai workflow; `.github/scripts/*` non letti. [^src: raw/2026-11-21-repo-llm_wiki-ricerca-ui-residui.md §CI e build (gap ci-test-build)]
+
+## Aggiornamenti (v2026-11-21, issue chiuse)
+Dalla source page [[2026-11-21-issues-llm_wiki-chiuse]] (upstream v0.6.13, commit `e08cfce`, branch `develop` coincidente con `main`). Il testo sopra non è modificato. Gap `llm-wiki-test-fuori-workflow`: aggiornamento parziale, resta aperto.
+
+- **Dichiarato (segnalatori e contributori), #170, #193, #228:** eseguono in locale `npm run test:mocks`, `npm run typecheck` e `npm run build`. È una dichiarazione su come lavorano, non una regola del repository. [^src: raw/2026-11-21-issues-llm_wiki-chiuse.md §6. Altre dichiarazioni pertinenti (non chiudono)]
+- **Osservato v0.6.13:** `test` = `test:mocks` + `test:llm`; `test:mocks` = vitest escludendo `*.real-llm.test.ts` e `mcp-server`; `test:llm` = vitest sui test `real-llm`, senza parallelismo fra file; `typecheck` = `tsc --build` (`package.json:8, 12-14`). Gli script `test` e `typecheck` non erano elencati sopra: aggiunta, non contraddizione. [^src: raw/2026-11-21-issues-llm_wiki-chiuse.md §6. Altre dichiarazioni pertinenti (non chiudono)]
+- **Che cosa resta non verificato:** nessuna issue letta cita `cargo test` (il «non trovato» vale per quanto letto, con uno script di ricerca non versionato); gli script `.github/scripts/*` non sono letti; la documentazione di contribuzione non è letta. [^src: raw/2026-11-21-issues-llm_wiki-chiuse.md §6. Altre dichiarazioni pertinenti (non chiudono)]
 
 ## Contradictions
 - **`build.yml` «non letto».** Prima (Contesto, sezione CI): il workflow `build.yml` non è stato letto. Ora (fetta E): è letto per intero e non esegue test; l'affermazione che la CI non esegue i test vale per entrambi i workflow letti. [^src: raw/2026-11-21-repo-llm_wiki-ricerca-ui-residui.md §CI e build (gap ci-test-build)]
