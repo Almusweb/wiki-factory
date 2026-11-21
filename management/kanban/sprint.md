@@ -16,9 +16,9 @@ updated: 2026-11-21
 | Epica | Titolo | Status epica | blocked | in_progress | review | todo |
 |---|---|---|---|---|---|---|
 | [EP-002](EP-002-conoscenza-layer-di-persistenza/EP-002.md) | Completare la conoscenza del layer di persistenza | defined | 0 | 0 | 0 | 1 |
-| [EP-004](EP-004-verifica-rischi-di-persistenza/EP-004.md) | Verificare i rischi di persistenza prima di correggerli | defined | 0 | 1 | 0 | 1 |
+| [EP-004](EP-004-verifica-rischi-di-persistenza/EP-004.md) | Verificare i rischi di persistenza prima di correggerli | defined | 0 | 1 | 0 | 0 |
 
-Totale TSK aperti: 3 (sprint corrente 2, lookahead 1).
+Totale TSK aperti: 2 (sprint corrente 1, lookahead 1).
 
 ## Sprint corrente
 
@@ -26,8 +26,7 @@ Totale TSK aperti: 3 (sprint corrente 2, lookahead 1).
 
 | TSK | Titolo | US | Layer | Pri | Status | Owner | Dipende da |
 |---|---|---|---|---|---|---|---|
-| [TSK-026](EP-004-verifica-rischi-di-persistenza/US-032-rischio-segreti-in-chiaro/TSK-026.md) | Dossier EP-004, rischio 8: lettura dei campi sensibili dello store applicativo, senza valori (repo-sync) | US-032 | docs | P1 | in_progress | — | TSK-011, TSK-024 |
-| [TSK-027](EP-004-verifica-rischi-di-persistenza/US-032-rischio-segreti-in-chiaro/TSK-027.md) | Ingerire il dossier r8 e registrare in wiki l'esito del rischio 8 (segreti in chiaro nello store) | US-032 | docs | P1 | todo | — | TSK-026 |
+| [TSK-027](EP-004-verifica-rischi-di-persistenza/US-032-rischio-segreti-in-chiaro/TSK-027.md) | Ingerire il dossier r8 e registrare in wiki l'esito del rischio 8 (segreti in chiaro nello store) | US-032 | docs | P1 | in_progress | — | TSK-026 |
 
 ## Lookahead
 
