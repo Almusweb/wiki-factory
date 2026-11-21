@@ -113,5 +113,137 @@
       "secrets_redacted": 0,
       "payload_truncated": false
     }
+  },
+  "2026-11-21-repo-llm_wiki-api-mcp": {
+    "source": "repo",
+    "extracted_at": "2026-11-21T07:10:48Z",
+    "primary_artifact": "raw/2026-11-21-repo-llm_wiki-api-mcp.md",
+    "secondary_artifacts": [],
+    "extractor_version": "repo-sync@2.12.0",
+    "extraction_metadata": {
+      "source_path": "/home/user/wiki-factory/code_repos/llm_wiki",
+      "git_commit": "e08cfce65aad8b76b13546a081c1a8d4422b70c3",
+      "git_branch": "HEAD",
+      "stack": {
+        "language": "typescript",
+        "framework": "react",
+        "confidence": 0.7
+      },
+      "files_sampled": 10,
+      "files_total_in_repo": 476,
+      "status": "success",
+      "secrets_redacted": 0,
+      "size_bytes": 14495
+    }
+  },
+  "2026-11-21-repo-llm_wiki-agente-runtime": {
+    "source": "repo",
+    "extracted_at": "2026-11-21T07:10:40Z",
+    "primary_artifact": "raw/2026-11-21-repo-llm_wiki-agente-runtime.md",
+    "secondary_artifacts": [],
+    "extractor_version": "repo-sync@2.12.0",
+    "extraction_metadata": {
+      "source_path": "/home/user/wiki-factory/code_repos/llm_wiki",
+      "git_commit": "e08cfce65aad8b76b13546a081c1a8d4422b70c3",
+      "git_branch": "HEAD",
+      "stack": {
+        "language": "typescript",
+        "framework": "react",
+        "confidence": 0.7
+      },
+      "files_sampled": 4,
+      "files_total_in_repo": 476,
+      "status": "partial",
+      "secrets_redacted": 0,
+      "size_bytes": 11688
+    }
+  },
+  "2026-11-21-repo-llm_wiki-agente-tools": {
+    "source": "repo",
+    "extracted_at": "2026-11-21T07:10:45Z",
+    "primary_artifact": "raw/2026-11-21-repo-llm_wiki-agente-tools.md",
+    "secondary_artifacts": [],
+    "extractor_version": "repo-sync@2.12.0",
+    "extraction_metadata": {
+      "source_path": "/home/user/wiki-factory/code_repos/llm_wiki",
+      "git_commit": "e08cfce65aad8b76b13546a081c1a8d4422b70c3",
+      "git_branch": "HEAD",
+      "stack": {
+        "language": "typescript",
+        "framework": "react",
+        "confidence": 0.7
+      },
+      "files_sampled": 5,
+      "files_total_in_repo": 476,
+      "status": "partial",
+      "secrets_redacted": 0,
+      "size_bytes": 13480
+    }
+  },
+  "2026-11-21-repo-llm_wiki-fs-lib-progetto": {
+    "source": "repo",
+    "extracted_at": "2026-11-21T07:10:41Z",
+    "primary_artifact": "raw/2026-11-21-repo-llm_wiki-fs-lib-progetto.md",
+    "secondary_artifacts": [],
+    "extractor_version": "repo-sync@2.12.0",
+    "extraction_metadata": {
+      "source_path": "/home/user/wiki-factory/code_repos/llm_wiki",
+      "git_commit": "e08cfce65aad8b76b13546a081c1a8d4422b70c3",
+      "git_branch": "HEAD",
+      "stack": {
+        "language": "typescript",
+        "framework": "react",
+        "confidence": 0.7
+      },
+      "files_sampled": 12,
+      "files_total_in_repo": 476,
+      "status": "partial",
+      "secrets_redacted": 0,
+      "size_bytes": 11906
+    }
+  },
+  "2026-11-21-repo-llm_wiki-ingest": {
+    "source": "repo",
+    "extracted_at": "2026-11-21T07:11:12Z",
+    "primary_artifact": "raw/2026-11-21-repo-llm_wiki-ingest.md",
+    "secondary_artifacts": [],
+    "extractor_version": "repo-sync@2.12.0",
+    "extraction_metadata": {
+      "source_path": "/home/user/wiki-factory/code_repos/llm_wiki",
+      "git_commit": "e08cfce65aad8b76b13546a081c1a8d4422b70c3",
+      "git_branch": "HEAD",
+      "stack": {
+        "language": "typescript",
+        "framework": "react",
+        "confidence": 0.7
+      },
+      "files_sampled": 20,
+      "files_total_in_repo": 476,
+      "status": "partial",
+      "secrets_redacted": 0,
+      "size_bytes": 22705
+    }
+  },
+  "2026-11-21-repo-llm_wiki-ricerca-ui-residui": {
+    "source": "repo",
+    "extracted_at": "2026-11-21T07:10:53Z",
+    "primary_artifact": "raw/2026-11-21-repo-llm_wiki-ricerca-ui-residui.md",
+    "secondary_artifacts": [],
+    "extractor_version": "repo-sync@2.12.0",
+    "extraction_metadata": {
+      "source_path": "/home/user/wiki-factory/code_repos/llm_wiki",
+      "git_commit": "e08cfce65aad8b76b13546a081c1a8d4422b70c3",
+      "git_branch": "HEAD",
+      "stack": {
+        "language": "typescript",
+        "framework": "react",
+        "confidence": 0.7
+      },
+      "files_sampled": 15,
+      "files_total_in_repo": 476,
+      "status": "success",
+      "secrets_redacted": 0,
+      "size_bytes": 17667
+    }
   }
 }
