@@ -247,3 +247,22 @@ W26-W28 sono lo stesso difetto (nota senza citazione) su tre pagine; sono WARNIN
 ### Totali dopo il rescan (solo per W19-W25 e derivati)
 
 Chiusi: W19, W23, W24, W25 (4). Aperti: W20, W21, W22. Nuovi: W26-W28. Variazione netta WARNING: 18 -> 17 (-4 chiusi, +3 nuovi), da riverificare con il lint completo; ERROR 0, heal-eligible 0.
+
+## Rescan 2 (W20-W22, W26-W28)
+
+Rescan scoped del 2026-11-21. Nota di stato VCS: `git status --short` mostra solo `wiki/log.md` modificato; le correzioni del keeper sono gia' nel commit `87dcbb0` (`git log --oneline -3`), quindi `git diff` sul working tree e' vuoto per le tre pagine. Ho letto le righe direttamente. `wiki/log.md` non toccato, nessun auto-fix.
+
+| Finding | Esito | Riga letta / motivo |
+|---|---|---|
+| W20 | CHIUSO | `rischi-persistenza.md:28`: «i segreti in chiaro (deduzione non testata) in `app-state.json`». Il qualificatore e' nella frase stessa. |
+| W21 | CHIUSO (residuo cosmetico) | `sicurezza.md:54`: «Tra i campi in chiaro (deduzione non testata) compaiono `token` e `localToken`...». Resta il titolo in grassetto «**Segreti in chiaro nello store.**» senza qualificatore: la frase sotto e' qualificata, il titolo no. Non lo conto come finding. |
+| W22 | CHIUSO | `archivi-persistenza.md:60`: «Tra i campi in chiaro (deduzione non testata) compaiono `token` e `localToken` in `mineruConfig`...». |
+| W26 | CHIUSO | `archivi-persistenza.md:171`: la frase «nelle finestre lette non si vede alcuna cifratura» ha ora `[^src: raw/2026-11-21-repo-llm_wiki-fs-lib-progetto.md §Archivio dello stato app (gap 15)]` nella stessa riga. |
+| W27 | CHIUSO | `sicurezza.md:112`: citazione presente nella stessa riga. |
+| W28 | CHIUSO | `rischi-persistenza.md:114`: citazione presente nella stessa riga. |
+
+Citazione verificata a lettura: la sezione `## Archivio dello stato app (gap 15)` esiste (raw `fs-lib-progetto` riga 13) e contiene, come ultimo punto, «**[DEDUZIONE NON TESTATA]** I token (`apiConfig`, chiavi provider) sono salvati come campi JSON dello store senza passaggi di cifratura visibili nelle finestre lette: probabile memorizzazione in chiaro. Non verificato che manchi una cifratura altrove.» Dice quindi esattamente cio' che le note le attribuiscono (nessuna cifratura visibile nelle finestre lette; assenza altrove non verificata). Il raw non porta il nome del gap `llm-wiki-token-cifratura`, che le note citano come rinvio a `gaps.md`, non come fonte.
+
+Nuovi candidati dalle righe aggiunte: nessuno. Le tre note hanno la citazione; le frasi «Correzione in-place: ... prima ..., ora ...» sono meta-descrizione della modifica, non claim sul progetto; il rinvio «Vedi gap ... (aperto)» e' un puntatore. `[[wikilink]]` nuovi: nessuno.
+
+**Conteggio WARNING aggiornato: 11** (18 iniziali - W19, W20, W21, W22, W23, W24, W25 chiusi; W26-W28 nati e chiusi nello stesso giro, netto 0). ERROR 0, heal-eligible 0. Valore derivato dal report e da questo rescan, non da un lint completo: da riconfermare alla prossima esecuzione completa.
