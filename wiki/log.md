@@ -89,3 +89,7 @@ Totale: 0 ERROR, 18 WARNING, 10 INFO (heal-eligible: 0). Risolti W8-W13, W15 (ri
 ## [2026-11-21] fix | correzioni lint W19-W25
 Correzioni approvate dall'utente in chat. W19: chiamante di `import_project_archive` (`MaintenanceSection`) registrato in `## Aggiornamenti`, voce in `## Contradictions` di operazioni-distruttive, aggiornamento in gaps (gap aperto). W20-W22: note «DEDUZIONE NON TESTATA» sui segreti in chiaro. W23-W24: `sources:` integrati. W25: `updated`.
 File toccati: wiki/concepts/llm-wiki-rischi-persistenza.md, wiki/concepts/llm-wiki-operazioni-distruttive.md, wiki/concepts/llm-wiki-sicurezza.md, wiki/concepts/llm-wiki-archivi-persistenza.md, wiki/sources/2026-11-20-repo-llm_wiki-persistenza-a.md, wiki/gaps.md, wiki/log.md
+
+## [2026-11-21] fix | completamento W20-W22 (in-place) e citazioni W26-W28
+Inserito «(deduzione non testata)» nelle righe originali di rischi-persistenza (28), sicurezza (54), archivi-persistenza (60); aggiunta la citazione `[^src: raw/2026-11-21-repo-llm_wiki-fs-lib-progetto.md §Archivio dello stato app (gap 15)]` alle tre note di correzione (sezione verificata nel raw, riga 22).
+File toccati: wiki/concepts/llm-wiki-rischi-persistenza.md, wiki/concepts/llm-wiki-sicurezza.md, wiki/concepts/llm-wiki-archivi-persistenza.md, wiki/log.md
