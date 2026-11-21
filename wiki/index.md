@@ -29,6 +29,7 @@ Indice delle pagine di `wiki/`, aggiornato da `wiki-keeper` a ogni ingest.
 - [[2026-11-21-repo-llm_wiki-dossier-ep004-r2]] — dossier EP-004 r2 (2026-11-21): rischio 2, rigenerazione dell'identità del progetto, esito confermato per lettura
 - [[2026-11-21-repo-llm_wiki-dossier-ep004-r3]] — dossier EP-004 r3 (2026-11-21): rischio 3, scritture sul registro dei progetti, esito confermato per lettura sul meccanismo e non conclusivo sulla concorrenza reale
 - [[2026-11-21-repo-llm_wiki-dossier-ep004-r5]] — dossier EP-004 r5 (2026-11-21): rischio 5, logica duplicata TS e Rust, chunking confermato diverso per lettura, pulizia id legacy non conclusiva, invalidazione dell'impronta confermata
+- [[2026-11-21-repo-llm_wiki-dossier-ep004-r6]] — dossier EP-004 r6 (2026-11-21): rischio 6, re-index senza rollback, confermato per lettura (tabella assente o parziale dopo lo svuotamento, rilancio da zero, un solo innesco), non conclusivo sullo stato su disco dopo errore parziale
 - [[session-2026-11-20-16-3649aa67]] — sessione di bootstrap `wiki-factory` 2.48 su `llm_wiki` (in `wiki/sessions/`; indice delle sessioni: [sessions/index.md](sessions/index.md))
 
 ## Entities
@@ -52,7 +53,7 @@ Indice delle pagine di `wiki/`, aggiornato da `wiki-keeper` a ogni ingest.
 - [[llm-wiki-sincronizzazione-file]] — watcher di progetto, snapshot e coda dei cambi file
 - [[llm-wiki-cancellazione-pagine-e-sorgenti]] — cascata di cancellazione di una pagina e ciclo di vita delle sorgenti
 - [[llm-wiki-pipeline-ingest]] — pipeline di ingest (due stadi), coda, cache e guardie di percorso
-- [[llm-wiki-rischi-persistenza]] — divergenze e rischi del layer di persistenza (deduzioni; esiti verificati in EP-004: rischio 1 non conclusivo, rischio 2 confermato, rischio 3 confermato sul meccanismo, rischio 5 confermato sul chunking e sull'invalidazione dell'impronta, non conclusivo sulla pulizia id legacy)
+- [[llm-wiki-rischi-persistenza]] — divergenze e rischi del layer di persistenza (deduzioni; esiti verificati in EP-004: rischio 1 non conclusivo, rischio 2 confermato, rischio 3 confermato sul meccanismo, rischio 5 confermato sul chunking e sull'invalidazione dell'impronta, non conclusivo sulla pulizia id legacy, rischio 6 confermato sul meccanismo e non conclusivo sullo stato su disco dopo errore parziale)
 - [[llm-wiki-licenza-e-standard]] — GPL v3 di terzi, anomalia MIT del server MCP
 - [[llm-wiki-test-e-ci]] — test e CI
 
