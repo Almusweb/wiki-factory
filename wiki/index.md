@@ -4,7 +4,7 @@ type: index
 title: Wiki Index
 status: draft
 created: 2026-11-20
-updated: 2026-11-20
+updated: 2026-11-21
 sources: []
 tags: [navigation]
 ---
@@ -18,6 +18,12 @@ Indice delle pagine di `wiki/`, aggiornato da `wiki-keeper` a ogni ingest.
 - [[2026-11-20-repo-llm_wiki-persistenza-a]] — fetta A della persistenza: store `app-state.json`, cartella dati, tipi delle configurazioni, lettori backend
 - [[2026-11-20-repo-llm_wiki-persistenza-b]] — fetta B della persistenza: scritture e atomicità, sincronizzazione file, log e indice
 - [[2026-11-20-repo-llm_wiki-persistenza-c]] — fetta C della persistenza: chiamanti delle operazioni distruttive, cancellazioni, `append_turn`, v1
+- [[2026-11-21-repo-llm_wiki-api-mcp]] — estrazione 2026-11-21 fetta A: `api_server.rs` per intero, API HTTP locale, MCP, bind e autenticazione
+- [[2026-11-21-repo-llm_wiki-agente-runtime]] — estrazione 2026-11-21 fetta B1: `agent/runtime.rs`, approvazione shell, sessioni e id
+- [[2026-11-21-repo-llm_wiki-agente-tools]] — estrazione 2026-11-21 fetta B2: registry dei tool, `shell.exec`, serde delle config, `write_wiki_page_verified`
+- [[2026-11-21-repo-llm_wiki-fs-lib-progetto]] — estrazione 2026-11-21 fetta C1: comandi FS, `lib.rs`, layout del progetto, identità e import
+- [[2026-11-21-repo-llm_wiki-ingest]] — estrazione 2026-11-21 fetta C2: pipeline di ingest, coda, cache, formati, cancellazione lato TypeScript
+- [[2026-11-21-repo-llm_wiki-ricerca-ui-residui]] — estrazione 2026-11-21 fetta E: embedding, i18n, CI e build, impostazioni, id, revisioni e sessioni
 - [[session-2026-11-20-16-3649aa67]] — sessione di bootstrap `wiki-factory` 2.48 su `llm_wiki` (in `wiki/sessions/`; indice delle sessioni: [sessions/index.md](sessions/index.md))
 
 ## Entities
@@ -40,6 +46,7 @@ Indice delle pagine di `wiki/`, aggiornato da `wiki-keeper` a ogni ingest.
 - [[llm-wiki-gestione-file-corrotti]] — comportamento sui file corrotti
 - [[llm-wiki-sincronizzazione-file]] — watcher di progetto, snapshot e coda dei cambi file
 - [[llm-wiki-cancellazione-pagine-e-sorgenti]] — cascata di cancellazione di una pagina e ciclo di vita delle sorgenti
+- [[llm-wiki-pipeline-ingest]] — pipeline di ingest (due stadi), coda, cache e guardie di percorso
 - [[llm-wiki-rischi-persistenza]] — divergenze e rischi del layer di persistenza (deduzioni)
 - [[llm-wiki-licenza-e-standard]] — GPL v3 di terzi, anomalia MIT del server MCP
 - [[llm-wiki-test-e-ci]] — test e CI

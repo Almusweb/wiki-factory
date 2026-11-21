@@ -4,8 +4,8 @@ type: concept
 title: llm-wiki — versioni di formato e migrazioni
 status: draft
 created: 2026-11-20
-updated: 2026-11-20
-sources: ["raw/2026-11-20-repo-llm_wiki.md", "raw/2026-11-20-repo-llm_wiki-persistenza-b.md", "raw/2026-11-20-repo-llm_wiki-persistenza-c.md"]
+updated: 2026-11-21
+sources: ["raw/2026-11-20-repo-llm_wiki.md", "raw/2026-11-20-repo-llm_wiki-persistenza-b.md", "raw/2026-11-20-repo-llm_wiki-persistenza-c.md", "raw/2026-11-21-repo-llm_wiki-fs-lib-progetto.md", "raw/2026-11-21-repo-llm_wiki-ricerca-ui-residui.md"]
 tags: [llm-wiki, dati, migrazioni, db]
 ---
 
@@ -72,6 +72,15 @@ Nell'ambito cercato (sorgenti non di test sotto `src` e `src-tauri/src`; fuori `
 
 ### Spostamento di sorgenti
 `migrateSourcePath` (rinomina o spostamento di una sorgente) riscrive `sources:` nelle pagine che la citano, sposta il riepilogo, la voce di `ingest-cache` e la copia in `raw/parsed`; rifiuta se la destinazione esiste; ha un rollback best effort per errori prima degli ultimi passi. `moveParsedMarkdown` (chiamato da `migrateSourcePath` secondo graphify) scrive la nuova copia in modo atomico e poi cancella la vecchia, tollerando l'errore di cancellazione. È una migrazione di percorsi, non di formato. Dettaglio in [[llm-wiki-cancellazione-pagine-e-sorgenti]]. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-c.md §Ciclo di vita delle sorgenti]
+
+## Aggiornamenti (v2026-11-21)
+Dalle fette C1 ed E del giro del 2026-11-21 ([[2026-11-21-repo-llm_wiki-fs-lib-progetto]], [[2026-11-21-repo-llm_wiki-ricerca-ui-residui]], commit `e08cfce`). Il testo sopra non è modificato. Il gap `llm-wiki-vector-v1-chiamanti` non è chiuso: resta aperto in [[gaps]] (parziale).
+
+### Comandi vector v1 e v2
+- In `lib.rs` sono registrati i comandi v1 `vector_upsert`, `vector_search`, `vector_delete`, `vector_count` e i v2 `vector_upsert_chunks`, `vector_search_chunks`, `vector_delete_page`, `vector_count_chunks`, `vector_clear_chunks`, `vector_optimize_chunks`, `vector_legacy_row_count`, `vector_drop_legacy`. [^src: raw/2026-11-21-repo-llm_wiki-fs-lib-progetto.md §Vector v1 vs v2 (gap 17)]
+- `src/lib/embedding.ts` (letto intero dalla fetta C1) non invoca i comandi v1: usa solo i v2 ed elimina la tabella legacy v1 dopo un rebuild forzato. Non sono verificati altri chiamanti TS, `api_server.rs`, `agent/tools.rs`, `search.rs` e `mcp-server`; non si esclude un uso interno Rust dei v1. [^src: raw/2026-11-21-repo-llm_wiki-fs-lib-progetto.md §Vector v1 vs v2 (gap 17)]
+- `vector_legacy_row_count` e `vector_drop_legacy` sono usati da `embedding-section.tsx`; i comandi v1 restano presenti e testati, con chiamanti applicativi non verificati. [^src: raw/2026-11-21-repo-llm_wiki-ricerca-ui-residui.md §Chiamanti (gap chiamanti-non-verificati, parziale)]
+- `chat-history.json` è un formato legacy letto da `loadChatHistory` ma non più scritto da `saveChatHistory`; posizione `<project>/.llm-wiki/chat-history.json` (dettaglio in [[llm-wiki-archivi-persistenza]]). [^src: raw/2026-11-21-repo-llm_wiki-fs-lib-progetto.md §Storia dei file e persistenza in `.llm-wiki` (gap 13 parziale, gap 23 posizione)]
 
 ## Contradictions
 - **Versioni di formato esplicite.** Prima (tesi della pagina): «le versioni di formato esplicite sono solo due (`version: 1` in `scheduled-import-db.json` e il suffisso `_v2`)». Ora (fetta B): altri campi `version` in `file-snapshot.json`, `file-change-queue.json`, `ingest-progress` e `ingest-generation` (vedi sopra). Il numero di versioni esplicite va rivisto; la stessa frase è in [[llm-wiki-schema-dati]] e nel sommario di [[llm-wiki-archivi-persistenza]]. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-b.md §Sincronizzazione e osservazione dei file]
