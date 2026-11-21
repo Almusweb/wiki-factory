@@ -81,3 +81,7 @@ Il Check 4bc su `tools/wiki/verify_gap_closures.py --check` e `tools/wiki/gaps_a
 [2026-11-21 07:31] gap-closed — llm-wiki-embedding-trasporto via [[llm-wiki-sicurezza]] — files touched: 1
 [2026-11-21 07:31] gap-closed — llm-wiki-tipi-dedup-lint via [[llm-wiki-schema-dati]] — files touched: 1
 [2026-11-21 07:31] gap-closed — llm-wiki-markdown-estratto-percorsi via [[llm-wiki-archivi-persistenza]] — files touched: 1
+
+## [2026-11-21] lint | check completo (prima esecuzione del giorno)
+Orphan: 0 | Broken: 0 | Unsourced: 2 | Kanban: 0 err | Coerenza: 0 err
+Totale: 0 ERROR, 18 WARNING, 10 INFO (heal-eligible: 0). Risolti W8-W13, W15 (riga `project.json`), I8; nuovi W19-W25. Report: `wiki/lint/2026-11-21-lint-report.md`.
