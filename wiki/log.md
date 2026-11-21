@@ -93,3 +93,7 @@ File toccati: wiki/concepts/llm-wiki-rischi-persistenza.md, wiki/concepts/llm-wi
 ## [2026-11-21] fix | completamento W20-W22 (in-place) e citazioni W26-W28
 Inserito «(deduzione non testata)» nelle righe originali di rischi-persistenza (28), sicurezza (54), archivi-persistenza (60); aggiunta la citazione `[^src: raw/2026-11-21-repo-llm_wiki-fs-lib-progetto.md §Archivio dello stato app (gap 15)]` alle tre note di correzione (sezione verificata nel raw, riga 22).
 File toccati: wiki/concepts/llm-wiki-rischi-persistenza.md, wiki/concepts/llm-wiki-sicurezza.md, wiki/concepts/llm-wiki-archivi-persistenza.md, wiki/log.md
+
+## [2026-11-21] update | TSK-006 verifica US-014 (store applicativo e area dati)
+Ora: 19:37 UTC. Verificati gli AC di US-014 sul raw ingerito: AC1 con riserva (percorso `<app_data_dir>/app-state.json`; percorso OS e file corrotto non verificati), AC2, AC3, AC4 verificati, AC5 parziale. Aggiunta in [[llm-wiki-archivi-persistenza]] la sezione «Esito della verifica di US-014». Gap: `llm-wiki-creazione-cartella-dati` già risolto (nessuna nuova chiusura); `llm-wiki-app-state-percorso` resta aperto, con nota in `wiki/gaps.md`. Controllo segreti su `wiki/`: 0 occorrenze (Grep). Non eseguiti dal wiki-keeper (senza Bash): `generate_sprint.py`, `run-deterministic.py`, `git status`.
+File toccati: wiki/concepts/llm-wiki-archivi-persistenza.md, wiki/gaps.md, wiki/log.md, management/kanban/EP-002-conoscenza-layer-di-persistenza/US-014-store-applicativo-e-area-dati/TSK-006.md

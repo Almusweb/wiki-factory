@@ -126,6 +126,8 @@ File append-only: le informazioni che servono e la wiki non ha. Formato e chiusu
 
 **Aggiornamento (2026-11-21):** gap parziale, resta aperto. Il percorso è `<app_data_dir>/app-state.json` ([[llm-wiki-archivi-persistenza]]); il path OS risolto da `app_data_dir` per piattaforma e il comportamento su file corrotto non sono verificati. [^src: raw/2026-11-21-repo-llm_wiki-fs-lib-progetto.md §Archivio dello stato app (gap 15)]
 
+**Aggiornamento (2026-11-21, TSK-006):** verifica di US-014 sul raw ingerito: nessun nuovo elemento rispetto all'aggiornamento sopra, il gap **non è pronto per la chiusura**. Restano non verificati (a) il percorso fisico di `app_data_dir` per sistema operativo (dipende da Tauri) e (b) il comportamento del plugin store su file corrotto (sorgente e documentazione del plugin assenti dal raw). Per chiuderlo serve un nuovo raw: configurazione del plugin store e documentazione Tauri, oppure un'osservazione in esecuzione. Sintesi in [[llm-wiki-archivi-persistenza]]. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-a.md §Store applicativo (`app-state.json`)]
+
 ## 2026-11-20 17:06 — llm-wiki-creazione-cartella-dati
 **Origine:** wiki-keeper @ ingest 2026-11-20-repo-llm_wiki (aggiornamento v2026-11-20)
 **Gap:** non è noto chi crei `.llm-wiki/` per un progetto importato o aperto da disco: `create_project` non la crea e `open_project` non la richiede. Fonte del gap: raw/2026-11-20-repo-llm_wiki.md §Gap.
