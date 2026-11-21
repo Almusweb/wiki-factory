@@ -4,7 +4,7 @@ type: source
 title: Specifiche estratte da code_repos/llm_wiki, persistenza fetta A (repo-sync)
 status: draft
 created: 2026-11-20
-updated: 2026-11-20
+updated: 2026-11-21
 sources: ["raw/2026-11-20-repo-llm_wiki-persistenza-a.md"]
 tags: [source, repo, llm-wiki, persistenza]
 ---

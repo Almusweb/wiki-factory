@@ -85,3 +85,7 @@ Il Check 4bc su `tools/wiki/verify_gap_closures.py --check` e `tools/wiki/gaps_a
 ## [2026-11-21] lint | check completo (prima esecuzione del giorno)
 Orphan: 0 | Broken: 0 | Unsourced: 2 | Kanban: 0 err | Coerenza: 0 err
 Totale: 0 ERROR, 18 WARNING, 10 INFO (heal-eligible: 0). Risolti W8-W13, W15 (riga `project.json`), I8; nuovi W19-W25. Report: `wiki/lint/2026-11-21-lint-report.md`.
+
+## [2026-11-21] fix | correzioni lint W19-W25
+Correzioni approvate dall'utente in chat. W19: chiamante di `import_project_archive` (`MaintenanceSection`) registrato in `## Aggiornamenti`, voce in `## Contradictions` di operazioni-distruttive, aggiornamento in gaps (gap aperto). W20-W22: note «DEDUZIONE NON TESTATA» sui segreti in chiaro. W23-W24: `sources:` integrati. W25: `updated`.
+File toccati: wiki/concepts/llm-wiki-rischi-persistenza.md, wiki/concepts/llm-wiki-operazioni-distruttive.md, wiki/concepts/llm-wiki-sicurezza.md, wiki/concepts/llm-wiki-archivi-persistenza.md, wiki/sources/2026-11-20-repo-llm_wiki-persistenza-a.md, wiki/gaps.md, wiki/log.md

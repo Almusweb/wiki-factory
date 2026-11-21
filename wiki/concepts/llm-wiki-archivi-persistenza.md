@@ -57,7 +57,7 @@ Campi di `sourceWatchConfig` (normalizzata in `source-watch-config.ts`): `enable
 
 ### Sincronizzazione con Rust e segreti
 - I commenti di `project-store.ts` indicano che i nomi `proxyConfig` e `apiConfig` devono coincidere con quelli letti dal codice Rust; se divergono, l'API resta senza token configurato. [^src: raw/2026-11-20-repo-llm_wiki.md §Schemi e campi]
-- Tra i campi in chiaro compaiono `token` e `localToken` in `mineruConfig`; per `apiConfig` i commenti parlano di un token API. Nessun valore è stato letto. I tipi di `llmConfig`, `embeddingConfig`, `searchApiConfig` e `providerConfigs` sono in `src/stores/wiki-store.ts`, non letto: la presenza di chiavi API non è verificata. [^src: raw/2026-11-20-repo-llm_wiki.md §Schemi e campi]
+- Tra i campi in chiaro (deduzione non testata) compaiono `token` e `localToken` in `mineruConfig`; per `apiConfig` i commenti parlano di un token API. Nessun valore è stato letto. I tipi di `llmConfig`, `embeddingConfig`, `searchApiConfig` e `providerConfigs` sono in `src/stores/wiki-store.ts`, non letto: la presenza di chiavi API non è verificata. [^src: raw/2026-11-20-repo-llm_wiki.md §Schemi e campi]
 
 ### Nota sulla cronologia
 La cronologia è una mappa file-per-percorso con indirizzo stabile (hash FNV-1a a 64 bit con costanti fisse, per resistere ai cambi di toolchain). Il record di `scheduled-import-db.json` tiene un hash md5 per file e, in più, size e mtime per saltare il ricalcolo. [^src: raw/2026-11-20-repo-llm_wiki.md §Schemi e campi]
@@ -167,6 +167,8 @@ Dal giro di sei fette del 2026-11-21 sullo stesso commit `e08cfce`: [[2026-11-21
 
 ### Nessuna cancellazione dei file di sessione in `session.rs`
 Nessuna funzione di `session.rs` cancella i file di sessione: restano su disco oltre il troncamento a 40 messaggi; non è verificato se UI, API, `runtime.rs` o `lib.rs` li cancellino (nessuna ricerca testuale in quella fetta). [^src: raw/2026-11-21-repo-llm_wiki-ricerca-ui-residui.md §Cancellazione di revisioni e sessioni (gap cancellazione-file-orfani)]
+
+Correzione da lint (2026-11-21, W22): la riga 60 («Tra i campi in chiaro compaiono `token` e `localToken`...») va letta come **DEDUZIONE NON TESTATA** per quanto riguarda la memorizzazione in chiaro: nelle finestre lette non si vede alcuna cifratura e non è verificato che manchi altrove. [^src: raw/2026-11-21-repo-llm_wiki-fs-lib-progetto.md §Archivio dello stato app (gap 15)] Vedi gap `llm-wiki-token-cifratura` (aperto). Correzione in-place: riga 60, prima «Tra i campi in chiaro compaiono», ora «Tra i campi in chiaro (deduzione non testata) compaiono».
 
 ## Contradictions
 - **Riga `project.json`.** Prima (inventario): «TS scrive e legge (`project-identity.ts`); RS non lo legge». Ora (fetta A): il Rust legge `.llm-wiki/project.json` per ricavare l'id dei progetti recenti, con ripiego sul percorso quando manca (`lib.rs:436-448`, `api_server.rs:877-884`). Contraddizione diretta, non risolta nel testo sopra. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-a.md §Cartella dati di progetto `.llm-wiki/`]

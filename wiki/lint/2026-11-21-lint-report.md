@@ -208,3 +208,42 @@ Config invariata (`git diff --stat 74ff34f HEAD -- factory.config.yaml` vuoto).
 
 - **ERROR heal-eligible: 0.** `heal_eligible_count: 0`, `heal_eligible_categories: []`. Nessun `broken-wikilink` reale, nessun `missing-frontmatter-field` (W7 non deducibile dal path e WARNING, W23-W24 hanno il campo), nessun `citation-section-mismatch`.
 - **4ax (W3)**: etichettato «heal-eligible» dallo script, registrato come `script_heal_label: [4ax]`, non contato: fuori dalla whitelist di `heal-protocol` e soggetto al difetto 11 (modifica di `.gitmodules`).
+
+## Rescan correzioni W19-W25
+
+Rescan scoped del 2026-11-21 sulle modifiche non committate di wiki-keeper (`git status --short`: 6 pagine wiki + `gaps.md` + `log.md` modificati). Letti: diff completo, righe originali, frontmatter, header dei raw citati. Nessun auto-fix, `wiki/log.md` non toccato.
+
+| Finding | Esito | Motivo |
+|---|---|---|
+| W19 | CHIUSO (con residuo minore) | Il chiamante `MaintenanceSection` e' registrato in `operazioni-distruttive` (nota dopo riga 127), in `rischi-persistenza` (`### Correzioni da lint`, sotto `## Aggiornamenti (v2026-11-21)`) e in `gaps.md` (`Aggiornamento` dopo riga 209, gap `llm-wiki-import-id-duplicato` resta aperto). Nuova voce in `## Contradictions` di `operazioni-distruttive` («Chiamante UI di `import_project_archive`: trovato contro non trovato»). Citazione `raw/2026-11-20-repo-llm_wiki-persistenza-c.md §Operazioni distruttive: chiamanti, riga per riga`: header presente (riga 25), e la riga 44 del raw riporta `import_project_archive` -> `MaintenanceSection`. Residuo: la voce `## Contradictions` e' in `operazioni-distruttive`, non in `rischi-persistenza` come suggerito; la riga 86 di `rischi-persistenza` («non e' stato trovato in `src/`») e la frase di `gaps.md` 209 restano com'erano, corrette da note adiacenti e non riscritte. Contraddizione dichiarata, quindi chiuso per il criterio del Check 3. |
+| W20 | ANCORA PRESENTE (attenuato) | `rischi-persistenza` riga 28 letta: «il raw aggiunge un ottavo punto, i segreti in chiaro in `app-state.json`...» e' invariata e resta formulata come fatto. La nota aggiunta (riga ~114) la qualifica «DEDUZIONE NON TESTATA», ma non la modifica. Per il criterio del lint (affermazione presentata come fatto nel punto in cui compare) il finding non e' chiuso. E' declassabile a INFO solo se si accetta la nota di rettifica come qualifica sufficiente: decisione dell'utente. Il fix originale era «riformulare la riga 28». |
+| W21 | ANCORA PRESENTE (attenuato) | `sicurezza` riga 54 letta: «**Segreti in chiaro nello store.** Tra i campi in chiaro compaiono `token` e `localToken`...» invariata, intestazione compresa. La nota (dopo riga 112, in coda a `## Aggiornamenti`) e' distante dalla riga e il lettore della sezione v2026-11-20 non la incontra. Stesso esito di W20. |
+| W22 | ANCORA PRESENTE (attenuato) | `archivi-persistenza` riga 60 letta: «Tra i campi in chiaro compaiono `token` e `localToken` in `mineruConfig`...» invariata. La nota e' alla riga ~171, in fondo alla sezione v2026-11-21, con rinvio al gap `llm-wiki-token-cifratura` (presente in `gaps.md` riga 345, aperto). Stesso esito di W20. |
+| W23 | CHIUSO | `sicurezza.md` riga 8 letta: `sources:` ora include `raw/2026-11-21-repo-llm_wiki-ingest.md` (8 raw, uno in piu'). |
+| W24 | CHIUSO | `operazioni-distruttive.md` riga 8 letta: `sources:` ora include `raw/2026-11-21-repo-llm_wiki-agente-tools.md`; il file esiste. |
+| W25 | CHIUSO | `sources/2026-11-20-repo-llm_wiki-persistenza-a.md` riga 7 letta: `updated: 2026-11-21` (diff: 1 riga). |
+
+### Verdetto onesto su W20-W22
+
+Con il criterio del lint il finding NON e' chiuso: la riga originale e' ancora scritta come fatto («i segreti in chiaro», «Tra i campi in chiaro compaiono», «Segreti in chiaro nello store»). Le note sono corrette nel contenuto, ma la correzione e' un cerotto a distanza, non una riformulazione. In `rischi-persistenza` e in `sicurezza` la pagina ha anche la versione gia' corretta (righe 106 e 100), quindi l'incoerenza interna e' ora dichiarata ma non eliminata. Per chiuderli: riformulare le tre righe (es. «campi che, nelle finestre lette, non risultano cifrati: deduzione non testata») oppure decidere esplicitamente che la nota basta e declassare a INFO. Stato proposto: 3 WARNING aperti (W20-W22).
+
+### Check 2 sulle righe aggiunte (nuovi candidati)
+
+- `archivi-persistenza` nota W22: 0 `[^src:]`; contiene un'affermazione («nelle finestre lette non si vede alcuna cifratura») non citata nella riga stessa, sostenuta solo dal gap `llm-wiki-token-cifratura` (riga 345 di `gaps.md`, che cita `fs-lib-progetto §Archivio dello stato app (gap 15)`). Candidato Check 2 WARNING (**W26**), fix: citare `raw/2026-11-21-repo-llm_wiki-fs-lib-progetto.md §Archivio dello stato app (gap 15)`. Non verificata la fedelta' del rinvio.
+- `sicurezza` nota W21 (riga ~112): stessa formulazione, 0 citazioni: candidato (**W27**), stesso fix.
+- `rischi-persistenza`, secondo punto della nota (riga 28 / W20): stessa formulazione, 0 citazioni: candidato (**W28**), stesso fix.
+- `operazioni-distruttive` nota W19: 1 citazione; la frase «Resta NON verificato se l'id venga rigenerato...» e' una dichiarazione di non verificato, non un claim: non e' candidato.
+- `rischi-persistenza` primo punto della nota: citato. `gaps.md` aggiornamento: citato. Voce Contradictions: 2 citazioni, ok.
+
+W26-W28 sono lo stesso difetto (nota senza citazione) su tre pagine; sono WARNING nuovi indotti dalla correzione, heal-eligible: false.
+
+### Citazioni nuove: esistenza delle sezioni
+
+- `raw/2026-11-20-repo-llm_wiki-persistenza-c.md §Operazioni distruttive: chiamanti, riga per riga`: esiste (riga 25). Usata 4 volte (3 pagine + gaps).
+- `raw/2026-11-21-repo-llm_wiki-fs-lib-progetto.md §Identita' del progetto, registro e import (gap 26)`: esiste (riga 34).
+- Nessuna citazione nuova rotta. `persistenza-c` e' in `sources:` di `rischi-persistenza` e `operazioni-distruttive`.
+- Link `[[...]]` nuovi: nessuno. Nessun frontmatter alterato oltre a W23-W25.
+
+### Totali dopo il rescan (solo per W19-W25 e derivati)
+
+Chiusi: W19, W23, W24, W25 (4). Aperti: W20, W21, W22. Nuovi: W26-W28. Variazione netta WARNING: 18 -> 17 (-4 chiusi, +3 nuovi), da riverificare con il lint completo; ERROR 0, heal-eligible 0.

@@ -208,6 +208,8 @@ File append-only: le informazioni che servono e la wiki non ha. Formato e chiusu
 
 **Aggiornamento (2026-11-21):** gap parziale, resta aperto. `upsertProjectInfo` sovrascrive la entry del registro per id senza controllare il path e `import_project_archive` non rigenera l'id; l'esito della collisione è una **deduzione non testata**; il chiamante UI di `import_project_archive` non è stato trovato in `src/` (nessun file `*archive*` o `*project-maintenance*`). [^src: raw/2026-11-21-repo-llm_wiki-fs-lib-progetto.md §Identita' del progetto, registro e import (gap 26)]
 
+**Aggiornamento (2026-11-21):** corregge il «chiamante UI non trovato» qui sopra: il chiamante è documentato in persistenza-c (`MaintenanceSection`, poi `openProject` e `addToRecentProjects`); la fetta fs-lib-progetto aveva cercato solo per nome file. Resta aperto se l'id venga rigenerato prima di `openProject`; la collisione resta deduzione non testata. Gap non chiuso. [^src: raw/2026-11-20-repo-llm_wiki-persistenza-c.md §Operazioni distruttive: chiamanti, riga per riga]
+
 ## 2026-11-20 21:12 — llm-wiki-serde-compat-config
 **Origine:** wiki-keeper @ ingest 2026-11-20-repo-llm_wiki-persistenza-a
 **Gap:** non è verificata la compatibilità serde tra `llmConfig` dello store e `agent::provider::LlmConfig`, né tra `searchApiConfig` e le struct `WebSearchConfig` e `AnyTxtConfig` (`agent/provider.rs` e `agent/tools.rs` non letti): non si sa se campi opzionali o sconosciuti vengano scartati in silenzio. Fonte del gap: raw/2026-11-20-repo-llm_wiki-persistenza-a.md §Gap evidenti.
