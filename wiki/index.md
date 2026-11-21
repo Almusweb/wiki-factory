@@ -64,5 +64,8 @@ Indice delle pagine di `wiki/`, aggiornato da `wiki-keeper` a ogni ingest.
 - [[factory-decisioni-di-configurazione]] — le dieci decisioni di configurazione della sessione 2026-11-20
 - [[master-difetti-rilevati]] — undici difetti del master con evidenza e stato di verifica
 
+## Syntheses
+- [[llm-wiki-sintesi-rischi-persistenza]] — sintesi dei rischi di persistenza verificati in EP-004 (US-033): tabella degli 8 rischi con gravità, probabilità e priorità proposte, correzioni da aprire, non conclusivi, prerequisito `db-dev`, decisioni richieste all'utente
+
 ## Meta
 - [[gaps]] — informazioni che servono e la wiki non ha
