@@ -405,6 +405,7 @@ File append-only: le informazioni che servono e la wiki non ha. Formato e chiusu
 **Gap:** `restoreQueue` di `dedup-queue.ts:273-296` scarta per id i task con `projectId` diverso (ricerca globale della sessione principale), ma non è verificato se riscriva il file su disco come fa la coda di ingest (`saveQueue`), cioè se lo scarto sia permanente anche per la coda di dedup. Non letti nemmeno `project-file-sync.ts` (se i sorgenti siano riaccodati dopo la perdita dei task) e `file-change-queue.json` per id. Fonte del gap: management/kanban/EP-004-verifica-rischi-di-persistenza/US-026-rischio-identita-progetto/TSK-014.md §Chiusura.
 **Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (lettura di `dedup-queue.ts` oltre le righe 273-296 e di `project-file-sync.ts`). Non bloccante.
 **Impatto:** [[llm-wiki-rischi-persistenza]] non può dire se l'impatto del rischio 2 includa la perdita dei task di dedup.
+**Aggiornamento (2026-11-21 21:15):** un commento in `dedup-queue.ts:13` dichiara «Mirrors `ingest-queue.ts` almost line-for-line»: la coda di dedup è una copia dichiarata di quella di ingest (duplicazione TS-TS), indizio che anche la riscrittura su disco dopo lo scarto possa essere analoga a `saveQueue`; resta non verificato, il gap rimane aperto. [^src: management/kanban/EP-004-verifica-rischi-di-persistenza/US-029-rischio-logica-duplicata/TSK-018.md §Chiusura (Correzione)]
 
 ## 2026-11-21 20:35 — llm-wiki-source-watch-default
 **Origine:** wiki-keeper @ ingest 2026-11-21-repo-llm_wiki-dossier-ep004-r2
@@ -429,3 +430,40 @@ File append-only: le informazioni che servono e la wiki non ha. Formato e chiusu
 **Gap:** restano non verificati: se il pulsante di importazione sia legato a `projectToolBusy` e se esista una guardia fra import e apertura (`maintenance-section.tsx`, binding non riletto); se `React.StrictMode` (`main.tsx:23-27`) raddoppi `init` anche in produzione; la dimensione reale della finestra fra due aperture ravvicinate (`handleSelectRecent`, `handleOpenProject` senza guardia di rientro, `App.tsx:595-617`). Chiusi dalla ricerca globale della sessione principale: elenco dei chiamanti di `openProject(` e `createProject(`, scrittore unico del registro, nessuna `WebviewWindow`. Fonte del gap: raw/2026-11-21-repo-llm_wiki-dossier-ep004-r3.md §Gap evidenti; management/kanban/EP-004-verifica-rischi-di-persistenza/US-027-rischio-scritture-registro/TSK-016.md §Chiusura.
 **Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (rilettura di `maintenance-section.tsx` e della configurazione di build). Non bloccante.
 **Impatto:** [[llm-wiki-rischi-persistenza]] non può dire se le sovrapposizioni fra azioni utente indicate come deduzione non testata siano raggiungibili dall'interfaccia.
+
+## 2026-11-21 21:05 — llm-wiki-chunking-alternanza-frequenza
+**Origine:** wiki-keeper @ ingest 2026-11-21-repo-llm_wiki-dossier-ep004-r5
+**Gap:** i chiamanti dei due percorsi di embedding sono noti dalla ricerca globale (`embedPage` da `ingest.ts:1572, 3613` e `deep-research.ts:696`; `embed_wiki_page` da `api_server.rs:1915`, via MCP `embedPage`), ma non è determinabile per lettura con quale frequenza una stessa pagina sia scritta da entrambi i lati, né se esistano test che confrontano i due chunker o fissano come comportamento le differenze trovate (resto di `text-chunker.test.ts` e `embedding.test.ts` non letto). Fonte del gap: raw/2026-11-21-repo-llm_wiki-dossier-ep004-r5.md §Gap evidenti; management/kanban/EP-004-verifica-rischi-di-persistenza/US-029-rischio-logica-duplicata/TSK-018.md §Chiusura.
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (lettura dei test e dei chiamanti); la frequenza reale richiede esecuzione, fuori dal metodo di EP-004 (Q_003). Non bloccante.
+**Impatto:** [[llm-wiki-rischi-persistenza]] dichiara il rischio 5 confermato per lettura ma non può dire quanto spesso incida su costo e coerenza dell'indice.
+
+## 2026-11-21 21:05 — llm-wiki-id-legacy-enumerazione-cache
+**Origine:** wiki-keeper @ ingest 2026-11-21-repo-llm_wiki-dossier-ep004-r5
+**Gap:** non sono letti il comportamento di `listDirectory` (`src/commands/fs.ts`, nascosti, collegamenti simbolici) e di `list_directory` Rust, né altre invalidazioni della cache `legacyStemOwnerCounts` / `attemptedLegacyVectorCleanup` fuori da `embedding.ts`. Per questo l'equivalenza della pulizia dell'id legacy fra TS e Rust resta non conclusiva. Fonte del gap: raw/2026-11-21-repo-llm_wiki-dossier-ep004-r5.md §2.1 Esito del punto 2.
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (`fs.ts` `listDirectory`, `fs.rs` `list_directory`, chiamanti della cache). Non bloccante.
+**Impatto:** [[llm-wiki-rischi-persistenza]] non può chiudere l'esito del punto 2 del rischio 5 né quantificare il caso di conteggio superato.
+
+## 2026-11-21 21:05 — llm-wiki-override-llm-resolveconfig
+**Origine:** wiki-keeper @ ingest 2026-11-21-repo-llm_wiki-dossier-ep004-r5
+**Gap:** non sono letti `resolveConfig` (preset-resolver), `findLlmPreset` (registro dei preset) e il tipo `ProjectLlmOverride` (`wiki-store.ts`): l'equivalenza della risoluzione LLM per progetto fra `resolveProjectLlmConfig` (TS) e `project_llm_config` (Rust) resta non conclusiva; la sola differenza trovata è `presetId` vuoto. Fonte del gap: raw/2026-11-21-repo-llm_wiki-dossier-ep004-r5.md §4.2 `projectLlmOverrides`.
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (`preset-resolver`, `llm-presets`, `wiki-store.ts`). Non bloccante.
+**Impatto:** [[llm-wiki-rischi-persistenza]] non può dire se l'API locale e l'agente usino lo stesso modello dell'interfaccia per un progetto.
+
+## 2026-11-21 21:05 — llm-wiki-source-watch-normalizzazione-rust
+**Origine:** wiki-keeper @ ingest 2026-11-21-repo-llm_wiki-dossier-ep004-r5
+**Gap:** non sono letti gli helper Rust `normalize_ext_list`, `normalize_string_list`, `SourceWatchRules` e `rescan_project_files` (`file_sync.rs` righe 250-380, 710-760 e oltre 1090), né la cache di `load_app_state` rispetto alle scritture del frontend: non è confermata né smentita la differenza sulle estensioni legacy (`png/jpg/jpeg`) e l'equivalenza su input validi di `sourceWatchConfig`. Fonte del gap: raw/2026-11-21-repo-llm_wiki-dossier-ep004-r5.md §4.3 `sourceWatchConfig` e `projectFileSyncEnabled`.
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (`file_sync.rs` e `api_server.rs` residui). Non bloccante.
+**Impatto:** [[llm-wiki-rischi-persistenza]] non può dire se la riscansione avviata dall'API usi gli stessi filtri dell'interfaccia.
+
+## 2026-11-21 21:05 — llm-wiki-coppie-id-pagina-non-confrontate
+**Origine:** wiki-keeper @ ingest 2026-11-21-repo-llm_wiki-dossier-ep004-r5
+**Gap:** la coppia `wikiPageIdFromPath` (`embedding.ts:450-462`) e `vector_page_id` (`page_embedding.rs:282-290`) esiste su entrambi i lati ma è fuori dal perimetro di TSK-018 e non è stata confrontata; restano ignote anche altre coppie duplicate TS/Rust oltre a quelle lette. Rilevante perché una divergenza nell'id cambierebbe lo schema `page_id#chunk_index` e la pulizia dell'id legacy. Fonte del gap: raw/2026-11-21-repo-llm_wiki-dossier-ep004-r5.md §Gap evidenti (punto 6).
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (confronto mirato delle due funzioni; eventuale TSK dedicato). Non bloccante.
+**Impatto:** [[llm-wiki-rischi-persistenza]] dichiara l'esito del rischio 5 senza coprire la derivazione dell'id di pagina; vedi anche [[llm-wiki-versioni-e-migrazioni]] (§Identificatore di pagina).
+
+## 2026-11-21 21:05 — llm-wiki-commenti-allineamento-discrepanza
+**Origine:** wiki-keeper @ ingest 2026-11-21-repo-llm_wiki-dossier-ep004-r5
+**Gap:** il dossier r5 riporta commenti che dichiarano l'allineamento fra le copie TS/Rust (`text-chunker.ts:4-7`, `page_embedding.rs:507-509`, `llm-task-routing.ts:20-22`, `api_server.rs:2397`), mentre la ricerca testuale globale della sessione principale (TSK-018 §Chiusura) riporta nessun commento di allineamento salvo `file_sync.rs:142`. Le due fonti non sono riconciliate; la causa più probabile sono le stringhe cercate diverse da quelle dei commenti, ma non è verificata. Serve rieseguire la ricerca con le stringhe proposte dal dossier (`aligned`, `Keep`, `mirror`, `Match `, `in sync`). Fonte del gap: raw/2026-11-21-repo-llm_wiki-dossier-ep004-r5.md §1. Chunking: le due implementazioni affiancate (AC2); management/kanban/EP-004-verifica-rischi-di-persistenza/US-029-rischio-logica-duplicata/TSK-018.md §Chiusura.
+**Sospetta fonte:** nessuna fonte chiara, serve nuova ricerca testuale della sessione principale (non un raw nuovo). Non bloccante.
+**Impatto:** [[llm-wiki-rischi-persistenza]] riporta entrambe le versioni in `## Contradictions` e non può dire se l'allineamento fra le copie sia dichiarato solo nei quattro commenti letti o anche altrove.
+**Risolto:** 2026-11-21 — la ricerca di TSK-018 era errata (stringhe non coincidenti); ripetuta a comando con `grep -rniE` su `aligned`, `in sync`, `mirror(s|ed|ing)?`, `Match `, i quattro commenti del dossier esistono, a coppie (`text-chunker.ts:4-7` ↔ `page_embedding.rs:507-509`; `llm-task-routing.ts:20-22` ↔ `api_server.rs:2397`): duplicazione dichiarata e intenzionale, allineamento manuale. Emergono anche `dedup-queue.ts:13` ed `extract-source-images.ts:20`. [^src: management/kanban/EP-004-verifica-rischi-di-persistenza/US-029-rischio-logica-duplicata/TSK-018.md §Chiusura (Correzione)]
