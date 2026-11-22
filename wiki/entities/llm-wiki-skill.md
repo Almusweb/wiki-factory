@@ -71,3 +71,8 @@ Sede unica delle 17 voci del raw (numerazione del raw): discrepanze verificabili
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+
+## Aggiornamenti (v2026-11-22, evidenze alm-wiki)
+Dalle source page [[2026-11-22-repo-alm-wiki-evidenze-api]] e [[2026-11-22-repo-alm-wiki-bozza-skill]]. Il testo sopra non è modificato e continua a descrivere l'originale (`main`, `642b438`, API v1, app 0.4.10+).
+- **Bozza di riscrittura:** esiste nel repo locale dell'utente (alm-wiki) una bozza che porta la skill alla 0.6.13 con etichette `[obs]` e `[code]`; è un testo candidato di un'altra linea e sta in [[llm-wiki-skill-bozza-alm-wiki]]. [^src: raw/2026-11-22-repo-alm-wiki-bozza-skill.md §Identita']
+- **Voci della tabella delle incoerenze toccate dall'osservazione in esecuzione** (app 0.6.13, 2026-11-13, un progetto, non replicata): n. 2 (`maxFiles`: 413 oltre il limite e `truncated` mai `true`); n. 8 (`OPTIONS` risponde 204 senza auth; il verbo sbagliato su una route nota dà 404, non 405); n. 7 (assenza di `Retry-After` dichiarata solo come C, non verificata); n. 14 (default di `sourceWatchConfig`: nessuna evidenza); n. 15 (`nodeType`: tipi osservati in un progetto, nessun nodo `query`). Nessuna voce è chiusa; dettaglio in [[llm-wiki-api-osservazioni-esecuzione-v0-6-13]] e [[llm-wiki-skill-vs-app-v0-6-13]]. [^src: raw/2026-11-22-repo-alm-wiki-evidenze-api.md §Osservazioni R della prova runtime (12, tutte R)]

@@ -489,5 +489,47 @@
       "status": "success",
       "secrets_redacted": 0
     }
+  },
+  "2026-11-22-repo-alm-wiki-evidenze-api": {
+    "source": "repo",
+    "extracted_at": "2026-11-22T00:00:00Z",
+    "primary_artifact": "raw/2026-11-22-repo-alm-wiki-evidenze-api.md",
+    "secondary_artifacts": [],
+    "extractor_version": "repo-sync@2.12.0",
+    "extraction_metadata": {
+      "source_path": "C:\\local_git\\knowledge\\alm-wiki",
+      "git_commit": "050f0236cb4bc786cb0b8809513fa1d2aa62868e",
+      "git_branch": "main",
+      "stack": {
+        "language": "markdown",
+        "framework": "none",
+        "confidence": 0
+      },
+      "files_sampled": 5,
+      "files_total_in_repo": 5,
+      "status": "partial",
+      "secrets_redacted": 0
+    }
+  },
+  "2026-11-22-repo-alm-wiki-bozza-skill": {
+    "source": "repo",
+    "extracted_at": "2026-11-22T00:00:00Z",
+    "primary_artifact": "raw/2026-11-22-repo-alm-wiki-bozza-skill.md",
+    "secondary_artifacts": [],
+    "extractor_version": "repo-sync@2.12.0",
+    "extraction_metadata": {
+      "source_path": "C:\\local_git\\knowledge\\alm-wiki\\.agents\\skills\\llm-wiki",
+      "git_commit": "050f0236cb4bc786cb0b8809513fa1d2aa62868e",
+      "git_branch": "main",
+      "stack": {
+        "language": "markdown",
+        "framework": "none",
+        "confidence": 0
+      },
+      "files_sampled": 5,
+      "files_total_in_repo": 5,
+      "status": "success",
+      "secrets_redacted": 0
+    }
   }
 }

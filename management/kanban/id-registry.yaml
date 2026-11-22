@@ -44,5 +44,8 @@ namespaces:
   - prefix: "LLW"
     code_path: "code_repos/llm_wiki"
     description: "llm_wiki (Almusweb/llm_wiki, submodule su develop) — lavoro sul codice"
+  - prefix: "LWS"
+    code_path: "code_repos/llm_wiki_skill"
+    description: "llm_wiki_skill (Almusweb/llm_wiki_skill, submodule su main) — skill per agenti, solo markdown"
 
 reservations: []

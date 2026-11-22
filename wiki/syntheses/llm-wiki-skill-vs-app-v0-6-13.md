@@ -55,3 +55,37 @@ La skill descrive solo l'API HTTP, in sola lettura più il rescan, e non cita il
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+
+## Aggiornamenti (v2026-11-22, evidenze alm-wiki)
+Dalla source page [[2026-11-22-repo-alm-wiki-evidenze-api]]. Il testo sopra non è modificato. **Base:** osservato in esecuzione sull'app 0.6.13 il 2026-11-13 in un progetto locale dell'utente (alm-wiki), non riprodotto dalla factory: una prova, un progetto, non replicata. Linea: upstream v0.6.13; la build provata non è verificata come `e08cfce`. Dettaglio delle osservazioni in [[llm-wiki-api-osservazioni-esecuzione-v0-6-13]]. [^src: raw/2026-11-22-repo-alm-wiki-evidenze-api.md §Prova runtime del 2026-11-13 (P)]
+
+### D1-D12 e osservazione in esecuzione
+| Esito | Id | Osservazione |
+|---|---|---|
+| Confermata in esecuzione | D4 | Origini locali riecheggiate con `Vary: Origin` e `Allow-Private-Network: true`; per `https://example.com`, `null` e `http://localhost.evil.com` l'header manca (la richiesta è comunque servita) [^src: raw/2026-11-22-repo-alm-wiki-evidenze-api.md §Osservazioni R della prova runtime (12, tutte R)] |
+| Confermata in esecuzione | D7 | `/health` con `agent`, `mcpEnabled`, `allowLanAccess` e `version` 0.6.13; risponde anche senza prefisso e con `POST` [^src: raw/2026-11-22-repo-alm-wiki-evidenze-api.md §Osservazioni R della prova runtime (12, tutte R)] |
+| Confermata in esecuzione | D9 | `graphHits` presente nella risposta di `search` [^src: raw/2026-11-22-repo-alm-wiki-evidenze-api.md §Osservazioni R della prova runtime (12, tutte R)] |
+| Confermata in esecuzione | D10 | `offset`, `limit`, `totalCount` e `hasMore` sempre presenti; `edgeScope` non valido dà 400; la cache di 5 s non è provata in esecuzione [^src: raw/2026-11-22-repo-alm-wiki-evidenze-api.md §Osservazioni R della prova runtime (12, tutte R)] |
+| Parziale | D11 | `OPTIONS` dà 204 senza auth e `PUT` con token dà 405; `POST` e `DELETE` su `projects` e `GET` su `search` danno 404, non 405: la skill (405 fuori da `GET` e `POST`) è smentita in questo punto, e il 404 è coerente con l'ordine dei controlli già in wiki [^src: raw/2026-11-22-repo-alm-wiki-evidenze-api.md §Osservazioni R della prova runtime (12, tutte R)] |
+| Parziale | D2 | `/health` riporta `agent.chat: true` (2026-11-08); la chat come funzione non è stata provata [^src: raw/2026-11-22-repo-alm-wiki-evidenze-api.md §Fatti R del task 002 (2026-11-08)] |
+| Parziale | D3 | `reviews` in lettura risponde (GET osservato); `pages/embed`, `pages/write` e `chat/cancel` non sono stati provati con token [^src: raw/2026-11-22-repo-alm-wiki-evidenze-api.md §Osservazioni R della prova runtime (12, tutte R)] |
+| Non confermate in esecuzione | D1, D5, D6, D12 | Scritture con token, bind LAN, `allowUnauthenticated` e 429/503 non sono stati provati [^src: raw/2026-11-22-repo-alm-wiki-evidenze-api.md §Gap evidenti] |
+
+Per D1 la fonte cita come osservata la risposta 409 e la sostituzione di `pages/write`, ma l'origine di quel dato (task 015 e 016) è fuori dallo scope letto e la prova P non l'ha provata con token. [^src: raw/2026-11-22-repo-alm-wiki-evidenze-api.md §Gap evidenti] Le concordanze elencate sopra (forme di `{id}`, alias di `root`, clamp di `topK` e `limit`, token in tre forme) risultano coerenti anche con la prova, secondo la fonte, che però non ne dichiara il livello di prova voce per voce. [^src: raw/2026-11-22-repo-alm-wiki-evidenze-api.md §Coerente con la skill (7 voci; livello non esplicitato dalla fonte, che le elenca nel file di prova runtime)]
+
+### Nuove differenze osservate (numerazione proposta D13-D17; D8 resta inesistente)
+| Id | Skill (API v1, app 0.4.10+) | App 0.6.13 osservata il 2026-11-13 |
+|---|---|---|
+| D13 | `Content-Type: application/json; charset=utf-8` [^src: raw/2026-11-22-repo-llm_wiki_skill.md §API surface] | `application/json` senza `charset=utf-8` [^src: raw/2026-11-22-repo-alm-wiki-evidenze-api.md §Osservazioni R della prova runtime (12, tutte R)] |
+| D14 | Snippet di circa 160 caratteri [^src: raw/2026-11-22-repo-llm_wiki_skill.md §API surface] | Snippet di circa 110 caratteri, frontmatter compreso [^src: raw/2026-11-22-repo-alm-wiki-evidenze-api.md §Osservazioni R della prova runtime (12, tutte R)] |
+| D15 | `hybrid` quando agiscono entrambe le pipeline, score RRF 0,015-0,033 [^src: raw/2026-11-22-repo-llm_wiki_skill.md §API surface] | `hybrid` anche con `vectorHits:0` (candidati del grafo), score additivi (122, 102, 82, 42, 22, 7, 2), `keyword` con `topK` uguale o minore di 1; con embedding attivi non provato [^src: raw/2026-11-22-repo-alm-wiki-evidenze-api.md §Osservazioni R della prova runtime (12, tutte R)] |
+| D16 | `nodeType` con esempi `entity`, `concept`, `query`, `other` [^src: raw/2026-11-22-repo-llm_wiki_skill.md §API surface] | Tipi osservati in un progetto: finding, concept, source, entity, comparison, methodology, other, overview; nessun nodo `query` (assenza in un progetto, non prova di esclusione) [^src: raw/2026-11-22-repo-alm-wiki-evidenze-api.md §Osservazioni R della prova runtime (12, tutte R)] |
+| D17 | `projects[]` con `current` per progetto [^src: raw/2026-11-22-repo-llm_wiki_skill.md §API surface] | In più la chiave `currentProject`; il nome del progetto come `{id}` dà 404 [^src: raw/2026-11-22-repo-alm-wiki-evidenze-api.md §Osservazioni R della prova runtime (12, tutte R)] |
+
+La numerazione è una proposta del keeper, approvata nel gate di questo ingest; D13-D17 sono ritrovabili col tag `diff-skill-app`.
+
+### Punti «non confrontabili» toccati
+Del gap `llm-wiki-skill-punti-da-verificare`: durata del preflight (osservato `Max-Age: 600`), presenza di `truncated` in `files` (413 oltre `maxFiles`, `truncated` mai `true`), valori di `mode` e range degli score senza embedding, elenco parziale dei campi di `search` e valori osservati di `nodeType` risultano ristretti o chiariti con la base sopra. Restano non confrontabili: campi di `rescan` e `kind` di `changedTasks`, `Retry-After`, codice del body generico troppo grande, estensioni leggibili, default di `sourceWatchConfig`. [^src: raw/2026-11-22-repo-alm-wiki-evidenze-api.md §Osservazioni R della prova runtime (12, tutte R)]
+
+### Affermazioni C della fonte
+Le affermazioni sul codice di `e08cfce` delle fonti di alm-wiki non sono verificate: confronto e punti da verificare in [[llm-wiki-api-affermazioni-codice-da-verificare]]. La bozza della skill è descritta in [[llm-wiki-skill-bozza-alm-wiki]]. [^src: raw/2026-11-22-repo-alm-wiki-evidenze-api.md §Discrepanze skill/codice (25) con livello di prova]
