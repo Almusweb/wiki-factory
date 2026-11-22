@@ -100,7 +100,7 @@ code_paths:
       submodule_path: code_repos/llm_wiki_skill
       remote_url: https://github.com/Almusweb/llm_wiki_skill.git
       base_branch: main
-      branch_strategy: per-tsk
+      branch_strategy: shared     # un solo branch neutro per LWS-EP-001 (TSK in serie, nessun ID nei nomi dei branch)
       commit_coupling: float
       branch_awareness:
         enabled: true
