@@ -87,6 +87,27 @@ code_paths:
         dispatch_gate: warn       # gate Fase 0 dev-protocol: avvisa se il submodule non e' sul branch atteso
         auto_align: propose       # propone il comando, mai checkout silenzioso (R.B8)
         drift_check: true         # segnala gitlink del parent diverso dall'HEAD del submodule
+  # Skill per agenti (solo markdown) che documenta l'API HTTP locale di llm_wiki; fork pubblico di
+  # nashsu/llm_wiki_skill. Scopo: allinearla a llm_wiki v0.6.13. Fase A da main (PR upstream),
+  # fase B personale su develop: base_branch va portato a develop a mano per quella fase.
+  # Con due entry che listano docs, ogni TSK docs deve dichiarare target: esplicito.
+  - name: llm_wiki_skill
+    path: code_repos/llm_wiki_skill
+    layers: [docs]
+    tags: [agent-skill, markdown, llm-wiki-http-api]
+    vcs:
+      mode: submodule
+      submodule_path: code_repos/llm_wiki_skill
+      remote_url: https://github.com/Almusweb/llm_wiki_skill.git
+      base_branch: main
+      branch_strategy: per-tsk
+      commit_coupling: float
+      branch_awareness:
+        enabled: true
+        preflight: true
+        dispatch_gate: warn
+        auto_align: propose
+        drift_check: true
 
 # Sorgente di alimentazione della wiki scelta al bootstrap (seed v2-12, G = existing-repo).
 wiki:
@@ -141,6 +162,7 @@ ai_policy_check:
     on_tsk_closed_count: 0
   scope:
     - path: code_repos/llm_wiki
+    - path: code_repos/llm_wiki_skill
 
 # Kanban publish — push-only mirror of kanban to external tool
 kanban_publish:
