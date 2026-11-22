@@ -48,4 +48,16 @@ namespaces:
     code_path: "code_repos/llm_wiki_skill"
     description: "llm_wiki_skill (Almusweb/llm_wiki_skill, submodule su main) — skill per agenti, solo markdown"
 
-reservations: []
+reservations:
+  - prefix: "LWS"
+    kind: "ep"
+    from: 1
+    to: 1
+    epic: "LWS-EP-001"
+    reserved_at: "2026-11-22"
+  - prefix: "LWS"
+    kind: "us"
+    from: 1
+    to: 10
+    epic: "LWS-EP-001"
+    reserved_at: "2026-11-22"
