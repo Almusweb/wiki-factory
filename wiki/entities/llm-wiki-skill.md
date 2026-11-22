@@ -5,7 +5,7 @@ title: llm-wiki skill (llm_wiki_skill), skill per agenti sull'API HTTP locale di
 status: draft
 created: 2026-11-22
 updated: 2026-11-22
-sources: ["raw/2026-11-22-repo-llm_wiki_skill.md"]
+sources: ["raw/2026-11-22-repo-llm_wiki_skill.md", "raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md"]
 tags: [llm-wiki, entity, skill, diff-skill-app]
 ---
 
@@ -76,3 +76,13 @@ Sede unica delle 17 voci del raw (numerazione del raw): discrepanze verificabili
 Dalle source page [[2026-11-22-repo-alm-wiki-evidenze-api]] e [[2026-11-22-repo-alm-wiki-bozza-skill]]. Il testo sopra non è modificato e continua a descrivere l'originale (`main`, `642b438`, API v1, app 0.4.10+).
 - **Bozza di riscrittura:** esiste nel repo locale dell'utente (alm-wiki) una bozza che porta la skill alla 0.6.13 con etichette `[obs]` e `[code]`; è un testo candidato di un'altra linea e sta in [[llm-wiki-skill-bozza-alm-wiki]]. [^src: raw/2026-11-22-repo-alm-wiki-bozza-skill.md §Identita']
 - **Voci della tabella delle incoerenze toccate dall'osservazione in esecuzione** (app 0.6.13, 2026-11-13, un progetto, non replicata): n. 2 (`maxFiles`: 413 oltre il limite e `truncated` mai `true`); n. 8 (`OPTIONS` risponde 204 senza auth; il verbo sbagliato su una route nota dà 404, non 405); n. 7 (assenza di `Retry-After` dichiarata solo come C, non verificata); n. 14 (default di `sourceWatchConfig`: nessuna evidenza); n. 15 (`nodeType`: tipi osservati in un progetto, nessun nodo `query`). Nessuna voce è chiusa; dettaglio in [[llm-wiki-api-osservazioni-esecuzione-v0-6-13]] e [[llm-wiki-skill-vs-app-v0-6-13]]. [^src: raw/2026-11-22-repo-alm-wiki-evidenze-api.md §Osservazioni R della prova runtime (12, tutte R)]
+
+## Aggiornamenti (v2026-11-22, verifica sul codice)
+Dalla source page [[2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki]] (lettura del codice di `e08cfce`, upstream v0.6.13, non eseguita). Il testo sopra non è modificato: la colonna «Con v0.6.13» della tabella delle incoerenze, dove diceva «non decidibile», cambia così per le voci seguenti. Dettaglio e nuove differenze D18-D21 in [[llm-wiki-skill-vs-app-v0-6-13]].
+- **n. 6 (estensioni leggibili):** deciso. Il codice accetta md, mdx, txt, csv, json, yaml, yml, xml, html, htm, log; `rtf` non è in lista (415 per estensione), mentre la skill elenca `rtf` (D18). [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: API (`api_server.rs`)]
+- **n. 7 (`Retry-After`):** assente nei percorsi letti (le risposte JSON aggiungono solo gli header CORS); riserva sugli header della risposta SSE di successo, non letti. [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: API (`api_server.rs`)]
+- **n. 12 (id non corrente «in sola lettura»):** deciso. `resolve_project` non verifica `current`; le review (PATCH, DELETE, `resolve`) si riscrivono sul progetto indicato e `rescan` ed `embed` risolvono lo stesso: non è sola lettura (D21). `handle_write_page` e `handle_chat` non letti. [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: API (`api_server.rs`)]
+- **n. 13 (`kind` di `changedTasks`):** ristretto. Un `changedTasks` vuoto significa «già visto»; i task `created` e `modified` sotto `raw/sources/` avviano l'ingest; l'elenco completo dei `kind` non è estratto dal raw. [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: sincronizzazione file (Rust e UI)]
+- **n. 15 (`nodeType`):** deciso. È la prima riga `type:` di tutto il file in minuscolo, default `other`: insieme aperto; i nodi `query` sono tolti dal grafo. [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: API (`api_server.rs`)]
+- **n. 8 (metodi e preflight):** un verbo o una rotta sbagliata fra GET, POST, PATCH, DELETE dà 404; il 405 solo fuori da questi quattro; `OPTIONS` dà 204 prima di ogni altro controllo. [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: API (`api_server.rs`)]
+- **n. 14 (default di `sourceWatchConfig`)** e **n. 1 (body troppo grande)**: invariati, non nel raw. Le altre voci della tabella non sono toccate.

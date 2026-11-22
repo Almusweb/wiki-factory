@@ -5,7 +5,7 @@ title: API HTTP locale di llm-wiki osservata in esecuzione (app 0.6.13, prova de
 status: draft
 created: 2026-11-22
 updated: 2026-11-22
-sources: ["raw/2026-11-22-repo-alm-wiki-evidenze-api.md"]
+sources: ["raw/2026-11-22-repo-alm-wiki-evidenze-api.md", "raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md"]
 tags: [llm-wiki, api, osservato-in-esecuzione, diff-skill-app]
 ---
 
@@ -64,3 +64,10 @@ Dichiarato dalla fonte come non provato: 413 e 415 sul contenuto, 429 e 503, `rt
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+
+## Aggiornamenti (v2026-11-22, verifica sul codice)
+Dalla source page [[2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki]] (lettura del codice di `e08cfce`, non eseguita). Il testo sopra non è modificato e le osservazioni restano osservazioni (una prova, un progetto, non replicate); la lettura del codice è un altro livello di prova e le spiega, non le sostituisce. Le righe seguenti accostano osservazione e codice; l'accostamento è un confronto del keeper.
+- **Oss. 4 (`hybrid` con `vectorHits:0`, score additivi):** il codice dà `hybrid` se i candidati del grafo sono più di zero anche senza risultati vettoriali e applica l'RRF solo con risultati vettoriali; il punteggio keyword è additivo (200, 50, 20, 5,0, 1,0). La quota del grafo è 0,30 della finestra senza vettori, arrotondata per eccesso, e 0 se `limit` è minore di 2: coerente con 3 su 10 e 15 su 50 e con `graphHits` pari a 0 per `topK` uguale o minore di 1. Dettaglio in [[llm-wiki-ricerca-e-grafo-api]]. [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: ricerca (`search.rs`)]
+- **Oss. 8 (`graph`):** il codice porta `limit` a `[1, 1000]` e dà 400 per 0, negativo e non numerico, come osservato; i nodi `query` sono tolti prima di risolvere i link, quindi l'assenza di nodi `query` osservata in un progetto è spiegata dal codice (la riga «Rapporto» sopra, «non è una prova di esclusione», è superata per la lettura). [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: API (`api_server.rs`)]
+- **Oss. 11 e 12 (`health`, 404 e 405):** il codice conferma `/health` su `/health` e `/api/v1/health`, e che il 405 è dato solo fuori da GET, POST, PATCH e DELETE mentre una rotta o un verbo sbagliato fra questi cade nel 404: il 404 di `POST` e `DELETE` su `projects` è quindi quello atteso (la deduzione del paragrafo «Sul 404…» è ora letta nel codice). [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: API (`api_server.rs`)]
+- **Incoerenza sul `limit` del grafo («Incoerenze fra le parti della fonte»):** decisa dal codice a favore della prova: clamp per i valori maggiori di 1000, 400 per 0, negativo e non numerico. [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: API (`api_server.rs`)]

@@ -37,6 +37,7 @@ Indice delle pagine di `wiki/`, aggiornato da `wiki-keeper` a ogni ingest.
 - [[2026-11-22-repo-llm_wiki_skill]] — estrazione 2026-11-22 di `code_repos/llm_wiki_skill` (`main`, `642b438`): skill per agenti sull'API HTTP locale, documentazione dichiarata per API v1 e app 0.4.10+
 - [[2026-11-22-repo-alm-wiki-evidenze-api]] — estrazione 2026-11-22 da alm-wiki (progetto locale dell'utente, `partial`, 5 file): prova in esecuzione dell'API 0.6.13 del 2026-11-13 (una prova, un progetto, non replicata), confronto skill/codice con livelli R/C/I, prove aperte
 - [[2026-11-22-repo-alm-wiki-bozza-skill]] — estrazione 2026-11-22 da alm-wiki: bozza di riscrittura della skill `llm-wiki` per l'app 0.6.13, testo candidato con etichette `[obs]` e `[code]` e 173 differenze rispetto all'originale
+- [[2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki]] — estrazione 2026-11-22 di `code_repos/llm_wiki` (`e08cfce`, `partial`, 17 file): verifica sul codice delle affermazioni C di alm-wiki (24 confermate, 6 parziali, 1 non conclusiva) e decisione delle due contraddizioni aperte
 - [[session-2026-11-20-16-3649aa67]] — sessione di bootstrap `wiki-factory` 2.48 su `llm_wiki` (in `wiki/sessions/`; indice delle sessioni: [sessions/index.md](sessions/index.md))
 
 ## Entities
@@ -54,6 +55,8 @@ Indice delle pagine di `wiki/`, aggiornato da `wiki-keeper` a ogni ingest.
 - [[llm-wiki-api-locale]] — API HTTP locale, clip server, comandi Tauri
 - [[llm-wiki-skill-api-v1-dichiarata]] — contratto dell'API HTTP locale come lo dichiara la skill (API v1, app 0.4.10+), non v0.6.13
 - [[llm-wiki-api-osservazioni-esecuzione-v0-6-13]] — le dodici osservazioni sull'API locale in esecuzione (app 0.6.13, 2026-11-13, una prova, un progetto, non replicata) e i fatti del 2026-11-08
+- [[llm-wiki-ricerca-e-grafo-api]] — come il codice v0.6.13 calcola `search` (modalità, quota del grafo, `vectorScore`, pesi, copertura) e `graph` (tipo, id, archi, `limit`); letto, non eseguito
+- [[llm-wiki-review-store-e-auto-save]] — review: id FNV-1a, auto-save della UI senza fusione col disco, scritture API su qualunque progetto, pulizia automatica senza filtro per tipo nella fase LLM
 - [[llm-wiki-agente]] — modulo agente, permessi e router
 - [[llm-wiki-sicurezza]] — bind, CORS, estensione Chrome, Tauri, segreti nello store, Clip server (token solo da rete locale, corpo senza limite, `projectPath` non confrontato)
 - [[llm-wiki-schema-dati]] — dati su file, tipi condivisi, schemi LanceDB
@@ -74,8 +77,8 @@ Indice delle pagine di `wiki/`, aggiornato da `wiki-keeper` a ogni ingest.
 
 ## Syntheses
 - [[llm-wiki-sintesi-rischi-persistenza]] — sintesi dei rischi di persistenza verificati in EP-004 (US-033): tabella degli 8 rischi con gravità, probabilità e priorità proposte, correzioni da aprire, non conclusivi, prerequisito `db-dev`, decisioni richieste all'utente
-- [[llm-wiki-skill-vs-app-v0-6-13]] — differenze fra la skill (API v1, app 0.4.10+) e l'app v0.6.13 per la PR upstream: 5 contraddizioni, 6 estensioni, concordanze e punti non confrontabili (tag `diff-skill-app`)
-- [[llm-wiki-api-affermazioni-codice-da-verificare]] — affermazioni di alm-wiki sul codice `e08cfce` (livello C, non verificate): confronto con la wiki, concordanze, contraddizioni e punti da verificare con un `repo-sync` mirato
+- [[llm-wiki-skill-vs-app-v0-6-13]] — differenze fra la skill (API v1, app 0.4.10+) e l'app v0.6.13 per la PR upstream: 5 contraddizioni, 6 estensioni, concordanze e punti non confrontabili, più D13-D17 (osservate) e D18-D21 (dal codice) (tag `diff-skill-app`)
+- [[llm-wiki-api-affermazioni-codice-da-verificare]] — affermazioni di alm-wiki sul codice `e08cfce` (livello C): confronto con la wiki e, nelle Aggiornamenti, esito della verifica sul codice (confermate, parziali, non conclusiva) e punti ancora da verificare
 
 ## Meta
 - [[gaps]] — informazioni che servono e la wiki non ha

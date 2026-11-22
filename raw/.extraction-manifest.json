@@ -531,5 +531,26 @@
       "status": "success",
       "secrets_redacted": 0
     }
+  },
+  "2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki": {
+    "source": "repo",
+    "extracted_at": "2026-11-22T00:00:00Z",
+    "primary_artifact": "raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md",
+    "secondary_artifacts": [],
+    "extractor_version": "repo-sync@2.12.0",
+    "extraction_metadata": {
+      "source_path": "c:\\local_git\\code\\wiki-factory\\code_repos\\llm_wiki",
+      "git_commit": "e08cfce65aad8b76b13546a081c1a8d4422b70c3",
+      "git_branch": "develop",
+      "stack": {
+        "language": "typescript",
+        "framework": "react",
+        "confidence": 0.7
+      },
+      "files_sampled": 17,
+      "files_total_in_repo": 476,
+      "status": "partial",
+      "secrets_redacted": 0
+    }
   }
 }

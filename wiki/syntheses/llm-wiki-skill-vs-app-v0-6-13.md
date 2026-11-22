@@ -5,7 +5,7 @@ title: Skill llm-wiki (API v1, app 0.4.10+) contro app llm_wiki v0.6.13, differe
 status: draft
 created: 2026-11-22
 updated: 2026-11-22
-sources: ["raw/2026-11-22-repo-llm_wiki_skill.md", "raw/2026-11-21-repo-llm_wiki-api-mcp.md"]
+sources: ["raw/2026-11-22-repo-llm_wiki_skill.md", "raw/2026-11-21-repo-llm_wiki-api-mcp.md", "raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md"]
 tags: [llm-wiki, skill, api, diff-skill-app, sintesi]
 ---
 
@@ -89,3 +89,35 @@ Del gap `llm-wiki-skill-punti-da-verificare`: durata del preflight (osservato `M
 
 ### Affermazioni C della fonte
 Le affermazioni sul codice di `e08cfce` delle fonti di alm-wiki non sono verificate: confronto e punti da verificare in [[llm-wiki-api-affermazioni-codice-da-verificare]]. La bozza della skill è descritta in [[llm-wiki-skill-bozza-alm-wiki]]. [^src: raw/2026-11-22-repo-alm-wiki-evidenze-api.md §Discrepanze skill/codice (25) con livello di prova]
+
+## Aggiornamenti (v2026-11-22, verifica sul codice)
+Dalla source page [[2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki]]. Il testo sopra e la sezione precedente non sono modificati. **Base:** lettura del codice di `e08cfce` (upstream v0.6.13, `develop` coincide con `main`), non eseguita; è un livello diverso dall'osservazione in esecuzione della sezione precedente e non la sostituisce. [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Come leggere gli esiti]
+
+### Stato delle differenze toccate
+| Id | Esito dalla lettura del codice |
+|---|---|
+| D1 | In parte: PATCH, DELETE e `resolve` delle review riscrivono `.llm-wiki/review.json`; `rescan` ed `embed` risolvono il progetto allo stesso modo. `handle_write_page` e `handle_chat` non letti [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: API (`api_server.rs`)] |
+| D4 | Confermata nel codice: `Access-Control-Allow-Origin` è l'`Origin` riflesso solo se in elenco, altrimenti l'header manca; nessun `*` [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: bind, CORS e sezione impostazioni] |
+| D5 | Confermata nel codice: `LLM_WIKI_BIND_HOST`, poi `allowLanAccess` che dà `0.0.0.0`, poi `127.0.0.1`; valutato a ogni bind del ciclo del server [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: bind, CORS e sezione impostazioni] |
+| D7 | In parte: `/health` risponde su `/health` e su `/api/v1/health` e il corpo non contiene `currentProject` [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: API (`api_server.rs`)] |
+| D9 | Confermata nel codice: `graphHits` maggiore di 0 dà `mode` `hybrid`, e la risposta ha `graphHits` [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: ricerca (`search.rs`)] |
+| D10 | In parte: `edgeScope` (`page` o `filtered`) letto; `limit` assente 200, ridotto a `[1,1000]`, 400 per 0, negativo e non numerico. `offset`, `totalCount`, `hasMore` e la cache di 5 s non sono nel raw [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: API (`api_server.rs`)] |
+| D11 | Confermata nel codice: 405 solo se il metodo non è GET, POST, PATCH o DELETE; un verbo o una rotta sbagliata fra gli ammessi dà 404; `OPTIONS` è gestito prima (204). Smentisce la skill (405 fuori da GET e POST) [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: API (`api_server.rs`)] |
+| D12 | In parte: finestra di 1 s con 120 richieste, `/health` e `OPTIONS` esclusi; 503 oltre 64 in volo, 8 stream chat, 4 embed. I limiti di corpo per route e l'ordine rispetto all'auth non sono riletti [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: API (`api_server.rs`)] |
+| D15 | Confermata nel codice: `hybrid` anche con zero risultati vettoriali se ci sono candidati del grafo; RRF solo con risultati vettoriali; score keyword additivo con pesi 200, 50, 20, 5,0, 1,0. La scala RRF non è nel raw [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: ricerca (`search.rs`)] |
+| D16 | Decisa dal codice: il tipo è la prima riga `type:` di tutto il file (default `other`) e i nodi `query` sono tolti dal grafo prima di risolvere i link: «assenza non probante» della riga D16 è superata. Il raw non dice cosa restituisca un filtro `nodeType=query` [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: API (`api_server.rs`)] |
+| D17 | In parte: `currentProject` è in `/projects` (e non in `/health`); «il nome del progetto come `{id}` dà 404» non è nel raw: `resolve_project` accetta id o percorso [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: API (`api_server.rs`)] |
+| D2, D3, D6, D13, D14 | Non toccate da questo raw |
+
+### Nuove differenze dal codice (numerazione approvata D18-D21; D8 resta inesistente)
+| Id | Skill (API v1, app 0.4.10+) | App v0.6.13 letta nel codice |
+|---|---|---|
+| D18 | Estensioni testuali di `files/content`: md, mdx, txt, json, yaml, yml, csv, html, htm, xml, rtf, log [^src: raw/2026-11-22-repo-llm_wiki_skill.md §API surface] | md, mdx, txt, csv, json, yaml, yml, xml, html, htm, log; `rtf` fuori lista, quindi 415 per estensione [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: API (`api_server.rs`)] |
+| D19 | Archi del grafo dai `[[wikilink]]` in `wiki/*.md`, deduplicati per coppia non ordinata [^src: raw/2026-11-22-repo-llm_wiki_skill.md §API surface] | Archi anche dai valori di `related:`; id nodo stem o percorso relativo se c'è collisione; link ambiguo scartato; nodi `query` esclusi; deduplica senza direzione concorda [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: API (`api_server.rs`)] |
+| D20 | La skill non dice quali file copra la ricerca [^src: raw/2026-11-22-repo-llm_wiki_skill.md §API surface] | Solo `wiki/**/*.md`, fino a 10.000 file; poi si ferma con un messaggio su stderr e la risposta non lo segnala [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: ricerca (`search.rs`)] |
+| D21 | `examples.md` dice che le chiamate su un id non corrente sono in sola lettura (voce n. 12 di [[llm-wiki-skill]]) [^src: raw/2026-11-22-repo-llm_wiki_skill.md §Gap evidenti] | `resolve_project` non verifica `current`: PATCH, DELETE e `resolve` delle review riscrivono `review.json` del progetto indicato, `rescan` ed `embed` risolvono lo stesso [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: API (`api_server.rs`)] |
+
+D18-D21 sono ritrovabili col tag `diff-skill-app`. Altri due punti utili alla PR: nel codice i due punti dell'id non sono separatori (la skill, secondo [[llm-wiki-api-affermazioni-codice-da-verificare]] n. 11, chiede di codificarli; la sua formulazione non è riletta qui), e la sezione impostazioni si chiama «API + MCP» (nome confermato in `en.json`). [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: bind, CORS e sezione impostazioni]
+
+### Punti «non confrontabili» toccati
+Del gap `llm-wiki-skill-punti-da-verificare`: chiusi per lettura `Retry-After` (assente nei percorsi letti, riserva sugli header SSE di successo), estensioni leggibili (vedi D18) e valori di `nodeType` (insieme aperto, vedi D16 e D19). Ristretti: campi di ogni risultato di `search` (noto `vectorScore`, copiato solo se l'RRF è applicato o per i risultati solo-vettore), range degli score (scala RRF non nel raw), campi e `kind` di `rescan` (`created` e `modified` avviano l'ingest; elenco completo non estratto). Restano aperti: codice del body generico troppo grande e default di `sourceWatchConfig`. [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: sincronizzazione file (Rust e UI)] [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: API (`api_server.rs`)]

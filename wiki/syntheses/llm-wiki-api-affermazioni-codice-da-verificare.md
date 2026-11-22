@@ -5,7 +5,7 @@ title: Affermazioni di alm-wiki sul codice llm_wiki e08cfce, confronto con la wi
 status: draft
 created: 2026-11-22
 updated: 2026-11-22
-sources: ["raw/2026-11-22-repo-alm-wiki-evidenze-api.md", "raw/2026-11-22-repo-alm-wiki-bozza-skill.md", "raw/2026-11-21-repo-llm_wiki-api-mcp.md"]
+sources: ["raw/2026-11-22-repo-alm-wiki-evidenze-api.md", "raw/2026-11-22-repo-alm-wiki-bozza-skill.md", "raw/2026-11-21-repo-llm_wiki-api-mcp.md", "raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md"]
 tags: [llm-wiki, api, diff-skill-app, da-verificare]
 ---
 
@@ -79,3 +79,37 @@ La bozza dice che le frasi senza etichetta sono quelle dell'upstream, ma restano
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+
+## Aggiornamenti (v2026-11-22, verifica sul codice)
+Dalla source page [[2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki]]: `repo-sync` ha letto il codice di `llm_wiki` a `e08cfce` (upstream v0.6.13, `develop` coincide con `main`), in sola lettura e senza eseguire nulla, per le affermazioni C elencate sopra. Il testo sopra non è modificato. **Supera** la frase «Finché non è fatto, nessuna riga della tabella chiude un gap» di §Come usare questa pagina: le righe confermate sono ora fatti letti nel codice, non più «da verificare». Escluse dal raw: n. 20, 21, 22, la soglia del 5% di n. 4 e la parte «i file si perdono» di n. 18. [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Come leggere gli esiti]
+
+### Esito per voce
+| # | Esito | Cosa fa il codice (precisazione) |
+|---|---|---|
+| 1, 2, 3 | Confermate | `mode`, quota del grafo (0,30 senza vettori, 0,15 a finestra piena, tetto) e `vectorScore` composito: [[llm-wiki-ricerca-e-grafo-api]] |
+| 4 (pesi) | Confermata | 200, 50, 20 (max 10), 5,0 e 1,0; la soglia del 5% resta fuori |
+| 5 | Confermata | Solo `wiki/**/*.md`, stop al 10.001-esimo file su stderr, nessun campo di troncamento nella risposta |
+| 6, 7, 8 | Confermate | Tipo dalla prima riga `type:` di tutto il file, `query` tolto, archi anche da `related:`, link ambiguo scartato, `q` non restituisce vicini |
+| 9 | **Parziale** | `limit` assente 200; maggiore di 0 ridotto a `[1,1000]` (5000 diventa 1000); 400 solo per 0, negativo e non numerico; «meno di 1 MB» senza riscontro |
+| 10 | Confermata | Vedi contraddizione (a) in [[llm-wiki-api-locale]] |
+| 11 | **Parziale** | Si divide su `/` prima di decodificare (una `/` nell'id va codificata `%2F`); i due punti non sono separatori; «solo `/`» è troppo stretto: `?` spezza l'URL, `+` diventa spazio, `%XX` è decodificato ovunque |
+| 12 | Confermata | Ordine: 404, 400, 403, 415 (estensione), 400 (`safe_join`), 404, 413, 415 (UTF-8); 11 estensioni, `rtf` esclusa |
+| 13, 14, 15 | Confermate | `/health` doppio senza `currentProject` (lo ha `/projects`); 405 solo fuori da GET, POST, PATCH, DELETE; rate limit e 503; nessun `Retry-After` nei percorsi letti, con riserva sugli header SSE di successo non letti |
+| 16 | **Parziale** | Il rescan non tocca la coda di ingest ma accoda nella coda Rust dei cambi e la elabora subito: «non accoda nulla» della fonte è impreciso; «solo progetto aperto» dipende da «Watch all projects» |
+| 17 | Confermata | Idempotenza per hash e dimensione; scope di `should_watch_rel` |
+| 18 (parte C) | **Parziale** | Condizioni di avvio dell'ingest; il ramo inattivi esiste solo con «Watch all projects» attivo |
+| 19 | Confermata | Verificata su review, rescan ed embed; `handle_write_page` e `handle_chat` non letti |
+| 23, 24 | Confermate | Ordine del bind; CORS con `Origin` riflesso solo se in elenco, nessun `*`; sezione «API + MCP» |
+| 25 | **Parziale** | `current` è il progetto con `current` vero, impostato dalla UI via POST al clip server; «esterni» e «negli script l'UUID» non sono decisi dal codice |
+[^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: ricerca (`search.rs`)] [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: API (`api_server.rs`)] [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: sincronizzazione file (Rust e UI)] [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: bind, CORS e sezione impostazioni]
+
+Le altre affermazioni C della bozza: cache di ingest (chiave senza `schema.md`, `purpose.md` e modello) **confermata**; id delle review FNV-1a, riscrittura di `review.json` circa 1 s dopo i cambi e auto-resolve **confermati** (vedi [[llm-wiki-review-store-e-auto-save]]); `allowLanAccess` e `LLM_WIKI_BIND_HOST` **confermati**; «progresso solo in UI o in `.llm-wiki/ingest-queue.json`» **non conclusiva** per questo raw (`ingest-queue.ts` non letto; la sintesi della bozza non dice cosa intenda per «progresso»). [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: cache di ingest e review]
+
+### Rettifica della riga «Watch all projects spento, 60 s»
+La riga della tabella «Altre affermazioni C della bozza» («con "Watch all projects" spento, 60 s») riporta una sintesi del raw della bozza che è **ambigua**: il raw non porta il testo originale. La verifica sul codice conferma il comportamento «60 s solo con l'opzione accesa»: l'intervallo esiste solo in `startAllProjectFileSync`, chiamata solo con l'opzione attiva. Non è una smentita della bozza. L'ipotesi della stessa riga («il 60 s potrebbe coincidere col rescan periodico») non è sostenuta dalle posizioni nel codice (**deduzione, dalle citazioni**): il 60 s del ramo inattivi è un timer lato TS (`project-file-sync.ts:45, 123-140`), il rescan periodico del watcher (10 s su Linux, 60 s altrove) è un meccanismo Rust descritto in [[llm-wiki-sincronizzazione-file]]; il raw non li confronta. [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: sincronizzazione file (Rust e UI)]
+
+### Contraddizioni interne alle fonti
+- **Limite del grafo (n. 9):** deciso dal codice, concorda con la prova in esecuzione: clamp a 1000 per i valori maggiori, 400 per 0, negativo e non numerico. [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: API (`api_server.rs`)]
+
+### Che cosa resta da verificare
+Voci n. 20, 21 e 22; soglia del 5%; parte «i file si perdono» di n. 18; `handle_write_page`, `handle_chat` e `respond_chat_sse` (e gli header SSE di successo); `enqueueInactiveProjectBatch` e un eventuale controllo LLM nel ramo inattivi; chiamante di `sweepResolvedReviews`; nome del file di coda dell'ingest; cosa passano i chiamanti come `sourceContent`; quasi tutta l'anomalia A1 (novità 0.6.13 della bozza senza etichetta: sono toccati solo `limit` 0 con 400, CORS e l'esclusione di `rtf`). Gap `llm-wiki-affermazioni-codice-da-verificare`, parziale, resta aperto ([[gaps]]). [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Gap evidenti]

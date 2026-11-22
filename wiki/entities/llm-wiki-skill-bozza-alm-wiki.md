@@ -5,7 +5,7 @@ title: Bozza di riscrittura della skill llm-wiki allineata all'app 0.6.13 (alm-w
 status: draft
 created: 2026-11-22
 updated: 2026-11-22
-sources: ["raw/2026-11-22-repo-alm-wiki-bozza-skill.md"]
+sources: ["raw/2026-11-22-repo-alm-wiki-bozza-skill.md", "raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md"]
 tags: [llm-wiki, entity, skill, bozza, diff-skill-app]
 ---
 
@@ -57,3 +57,10 @@ Come testo di partenza per la PR upstream della skill alla 0.6.13 ([[llm-wiki-sk
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+
+## Aggiornamenti (v2026-11-22, verifica sul codice)
+Dalla source page [[2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki]] (lettura del codice di `e08cfce`, upstream v0.6.13, non eseguita). Il testo sopra non è modificato; la bozza resta un testo candidato, non una fonte di fatti sull'app: i fatti entrano dalle pagine che citano il raw della verifica.
+- **Affermazioni `[code]` verificate sul codice:** 24 affermazioni distinte confermate, 6 parziali, 1 non conclusiva. Fra le righe della bozza: il rescan non accoda l'ingest (confermata, ma accoda nella coda Rust dei cambi); la UI accoda con progetto aperto, `enabled`, `autoIngest` e LLM (parziale: il ramo «Watch all projects» è confermato, l'eventuale LLM nel ramo inattivi non è letto); cache di ingest senza `schema.md`, `purpose.md` e modello, `allowLanAccess` e `LLM_WIKI_BIND_HOST`, id FNV-1a delle review, riscrittura di `review.json` dopo circa 1 s e auto-resolve (tutte confermate); progresso «solo in UI o in `ingest-queue.json`» (non conclusiva). Quadro per voce in [[llm-wiki-api-affermazioni-codice-da-verificare]]. [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: sincronizzazione file (Rust e UI)] [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: cache di ingest e review]
+- **La riga «Watch all projects» e i 60 s:** il raw della bozza ne dà una sintesi ambigua; la verifica sul codice conferma il comportamento «60 s solo con l'opzione accesa». Non è una smentita della bozza. [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: sincronizzazione file (Rust e UI)]
+- **«Uso consigliato», aggiornato:** le affermazioni `[code]` che coincidono con i punti confermati si possono portare alla PR citando il codice, non la bozza; quelle senza etichetta (A1) restano da classificare, tranne `limit` 0 con 400, CORS e l'esclusione di `rtf`, ora decisi dal codice. [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: API (`api_server.rs`)]
+- Nuove differenze con l'originale deducibili dal codice: D18-D21 in [[llm-wiki-skill-vs-app-v0-6-13]].

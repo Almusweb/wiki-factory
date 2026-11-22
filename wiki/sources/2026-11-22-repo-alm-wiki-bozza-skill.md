@@ -40,3 +40,6 @@ Le tabelle delle 173 differenze e `FORK.md` (descritto, non riportato): restano 
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+
+## Aggiornamenti (v2026-11-22, verifica sul codice)
+I riferimenti al codice dell'app della bozza (`[code]`, «non verificabili» in §Limiti e gap) sono stati verificati sul codice di `e08cfce` (upstream v0.6.13) dal `repo-sync` mirato. La riga «Watch all projects» e i 60 s è una sintesi ambigua nel raw della bozza: la verifica conferma «60 s solo con l'opzione accesa». Esiti: [[2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki]] e [[llm-wiki-skill-bozza-alm-wiki]]. Il testo sopra non è modificato. [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: sincronizzazione file (Rust e UI)]

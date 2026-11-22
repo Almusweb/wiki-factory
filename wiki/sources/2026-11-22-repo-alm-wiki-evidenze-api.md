@@ -50,3 +50,6 @@ Non riportato: il nome del progetto di prova, il suo UUID, i percorsi locali e l
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+
+## Aggiornamenti (v2026-11-22, verifica sul codice)
+Le affermazioni C di questa fonte (con `file:riga`, «non verificati» in §Limiti e gap) sono state verificate sul codice di `e08cfce` (upstream v0.6.13) dal `repo-sync` mirato: 24 affermazioni distinte confermate, 6 parziali, 1 non conclusiva; le righe sfasate sono segnalate nella source page. Esiti e dove sono finiti i fatti: [[2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki]] e [[llm-wiki-api-affermazioni-codice-da-verificare]]. Il testo sopra non è modificato. [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Come leggere gli esiti]

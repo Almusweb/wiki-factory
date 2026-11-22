@@ -4,8 +4,8 @@ type: concept
 title: llm-wiki — pipeline di ingest, coda e cache
 status: draft
 created: 2026-11-21
-updated: 2026-11-21
-sources: ["raw/2026-11-21-repo-llm_wiki-ingest.md", "raw/2026-11-21-issues-llm_wiki-chiuse.md"]
+updated: 2026-11-22
+sources: ["raw/2026-11-21-repo-llm_wiki-ingest.md", "raw/2026-11-21-issues-llm_wiki-chiuse.md", "raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md"]
 tags: [llm-wiki, ingest, pipeline, coda, cache]
 ---
 
@@ -52,3 +52,11 @@ Dalla source page [[2026-11-21-issues-llm_wiki-chiuse]] (upstream v0.6.13, commi
 
 - **Coda dopo il riavvio.** **Dichiarato (maintainer), #758, v0.6.12:** i task `pending` e `processing` persistiti riprendono al riavvio, con recupero degli eventi mancati del monitoraggio. È una dichiarazione, non un'osservazione. Precisazione dalla wiki: `restoreQueue` tiene solo i task con l'id di progetto corrente e riscrive il file senza gli scartati (vedi [[llm-wiki-rischi-persistenza]], rischio 2), quindi «riprendono» non vale per i task di un id diverso. [^src: raw/2026-11-21-issues-llm_wiki-chiuse.md §6. Altre dichiarazioni pertinenti (non chiudono)]
 - **Guardia dei percorsi nelle scritture dell'ingest.** **Osservato v0.6.13:** `executeIngestWrites` scarta i percorsi non sicuri o gestiti dall'app (`isSafeIngestPath`, `ingest.ts:3719, 3849-3851`); il punto 3 di #318 (scritture dell'ingest senza questo controllo), dichiarato nel 2026-06-01, risulta corretto. Riguarda le scritture, non la cancellazione di file. [^src: raw/2026-11-21-issues-llm_wiki-chiuse.md §6. Altre dichiarazioni pertinenti (non chiudono)]
+
+## Aggiornamenti (v2026-11-22, verifica sul codice)
+Dalla source page [[2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki]]: lettura del codice di `e08cfce` (upstream v0.6.13, `develop` coincide con `main`), non eseguita. Il testo sopra non è modificato.
+
+- **Chiave della cache di ingest.** Le voci sono indicizzate per nome o identità della sorgente; l'hash è lo SHA-256 del solo `sourceContent`. `checkIngestCache` e `saveIngestCache` hanno come unici input il percorso del progetto, il nome della sorgente e il testo: **non entrano `schema.md`, `purpose.md` né il modello**. Un colpo di cache richiede anche che i file scritti esistano ancora (conferma §Cache di ingest, con la precisazione sulla chiave). **Deduzione dalla lettura, non testata:** un cambio di `schema.md`, `purpose.md` o del modello non invalida da solo la cache, quindi una sorgente invariata non verrebbe rielaborata; il raw non ha letto cosa passino i chiamanti come `sourceContent`. [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: cache di ingest e review]
+- **Quando l'ingest parte dal monitoraggio dei file.** Condizioni (`enabled && autoIngest`, task `created` o `modified` sotto `raw/sources/` con estensione ingeribile, LLM usabile nel ramo del progetto aperto, ramo dei progetti inattivi solo con «Watch all projects» attivo): [[llm-wiki-sincronizzazione-file]]. [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: sincronizzazione file (Rust e UI)]
+- **Pulizia delle review risolte (§Requisiti confermati, «due fasi»).** Letta nel dettaglio: fase 1 con regole (`missing-page`, `duplicate`), fase 2 con giudizio LLM a lotti da 40, massimo 5 lotti, arresto al primo lotto senza risolti, azioni `auto-resolved` e `llm-judged`. **La fase 2 non filtra per tipo:** la prudenza su contraddizioni, suggerimenti e conferme è solo nel testo del prompt. Il chiamante non è letto nel raw (la wiki ha già che parte a coda svuotata, §Coda). Dettaglio in [[llm-wiki-review-store-e-auto-save]]. [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: cache di ingest e review]
+- **Non conclusivo.** «Progresso solo in UI o in `.llm-wiki/ingest-queue.json`» (bozza di alm-wiki): `ingest-queue.ts` non è fra i file di questo raw, e la sintesi della bozza non dice cosa intenda per «progresso». Il confronto con §Coda e con i checkpoint di ripresa resta da fare con la bozza originale. [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Esiti: cache di ingest e review]
