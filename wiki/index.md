@@ -4,7 +4,7 @@ type: index
 title: Wiki Index
 status: draft
 created: 2026-11-20
-updated: 2026-11-21
+updated: 2026-11-22
 sources: []
 tags: [navigation]
 ---
@@ -34,11 +34,13 @@ Indice delle pagine di `wiki/`, aggiornato da `wiki-keeper` a ogni ingest.
 - [[2026-11-21-repo-llm_wiki-dossier-ep004-r7]] — dossier EP-004 r7 (2026-11-21): rischio 7, cambio di modello o dimensione dell'embedding, confermato per lettura (nessun confronto con la tabella, `embedAllPages` non rileva il cambio, nessun avviso al salvataggio, impronta con modello), non conclusivo sul comportamento di LanceDB
 - [[2026-11-21-repo-llm_wiki-dossier-ep004-r8]] — dossier EP-004 r8 (2026-11-21): rischio 8, segreti in chiaro nello store applicativo, confermato per lettura (15 campi sensibili scritti così come sono, nessuna cifratura né archivio protetto, token API in HTTP sulla LAN, chiave SerpApi nell'URL), non conclusivo su permessi del file, SerpApi negli errori e copie fuori dallo store
 - [[2026-11-21-issues-llm_wiki-chiuse]] — issue chiuse di `nashsu/llm_wiki` (2026-11-21, `github-issues`): dichiarazioni di segnalatori e maintainer con la versione, più controlli puntuali su v0.6.13; Clip server (bind, CORS e token osservati, corpo senza limite, `projectPath` non confrontato col registro, loopback senza token), misure di terzi sulle dimensioni, regole di `page_id` e confronto degli id TS e Rust, stato dei sei punti di #318
+- [[2026-11-22-repo-llm_wiki_skill]] — estrazione 2026-11-22 di `code_repos/llm_wiki_skill` (`main`, `642b438`): skill per agenti sull'API HTTP locale, documentazione dichiarata per API v1 e app 0.4.10+
 - [[session-2026-11-20-16-3649aa67]] — sessione di bootstrap `wiki-factory` 2.48 su `llm_wiki` (in `wiki/sessions/`; indice delle sessioni: [sessions/index.md](sessions/index.md))
 
 ## Entities
 - [[llm-wiki-app]] — l'applicazione desktop `llm-wiki`: identità, funzioni dichiarate in README
 - [[llm-wiki-mcp-server]] — server MCP: 12 strumenti registrati, limiti di `llm_wiki_write_page`
+- [[llm-wiki-skill]] — skill `llm_wiki_skill` per agenti: identità, trigger, versione dichiarata (0.4.10+), istruzioni descritte e le 17 incoerenze interne
 
 ## Concepts
 
@@ -47,6 +49,7 @@ Indice delle pagine di `wiki/`, aggiornato da `wiki-keeper` a ogni ingest.
 - [[llm-wiki-struttura-e-moduli]] — layout, entrypoint e moduli
 - [[llm-wiki-stack-e-dipendenze]] — i tre descriptor, dipendenze, toolchain
 - [[llm-wiki-api-locale]] — API HTTP locale, clip server, comandi Tauri
+- [[llm-wiki-skill-api-v1-dichiarata]] — contratto dell'API HTTP locale come lo dichiara la skill (API v1, app 0.4.10+), non v0.6.13
 - [[llm-wiki-agente]] — modulo agente, permessi e router
 - [[llm-wiki-sicurezza]] — bind, CORS, estensione Chrome, Tauri, segreti nello store, Clip server (token solo da rete locale, corpo senza limite, `projectPath` non confrontato)
 - [[llm-wiki-schema-dati]] — dati su file, tipi condivisi, schemi LanceDB
@@ -67,6 +70,7 @@ Indice delle pagine di `wiki/`, aggiornato da `wiki-keeper` a ogni ingest.
 
 ## Syntheses
 - [[llm-wiki-sintesi-rischi-persistenza]] — sintesi dei rischi di persistenza verificati in EP-004 (US-033): tabella degli 8 rischi con gravità, probabilità e priorità proposte, correzioni da aprire, non conclusivi, prerequisito `db-dev`, decisioni richieste all'utente
+- [[llm-wiki-skill-vs-app-v0-6-13]] — differenze fra la skill (API v1, app 0.4.10+) e l'app v0.6.13 per la PR upstream: 5 contraddizioni, 6 estensioni, concordanze e punti non confrontabili (tag `diff-skill-app`)
 
 ## Meta
 - [[gaps]] — informazioni che servono e la wiki non ha

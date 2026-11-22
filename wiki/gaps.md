@@ -322,6 +322,8 @@ File append-only: le informazioni che servono e la wiki non ha. Formato e chiusu
 **Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (lettura di `page_embedding.rs`, `search.rs`, `file_sync.rs`, `agent/events.rs`). Non bloccante.
 **Impatto:** [[llm-wiki-api-locale]] descrive questi endpoint solo per contratto HTTP, non per comportamento.
 
+**Aggiornamento (2026-11-22):** gap parziale, resta aperto. La skill `llm_wiki_skill` (`main`, `642b438`) **dichiara**, per API v1 e app 0.4.10+ (non per v0.6.13), il comportamento di `search` (modi `keyword`, `vector` e `hybrid`, campi per risultato, `queryEmbedding` che salta l'embed del server) e di `sources/rescan` (risultato con `queue` e `changedTasks`), in [[llm-wiki-skill-api-v1-dichiarata]]. È documentazione riferita a una versione più vecchia e non verificata nel codice: non sostituisce la lettura di `search.rs`, `page_embedding.rs`, `file_sync.rs` e `agent/events.rs` in v0.6.13, e per `search` v0.6.13 ha già `graphHits` che la skill non cita ([[llm-wiki-skill-vs-app-v0-6-13]]). [^src: raw/2026-11-22-repo-llm_wiki_skill.md §API surface]
+
 ## 2026-11-21 07:31 — llm-wiki-clip-server-uso-bind-cors
 **Origine:** wiki-keeper @ ingest 2026-11-21-repo-llm_wiki-api-mcp
 **Gap:** l'uso effettivo di `server_bind` e `cors` in `clip_server.rs` oltre la riga 60 non è verificato: sono letti solo gli import (righe 7-8, 17). Non è noto se il Clip server (porta 19827) applichi gli stessi bind, token e CORS dell'API. Fonte del gap: raw/2026-11-21-repo-llm_wiki-api-mcp.md §Autenticazione e rete.
@@ -339,6 +341,8 @@ File append-only: le informazioni che servono e la wiki non ha. Formato e chiusu
 **Gap:** non sono letti il resto di `api-server-section.tsx` (UI del token e rendering della lista endpoint), `mcp-server/src/project-binding.ts` e `version.ts`. `src/i18n/index.ts` risulta letto dalla fetta [[2026-11-21-repo-llm_wiki-ricerca-ui-residui]] e non è più incluso. Fonte del gap: raw/2026-11-21-repo-llm_wiki-api-mcp.md §Provenienza e copertura.
 **Sospetta fonte:** nessuna fonte chiara, serve nuovo raw. Non bloccante.
 **Impatto:** [[llm-wiki-api-locale]] e [[llm-wiki-mcp-server]] non descrivono la UI del token né il vincolo di progetto del client MCP oltre `set_project`.
+
+**Aggiornamento (2026-11-22):** gap parziale, resta aperto. La skill `llm_wiki_skill` **dichiara**, per API v1 e app 0.4.10+ (non per v0.6.13), che il token si imposta in Settings, API Server, che «Enable local HTTP API» è attivo di default, che il token è vuoto di default e che con `tokenSource` uguale a `env` il campo token della UI è ignorato ([[llm-wiki-skill-api-v1-dichiarata]]). Descrive la UI solo a parole, non il codice: `api-server-section.tsx` oltre la riga 399, `project-binding.ts` e `version.ts` restano non letti. [^src: raw/2026-11-22-repo-llm_wiki_skill.md §Dipendenze esterne] [^src: raw/2026-11-22-repo-llm_wiki_skill.md §API surface]
 
 ## 2026-11-21 07:31 — llm-wiki-approved-shell-origine
 **Origine:** wiki-keeper @ ingest 2026-11-21-repo-llm_wiki-agente-runtime
@@ -422,6 +426,8 @@ File append-only: le informazioni che servono e la wiki non ha. Formato e chiusu
 **Gap:** non sono letti i valori predefiniti di `sourceWatchConfig` (`source-watch-config.ts`, `DEFAULT_SOURCE_WATCH_CONFIG`): con l'id nuovo `projectFileSyncEnabled` ripiega su `true` e `sourceWatchConfig` sul `default` o sul legacy, ma non è noto se questo riattivi davvero l'osservazione dei sorgenti. Fonte del gap: raw/2026-11-21-repo-llm_wiki-dossier-ep004-r2.md §Gap evidenti.
 **Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (`src/lib/source-watch-config.ts`). Non bloccante.
 **Impatto:** [[llm-wiki-rischi-persistenza]] non può quantificare il reset silenzioso delle impostazioni di osservazione nel rischio 2.
+
+**Aggiornamento (2026-11-22):** gap parziale, resta aperto. La skill `llm_wiki_skill` **cita**, per API v1 e app 0.4.10+ (non per v0.6.13), che il `sourceWatchConfig` regola il `rescan` (filtri di tipo, directory escluse, dimensione massima) e che in un esempio il `.json` risulta escluso di default; il raw segnala che quei default non sono documentati altrove nella skill (voce n. 14 di [[llm-wiki-skill]]). Non sono i valori di `DEFAULT_SOURCE_WATCH_CONFIG` di v0.6.13 né rispondono alla domanda sul ripiego dell'id nuovo. [^src: raw/2026-11-22-repo-llm_wiki_skill.md §API surface] [^src: raw/2026-11-22-repo-llm_wiki_skill.md §Gap evidenti]
 
 ## 2026-11-21 20:50 — llm-wiki-registro-concorrenza-reale
 **Origine:** wiki-keeper @ ingest 2026-11-21-repo-llm_wiki-dossier-ep004-r3
@@ -608,3 +614,15 @@ File append-only: le informazioni che servono e la wiki non ha. Formato e chiusu
 **Gap:** restano non determinati: come `normalizePath` (TS) tratti `\` prima di `wikiPageIdFromPath`; con quali input reali i chiamanti invochino `wikiPageIdFromPath` e `vector_page_id` (nome nudo senza `wiki/`, percorso senza `.md`, barre finali) e quindi se le differenze osservate nei casi limite si manifestino; quali altre coppie duplicate TS e Rust esistano oltre a quelle lette. Fonte del gap: raw/2026-11-21-issues-llm_wiki-chiuse.md §5. Id di pagina TS e Rust (gap `llm-wiki-coppie-id-pagina-non-confrontate`).
 **Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (lettura di `normalizePath` e dei chiamanti delle due funzioni, ricerca testuale delle coppie TS e Rust). Non bloccante.
 **Impatto:** [[llm-wiki-versioni-e-migrazioni]] e [[llm-wiki-rischi-persistenza]] non possono dire se una divergenza nell'id cambi lo schema `page_id#chunk_index` o la pulizia dell'id legacy nei casi reali.
+
+## 2026-11-22 11:24 — llm-wiki-skill-punti-da-verificare
+**Origine:** wiki-keeper @ ingest 2026-11-22-repo-llm_wiki_skill
+**Gap:** la wiki non sa confrontare con l'app v0.6.13 alcuni punti che la skill `llm_wiki_skill` dichiara per API v1 e app 0.4.10+: elenco dei campi di ogni risultato di `search`, valori di `mode` e range degli score, campi del risultato di `rescan` e `kind` di `changedTasks`, `Retry-After`, durata del preflight, codice del body generico troppo grande, presenza del campo `truncated` in `files`, estensioni leggibili da `files/content`, default di `sourceWatchConfig`, valori di `nodeType`. L'elenco con il commento è in [[llm-wiki-skill-vs-app-v0-6-13]] §Non confrontabili; le voci interne della skill che ne dipendono sono numerate in [[llm-wiki-skill]] (n. 1, 6, 7, 12, 13, 14, 15). Fonte del gap: raw/2026-11-22-repo-llm_wiki_skill.md §Gap evidenti.
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (lettura mirata di `api_server.rs`, `search.rs` e `file_sync.rs` di v0.6.13: `api_server.rs` è già letto per intero ma questi punti non risultano nel raw [[2026-11-21-repo-llm_wiki-api-mcp]], controllato con ricerca testuale su `Retry-After`, `truncated`, `413` e `changedTasks`). Non bloccante.
+**Impatto:** la PR che aggiornerà la skill alla v0.6.13 non può correggere questi punti con evidenza dalla wiki.
+
+## 2026-11-22 11:24 — llm-wiki-api-storia-versioni
+**Origine:** wiki-keeper @ ingest 2026-11-22-repo-llm_wiki_skill
+**Gap:** la wiki non sa in quale versione, fra 0.4.10 (la skill) e 0.6.13, sia comparsa ciascuna delle differenze D1…Dn di [[llm-wiki-skill-vs-app-v0-6-13]] (endpoint di scrittura, `chat` operativo, CORS ad elenco, ascolto su LAN, metodi `PATCH` e `DELETE`, `graphHits`, paginazione del grafo). Dati parziali già in wiki, solo dichiarazioni: bind configurabile in v0.5.4 (#474) e CORS `*` segnalato il 2026-06-01 (#318), in [[2026-11-21-issues-llm_wiki-chiuse]]. Fonte del gap: raw/2026-11-22-repo-llm_wiki_skill.md §Versione dichiarata.
+**Sospetta fonte:** nessuna fonte chiara, serve nuovo raw (note di release, `src/lib/changelog.ts` o storia dei tag di upstream, non letti).
+**Impatto:** [[llm-wiki-skill-vs-app-v0-6-13]] non può dire da quale versione ciascuna riga valga, e la PR non può indicare una versione minima per ogni correzione della skill.

@@ -466,5 +466,28 @@
       "secrets_redacted": 0,
       "status": "partial"
     }
+  },
+  "2026-11-22-repo-llm_wiki_skill": {
+    "source": "repo",
+    "extracted_at": "2026-11-22T00:00:00Z",
+    "primary_artifact": "raw/2026-11-22-repo-llm_wiki_skill.md",
+    "secondary_artifacts": [
+      "raw/images/2026-11-22-repo-llm_wiki_skill-tree.md"
+    ],
+    "extractor_version": "repo-sync@2.12.0",
+    "extraction_metadata": {
+      "source_path": "c:\\local_git\\code\\wiki-factory\\code_repos\\llm_wiki_skill",
+      "git_commit": "642b43822ed44f6797082a24483850a4a2c2a010",
+      "git_branch": "main",
+      "stack": {
+        "language": "markdown",
+        "framework": "none",
+        "confidence": 0
+      },
+      "files_sampled": 4,
+      "files_total_in_repo": 4,
+      "status": "success",
+      "secrets_redacted": 0
+    }
   }
 }

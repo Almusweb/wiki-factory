@@ -4,8 +4,8 @@ type: entity
 title: llm-wiki (applicazione)
 status: draft
 created: 2026-11-20
-updated: 2026-11-21
-sources: ["raw/2026-11-20-repo-llm_wiki.md", "raw/2026-11-21-repo-llm_wiki-ingest.md", "raw/2026-11-21-repo-llm_wiki-ricerca-ui-residui.md"]
+updated: 2026-11-22
+sources: ["raw/2026-11-20-repo-llm_wiki.md", "raw/2026-11-21-repo-llm_wiki-ingest.md", "raw/2026-11-21-repo-llm_wiki-ricerca-ui-residui.md", "raw/2026-11-22-repo-llm_wiki_skill.md"]
 tags: [llm-wiki, entity, prodotto]
 ---
 
@@ -66,6 +66,9 @@ Dalle fette C2 ed E del giro del 2026-11-21 ([[2026-11-21-repo-llm_wiki-ingest]]
 ### Lingue dell'interfaccia
 - L'interfaccia registra quattro lingue: `en`, `it`, `zh`, `ru`; lingua iniziale e di ripiego `en`. La sezione Interface offre English, Italiano, 中文, Русский; al salvataggio, se la lingua cambia, si chiamano `i18n.changeLanguage` e `saveLanguage`. [^src: raw/2026-11-21-repo-llm_wiki-ricerca-ui-residui.md §Lingue dell'interfaccia (gap i18n-lingue)]
 - La lingua di output delle pagine (`outputLanguage`, default `auto`) è un'impostazione distinta dalla lingua UI. Non verificato: dove la lingua salvata viene riletta all'avvio. [^src: raw/2026-11-21-repo-llm_wiki-ricerca-ui-residui.md §Lingue dell'interfaccia (gap i18n-lingue)]
+
+## Aggiornamenti (v2026-11-22)
+Dalla source page [[2026-11-22-repo-llm_wiki_skill]]: esiste una skill per agenti esterni, `llm_wiki_skill` (`main`, `642b438`), solo documentazione, che descrive l'API HTTP locale dell'app e dichiara di corrispondere ad API v1 «as shipped in app version 0.4.10+». È un repository distinto da `llm_wiki`; l'entità è [[llm-wiki-skill]] e le differenze con l'app v0.6.13 descritta in questa pagina sono in [[llm-wiki-skill-vs-app-v0-6-13]]. Il testo sopra non è modificato; nessuna contraddizione con questa pagina. [^src: raw/2026-11-22-repo-llm_wiki_skill.md §Versione dichiarata]
 
 ## Contradictions
 - **Ingest multimodale: stato del piano contro codice.** Prima (sezione «Stato dell'ingest multimodale»): `plans/multimodal-images.md` ha stato «Spec, not started», mentre la README descrive come già presente l'ingest multimodale. Ora (fetta C2): il codice implementa l'ingest multimodale; la README è coerente con il codice e lo stato del piano è superato (testo del piano non riletto). [^src: raw/2026-11-21-repo-llm_wiki-ingest.md §Multimodale: stato reale (gap 9)]
