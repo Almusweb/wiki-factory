@@ -45,3 +45,5 @@ Lettura statica. Non letti: `stable_review_id` in Rust, il chiamante di `sweepRe
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+Epica LWS-EP-001 — Allineare la skill llm-wiki all'app llm_wiki v0.6.13 (fase A, PR generica upstream)
+- LWS-US-007 — Scritture, chat e rescan

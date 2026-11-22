@@ -40,3 +40,6 @@ Lettura statica, nessuna esecuzione. Non sono coperti da questo raw: `offset`, `
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+Epica LWS-EP-001 — Allineare la skill llm-wiki all'app llm_wiki v0.6.13 (fase A, PR generica upstream)
+- LWS-US-005 — Salute, ricerca e grafo
+- LWS-US-008 — Verificare sul codice i soli residui

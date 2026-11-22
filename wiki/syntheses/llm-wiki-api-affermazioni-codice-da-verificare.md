@@ -79,6 +79,11 @@ La bozza dice che le frasi senza etichetta sono quelle dell'upstream, ma restano
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+Epica LWS-EP-001 — Allineare la skill llm-wiki all'app llm_wiki v0.6.13 (fase A, PR generica upstream)
+- LWS-US-002 — Bonificare la bozza come testo di partenza
+- LWS-US-007 — Scritture, chat e rescan
+- LWS-US-008 — Verificare sul codice i soli residui
+- LWS-US-010 — Preparare la PR upstream senza tracce e senza affermazioni scoperte
 
 ## Aggiornamenti (v2026-11-22, verifica sul codice)
 Dalla source page [[2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki]]: `repo-sync` ha letto il codice di `llm_wiki` a `e08cfce` (upstream v0.6.13, `develop` coincide con `main`), in sola lettura e senza eseguire nulla, per le affermazioni C elencate sopra. Il testo sopra non è modificato. **Supera** la frase «Finché non è fatto, nessuna riga della tabella chiude un gap» di §Come usare questa pagina: le righe confermate sono ora fatti letti nel codice, non più «da verificare». Escluse dal raw: n. 20, 21, 22, la soglia del 5% di n. 4 e la parte «i file si perdono» di n. 18. [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Come leggere gli esiti]

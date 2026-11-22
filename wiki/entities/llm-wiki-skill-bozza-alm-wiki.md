@@ -57,6 +57,9 @@ Come testo di partenza per la PR upstream della skill alla 0.6.13 ([[llm-wiki-sk
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+Epica LWS-EP-001 — Allineare la skill llm-wiki all'app llm_wiki v0.6.13 (fase A, PR generica upstream)
+- LWS-US-002 — Bonificare la bozza come testo di partenza
+- LWS-US-010 — Preparare la PR upstream senza tracce e senza affermazioni scoperte
 
 ## Aggiornamenti (v2026-11-22, verifica sul codice)
 Dalla source page [[2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki]] (lettura del codice di `e08cfce`, upstream v0.6.13, non eseguita). Il testo sopra non è modificato; la bozza resta un testo candidato, non una fonte di fatti sull'app: i fatti entrano dalle pagine che citano il raw della verifica.

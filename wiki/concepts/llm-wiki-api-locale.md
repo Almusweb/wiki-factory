@@ -39,6 +39,13 @@ La README descrive l'API come `127.0.0.1`-only, mentre il codice prevede l'ascol
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+Epica LWS-EP-001 — Allineare la skill llm-wiki all'app llm_wiki v0.6.13 (fase A, PR generica upstream)
+- LWS-US-003 — Sicurezza, rete e autenticazione
+- LWS-US-004 — Progetti, file e contenuti
+- LWS-US-005 — Salute, ricerca e grafo
+- LWS-US-006 — Metodi, errori e limiti
+- LWS-US-007 — Scritture, chat e rescan
+- LWS-US-008 — Verificare sul codice i soli residui
 
 ## Aggiornamenti (v2026-11-20)
 Dalle fette A e C delle estrazioni mirate sulla persistenza ([[2026-11-20-repo-llm_wiki-persistenza-a]], [[2026-11-20-repo-llm_wiki-persistenza-c]]). `api_server.rs` è letto solo in parte: righe 1-1200 più finestre (2035-2045, 2340-2360, 2435-2465, 2910-2925 per la fetta A; 360-395, 1572-1700, 1840-1897, 2060-2080 per la fetta C). Il testo sopra non è modificato; dove è superato lo dice `## Contradictions` in coda. I gap `llm-wiki-contratto-api-http` e `llm-wiki-api-lan-auth` restano aperti. Qualificatori come nel raw («solo graphify» non è promosso). Autenticazione, `/health` e segreti sono in [[llm-wiki-sicurezza]].

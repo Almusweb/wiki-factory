@@ -48,6 +48,9 @@ Non scrive file direttamente. Ascolta `file-sync://queue-updated` e `file-sync:/
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+Epica LWS-EP-001 — Allineare la skill llm-wiki all'app llm_wiki v0.6.13 (fase A, PR generica upstream)
+- LWS-US-007 — Scritture, chat e rescan
+- LWS-US-008 — Verificare sul codice i soli residui
 
 ## Aggiornamenti (v2026-11-21, issue chiuse)
 Dalla source page [[2026-11-21-issues-llm_wiki-chiuse]] (issue chiuse di `nashsu/llm_wiki`). Il testo sopra non è modificato. Solo dichiarazioni, nessuna osservazione sul codice di questo punto.

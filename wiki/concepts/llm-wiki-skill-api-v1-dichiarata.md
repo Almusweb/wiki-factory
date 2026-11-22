@@ -83,3 +83,10 @@ Ogni affermazione di questa pagina vale per **quanto dichiara la skill**, riferi
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+Epica LWS-EP-001 — Allineare la skill llm-wiki all'app llm_wiki v0.6.13 (fase A, PR generica upstream)
+- LWS-US-003 — Sicurezza, rete e autenticazione
+- LWS-US-004 — Progetti, file e contenuti
+- LWS-US-005 — Salute, ricerca e grafo
+- LWS-US-006 — Metodi, errori e limiti
+- LWS-US-007 — Scritture, chat e rescan
+- LWS-US-009 — Coerenza interna e dichiarazione di versione

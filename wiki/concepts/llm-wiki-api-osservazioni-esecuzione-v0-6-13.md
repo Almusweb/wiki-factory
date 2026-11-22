@@ -64,6 +64,11 @@ Dichiarato dalla fonte come non provato: 413 e 415 sul contenuto, 429 e 503, `rt
 
 ## Storie collegate
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
+Epica LWS-EP-001 — Allineare la skill llm-wiki all'app llm_wiki v0.6.13 (fase A, PR generica upstream)
+- LWS-US-003 — Sicurezza, rete e autenticazione
+- LWS-US-004 — Progetti, file e contenuti
+- LWS-US-005 — Salute, ricerca e grafo
+- LWS-US-006 — Metodi, errori e limiti
 
 ## Aggiornamenti (v2026-11-22, verifica sul codice)
 Dalla source page [[2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki]] (lettura del codice di `e08cfce`, non eseguita). Il testo sopra non è modificato e le osservazioni restano osservazioni (una prova, un progetto, non replicate); la lettura del codice è un altro livello di prova e le spiega, non le sostituisce. Le righe seguenti accostano osservazione e codice; l'accostamento è un confronto del keeper.
