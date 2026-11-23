@@ -59,8 +59,7 @@ Seconda parte di LWS-US-007 (AC6-AC9, AC10): comportamento del rescan, codici 49
 ## Chiusura
 <!-- AC1-AC5 sono di LWS-TSK-009 -->
 
-Branch verificato prima di scrivere: `docs/align-v0-6-13`, HEAD `d3d3fd4`, working tree pulito. Fini riga dei tre file: LF (0 CR con `grep -c $'
-'`), mantenute.
+Branch verificato prima di scrivere: `docs/align-v0-6-13`, HEAD `d3d3fd4`, working tree pulito. Fini riga dei tre file: LF (0 CR con `grep -c` sul carattere CR), mantenute.
 
 | AC | Esito | Evidenza |
 |---|---|---|
@@ -106,9 +105,9 @@ Comando: `grep -nEi "<modello>" SKILL.md api-reference.md examples.md README.md`
 
 ### Diff di chiusura (a comando)
 - Dichiarati: `code_repos/llm_wiki_skill/SKILL.md`, `api-reference.md`, `examples.md`.
-- Committati: `c73a69c` nel repo della skill (3 file, 37+/13-), dopo OK esplicito dell'utente in chat (2026-11-23); `sm_commit.py --dry-run` → messaggio invariato; `git log -1` senza trailer né attribution. Dopo il commit `git status --short` della skill vuoto. Factory: commit con questo TSK, `wiki/log.md`, `sprint.md` e il puntatore.
+- Committati: `c73a69c` nel repo della skill (3 file, 37+/13-), dopo OK esplicito dell'utente in chat (2026-11-23); `sm_commit.py --dry-run` → messaggio invariato; `git log -1` senza trailer né attribution. Dopo il commit `git status --short` della skill vuoto. Factory: commit `50165fe` con questo TSK, `wiki/log.md`, `sprint.md` e il puntatore.
 - Punti dubbi (decisione dell'utente, 2026-11-23): `README.md` r.113 («Ingest is queued by the UI only for the open project») rinviato a LWS-TSK-014; punti 2 e 3 tenuti come proposti. Evidenza dei 60 s: `wiki/concepts/llm-wiki-sincronizzazione-file.md` r.75 (solo con «Watch all projects» attivo).
-- Working tree: `git -C code_repos/llm_wiki_skill status --short` = `M SKILL.md`, `M api-reference.md`, `M examples.md`; nella factory `git status --short` mostra anche `m code_repos/llm_wiki_skill` (puntatore del submodulo), `M ...TSK-029.md` (altra sessione, non toccato) e `?? DOSSIER-llm-wiki-qualita-ingest.md` (non toccato) e questo TSK.
+- Working tree (prima del commit `c73a69c`): `git -C code_repos/llm_wiki_skill status --short` = `M SKILL.md`, `M api-reference.md`, `M examples.md`; nella factory `git status --short` mostra anche `m code_repos/llm_wiki_skill` (puntatore del submodulo), `M ...TSK-029.md` (altra sessione, non toccato) e `?? DOSSIER-llm-wiki-qualita-ingest.md` (non toccato) e questo TSK.
 
 ## Dependencies
 - LWS-TSK-009 — serializzazione per sovrapposizione di file.
