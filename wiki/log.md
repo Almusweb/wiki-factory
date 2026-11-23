@@ -312,3 +312,13 @@ scope: "EP-002 persistenza: prossimo TSK-009 (US-017)"
 **Commit:** d3d3fd4 (branch docs/align-v0-6-13, nessun push)
 **DoD:** pass
 **Note:** Route `reviews` in scrittura, `pages/write` (corpo noto, 409/400/500), `pages/embed`, `chat` (JSON o SSE) e cancel con solo metodo, auth, limiti ed errori; sezione «Routes that change state» con richiesta esplicita dell'utente; tolte le formule «unico endpoint di scrittura», «/chat 501», «non chiamare /chat». Dichiarazione di versione a LWS-TSK-014.
+
+## 2026-11-23 20:20 — develop LWS-TSK-010
+**Agente:** docs-dev (commit eseguito dalla sessione principale con OK dell'utente)
+**TSK:** [[../management/kanban/LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-007-scritture-chat-e-rescan/LWS-TSK-010]]
+**Layer:** docs
+**Code path:** code_repos/llm_wiki_skill
+**Files touched:** 3 (SKILL.md, api-reference.md, examples.md)
+**Commit:** c73a69c (branch docs/align-v0-6-13, nessun push)
+**DoD:** pass
+**Note:** Rescan: aggiorna lo snapshot e accoda i cambi, non accoda da sé l'ingest; `changedTasks` vuoto = già visto; solo `created` e `modified` avviano l'ingest; progetti non aperti dipendono da «Watch all projects», nessuna promessa di ingest né di perdita. Ricetta nuova sulla lettura di `reviews`. 499 assente, 409 solo per `pages/write`. `README.md` r.113 rinviato a LWS-TSK-014.
