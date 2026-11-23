@@ -322,3 +322,13 @@ scope: "EP-002 persistenza: prossimo TSK-009 (US-017)"
 **Commit:** c73a69c (branch docs/align-v0-6-13, nessun push)
 **DoD:** pass
 **Note:** Rescan: aggiorna lo snapshot e accoda i cambi, non accoda da sé l'ingest; `changedTasks` vuoto = già visto; solo `created` e `modified` avviano l'ingest; progetti non aperti dipendono da «Watch all projects», nessuna promessa di ingest né di perdita. Ricetta nuova sulla lettura di `reviews`. 499 assente, 409 solo per `pages/write`. `README.md` r.113 rinviato a LWS-TSK-014.
+
+## 2026-11-23 21:00 — develop LWS-TSK-014
+**Agente:** docs-dev (commit eseguito dalla sessione principale con OK dell'utente)
+**TSK:** [[../management/kanban/LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-009-coerenza-interna-e-versione/LWS-TSK-014]]
+**Layer:** docs
+**Code path:** code_repos/llm_wiki_skill
+**Files touched:** 3 (README.md, SKILL.md, api-reference.md)
+**Commit:** 9c2669e (branch docs/align-v0-6-13, nessun push)
+**DoD:** pass
+**Note:** Versione dichiarata «API v1 come implementata dall'app 0.6.13» con base generica (codice sorgente e alcune risposte di un'app in esecuzione); tolti «0.4.10+» e la storia delle versioni; regola di drift su qualunque versione diversa; README con quattro file e `--skill llm-wiki`; tre forme di `{id}` lato server. Residui a LWS-TSK-015 (drift in SKILL.md, `examples.md` r.173) e LWS-TSK-016.
