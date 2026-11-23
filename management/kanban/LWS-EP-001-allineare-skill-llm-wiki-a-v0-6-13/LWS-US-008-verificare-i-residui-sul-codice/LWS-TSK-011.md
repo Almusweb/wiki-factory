@@ -7,13 +7,13 @@ layer: docs
 consumer: human
 priority: P2
 estimate: M
-status: todo
+status: done
 depends_on: []
 blocked_by: []
 code_path: ["raw/**"]
 target: llm_wiki
-started_at:
-closed_at:
+started_at: 2026-11-23
+closed_at: 2026-11-23
 decision_refs: []
 ---
 
@@ -52,18 +52,18 @@ LWS-US-008 vuole leggere nel codice di `llm_wiki` a `e08cfce` (v0.6.13) i soli p
 5. `git -C code_repos/llm_wiki status --short` vuoto (repo cliente invariato).
 
 ## Definition of Done
-- [ ] Il raw esiste in `raw/` con file, simboli e righe per ogni conclusione; voce nel manifest.
-- [ ] Ogni residuo ha esito confermato / smentito / non conclusivo.
-- [ ] Il raw dichiara commit, branch, file letti e non letti.
-- [ ] Repo cliente invariato a comando.
+- [x] Il raw esiste in `raw/` con file, simboli e righe per ogni conclusione; voce nel manifest.
+- [x] Ogni residuo ha esito confermato / smentito / non conclusivo.
+- [x] Il raw dichiara commit, branch, file letti e non letti.
+- [x] Repo cliente invariato a comando.
 
 ## Chiusura
 
 | AC | Esito | Evidenza |
 |---|---|---|
-| LWS-US-008 AC1 | | |
-| LWS-US-008 AC2 | | |
-| LWS-US-008 AC4 | | |
+| LWS-US-008 AC1 | soddisfatto | raw/2026-11-23-repo-llm_wiki-residui-api-skill.md, voce manifest residui-api-skill, perimetro R1-R17 |
+| LWS-US-008 AC2 | soddisfatto | ogni residuo con esito e file:righe nel raw; sei punti non conclusivi dichiarati |
+| LWS-US-008 AC4 | soddisfatto | nessun file di llm_wiki_skill toccato; correzioni non applicate |
 
 <!-- AC3 e AC5 sono di LWS-TSK-012 / LWS-TSK-013 -->
 

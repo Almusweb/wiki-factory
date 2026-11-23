@@ -7,13 +7,13 @@ layer: docs
 consumer: human
 priority: P2
 estimate: S
-status: todo
+status: done
 depends_on: []
 blocked_by: []
 code_path: ["raw/**"]
 target: llm_wiki
-started_at:
-closed_at:
+started_at: 2026-11-23
+closed_at: 2026-11-23
 decision_refs: []
 ---
 
@@ -45,17 +45,17 @@ Seconda estrazione di LWS-US-008, sul perimetro della sincronizzazione file e de
 5. Dichiarare file letti e non letti; `git -C code_repos/llm_wiki status --short` vuoto.
 
 ## Definition of Done
-- [ ] Il raw esiste con file, simboli e righe per ogni conclusione; voce nel manifest.
-- [ ] Prove in esecuzione elencate come non verificate.
-- [ ] Repo cliente invariato a comando.
+- [x] Il raw esiste con file, simboli e righe per ogni conclusione; voce nel manifest.
+- [x] Prove in esecuzione elencate come non verificate.
+- [x] Repo cliente invariato a comando.
 
 ## Chiusura
 
 | AC | Esito | Evidenza |
 |---|---|---|
-| LWS-US-008 AC1 | | |
-| LWS-US-008 AC2 | | |
-| LWS-US-008 AC3 | | |
+| LWS-US-008 AC1 | soddisfatto | raw/2026-11-23-repo-llm_wiki-residui-watch-skill.md, voce manifest residui-watch-skill |
+| LWS-US-008 AC2 | soddisfatto | R1-R3, W1-W3, V4/V20/V21/V22 con esito e file:righe |
+| LWS-US-008 AC3 | soddisfatto | sezione «Prove in esecuzione non pianificate» con le prove elencate come non verificate |
 
 ## Dependencies
 - Nessuna. Alimenta `LWS-TSK-013`.
