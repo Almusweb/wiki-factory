@@ -273,6 +273,16 @@ scope: "EP-002 persistenza: prossimo TSK-009 (US-017)"
 **DoD:** pass
 **Note:** `/health` con `mcpEnabled`, `allowLanAccess`, `agent{...}` e `version` in tutti i file; `search` con `graphHits` e `queryEmbedding`; RRF solo con `vectorHits > 0`, nessun intervallo universale, `vectorScore` composito; copertura `wiki/**/*.md` fino a 10.000 file; snippet neutro. Inferenza di `examples.md` r.179 rinviata a LWS-TSK-016.
 
+## 2026-11-23 15:52 — develop TSK-009
+**Agente:** wiki-keeper (override one-shot del consumer `human`, come TSK-008)
+**TSK:** [[../management/kanban/EP-002-conoscenza-layer-di-persistenza/US-017-formato-log-e-index-progetto/TSK-009]]
+**Layer:** docs
+**Code path:** wiki/**
+**Files touched:** 4 (wiki/concepts/llm-wiki-schema-dati.md, wiki/gaps.md, wiki/log.md, TSK-009.md); nessuno in code_repos/llm_wiki
+**Commit:** n/a (nessun commit)
+**DoD:** pass (voci 1 e 2 dal keeper; voce 3 verificata a comando dalla sessione principale, output vuoto)
+**Note:** Verifica di US-017: AC1, AC2, AC3 e AC4 `verificato (con riserva)`. Aggiunta la sezione `## Esito della verifica di US-017` in coda a [[llm-wiki-schema-dati]] con la tabella degli scrittori di log e indice e del momento di scrittura. Gap `llm-wiki-log-index-formato` già chiuso il 2026-11-21: non riaperto, aggiornamento accodato. Controllo puntuale di `rebuild_wiki_index` in sola lettura (non ingerito): scrive un indice per `type`, diverso da quello dell'ingest. Non verificati: occorrenze di `index.md` e `log.md` non classificate, `rewriteIndexMd`, nome della funzione di ingest da conversazione. Ora scritta dalla sessione principale: il keeper non ha orologio.
+
 ## 2026-11-23 18:10 — develop LWS-TSK-007
 **Agente:** docs-dev (commit eseguito dalla sessione principale con OK dell'utente)
 **TSK:** [[../management/kanban/LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-005-salute-ricerca-e-grafo/LWS-TSK-007]]
