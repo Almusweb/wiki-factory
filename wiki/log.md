@@ -262,3 +262,13 @@ scope: "EP-002 persistenza: prossimo TSK-009 (US-017)"
 **Commit:** 69dece1 (branch docs/align-v0-6-13, nessun push)
 **DoD:** pass
 **Note:** `currentProject` in `/projects`; forme di `{id}` senza «exact», `%2F` resta; elenco estensioni identico e `rtf` 415; `files` 413 oltre `maxFiles`, nessun `truncated`; `Content-Type` neutro; tolti «UUID negli script» e progetti esterni.
+
+## 2026-11-23 17:30 — develop LWS-TSK-006
+**Agente:** docs-dev (riga `version` del README e commit eseguiti dalla sessione principale con OK dell'utente)
+**TSK:** [[../management/kanban/LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-005-salute-ricerca-e-grafo/LWS-TSK-006]]
+**Layer:** docs
+**Code path:** code_repos/llm_wiki_skill
+**Files touched:** 4 (README.md, SKILL.md, api-reference.md, examples.md)
+**Commit:** 460d634 (branch docs/align-v0-6-13, nessun push)
+**DoD:** pass
+**Note:** `/health` con `mcpEnabled`, `allowLanAccess`, `agent{...}` e `version` in tutti i file; `search` con `graphHits` e `queryEmbedding`; RRF solo con `vectorHits > 0`, nessun intervallo universale, `vectorScore` composito; copertura `wiki/**/*.md` fino a 10.000 file; snippet neutro. Inferenza di `examples.md` r.179 rinviata a LWS-TSK-016.

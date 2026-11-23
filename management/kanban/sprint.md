@@ -16,9 +16,9 @@ updated: 2026-11-23
 | Epica | Titolo | Status epica | blocked | in_progress | review | todo |
 |---|---|---|---|---|---|---|
 | [EP-002](EP-002-conoscenza-layer-di-persistenza/EP-002.md) | Completare la conoscenza del layer di persistenza | defined | 0 | 0 | 0 | 1 |
-| [LWS-EP-001](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-EP-001.md) | Allineare la skill llm-wiki all'app llm_wiki v0.6.13 (fase A, PR generica upstream) | defined | 0 | 0 | 0 | 13 |
+| [LWS-EP-001](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-EP-001.md) | Allineare la skill llm-wiki all'app llm_wiki v0.6.13 (fase A, PR generica upstream) | defined | 0 | 0 | 0 | 12 |
 
-Totale TSK aperti: 14 (sprint corrente 10, lookahead 4).
+Totale TSK aperti: 13 (sprint corrente 9, lookahead 4).
 
 ## Sprint corrente
 
@@ -26,7 +26,6 @@ Totale TSK aperti: 14 (sprint corrente 10, lookahead 4).
 
 | TSK | Titolo | US | Layer | Pri | Status | Owner | Dipende da |
 |---|---|---|---|---|---|---|---|
-| [LWS-TSK-006](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-005-salute-ricerca-e-grafo/LWS-TSK-006.md) | Salute e ricerca nella skill: campi di /health, graphHits, copertura e snippet | LWS-US-005 | docs | P1 | todo | — | LWS-TSK-005 |
 | [LWS-TSK-007](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-005-salute-ricerca-e-grafo/LWS-TSK-007.md) | Grafo nella skill: paginazione, edgeScope, cache, archi da related e tipi di nodo | LWS-US-005 | docs | P1 | todo | — | LWS-TSK-006 |
 | [LWS-TSK-008](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-006-metodi-errori-e-limiti/LWS-TSK-008.md) | Metodi, preflight, rate limit, limiti di corpo e Retry-After nella skill | LWS-US-006 | docs | P1 | todo | — | LWS-TSK-007 |
 | [LWS-TSK-009](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-007-scritture-chat-e-rescan/LWS-TSK-009.md) | Route che scrivono, chat e postura sulle scritture nella skill | LWS-US-007 | docs | P1 | todo | — | LWS-TSK-008 |
