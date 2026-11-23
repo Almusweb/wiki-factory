@@ -272,3 +272,13 @@ scope: "EP-002 persistenza: prossimo TSK-009 (US-017)"
 **Commit:** 460d634 (branch docs/align-v0-6-13, nessun push)
 **DoD:** pass
 **Note:** `/health` con `mcpEnabled`, `allowLanAccess`, `agent{...}` e `version` in tutti i file; `search` con `graphHits` e `queryEmbedding`; RRF solo con `vectorHits > 0`, nessun intervallo universale, `vectorScore` composito; copertura `wiki/**/*.md` fino a 10.000 file; snippet neutro. Inferenza di `examples.md` r.179 rinviata a LWS-TSK-016.
+
+## 2026-11-23 18:10 — develop LWS-TSK-007
+**Agente:** docs-dev (commit eseguito dalla sessione principale con OK dell'utente)
+**TSK:** [[../management/kanban/LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-005-salute-ricerca-e-grafo/LWS-TSK-007]]
+**Layer:** docs
+**Code path:** code_repos/llm_wiki_skill
+**Files touched:** 3 (SKILL.md, api-reference.md, examples.md)
+**Commit:** 541e610 (branch docs/align-v0-6-13, nessun push)
+**DoD:** pass
+**Note:** Paginazione del grafo (`offset`, `edgeScope`, `totalCount`, `hasMore`, `limit` 200 ridotto a [1, 1000], 400 per 0/negativo/non numerico), cache di 5 s come comportamento del codice, archi da `related:`, link ambigui scartati, nodi `type: query` tolti, `nodeType` aperto. Semantica di `totalCount`/`hasMore` e cache da verificare in LWS-TSK-011.
