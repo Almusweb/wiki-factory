@@ -302,3 +302,13 @@ scope: "EP-002 persistenza: prossimo TSK-009 (US-017)"
 **Commit:** 887df67 (branch docs/align-v0-6-13, nessun push)
 **DoD:** pass
 **Note:** 405 solo fuori da GET/POST/PATCH/DELETE, verbo sbagliato fra gli ammessi 404, OPTIONS 204 con CORS, preflight 600 s; rate limit 120 per finestra di 1 s prima dell'auth; limiti di corpo e in volo come limiti del codice non provati sotto carico; `Retry-After` non affermato; nessun codice per il corpo generico troppo grande. `chat` 501 e `examples.md` r.273 rinviati a LWS-TSK-009.
+
+## 2026-11-23 19:40 — develop LWS-TSK-009
+**Agente:** docs-dev (commit eseguito dalla sessione principale con OK dell'utente)
+**TSK:** [[../management/kanban/LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-007-scritture-chat-e-rescan/LWS-TSK-009]]
+**Layer:** docs
+**Code path:** code_repos/llm_wiki_skill
+**Files touched:** 4 (README.md, SKILL.md, api-reference.md, examples.md)
+**Commit:** d3d3fd4 (branch docs/align-v0-6-13, nessun push)
+**DoD:** pass
+**Note:** Route `reviews` in scrittura, `pages/write` (corpo noto, 409/400/500), `pages/embed`, `chat` (JSON o SSE) e cancel con solo metodo, auth, limiti ed errori; sezione «Routes that change state» con richiesta esplicita dell'utente; tolte le formule «unico endpoint di scrittura», «/chat 501», «non chiamare /chat». Dichiarazione di versione a LWS-TSK-014.
