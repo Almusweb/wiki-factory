@@ -15,10 +15,9 @@ updated: 2026-11-23
 
 | Epica | Titolo | Status epica | blocked | in_progress | review | todo |
 |---|---|---|---|---|---|---|
-| [EP-002](EP-002-conoscenza-layer-di-persistenza/EP-002.md) | Completare la conoscenza del layer di persistenza | defined | 0 | 0 | 0 | 1 |
 | [LWS-EP-001](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-EP-001.md) | Allineare la skill llm-wiki all'app llm_wiki v0.6.13 (fase A, PR generica upstream) | defined | 0 | 0 | 0 | 5 |
 
-Totale TSK aperti: 6 (sprint corrente 2, lookahead 4).
+Totale TSK aperti: 5 (sprint corrente 2, lookahead 3).
 
 ## Sprint corrente
 
@@ -30,12 +29,6 @@ Totale TSK aperti: 6 (sprint corrente 2, lookahead 4).
 | [LWS-TSK-018](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-010-preparare-la-pr-upstream/LWS-TSK-018.md) | Apertura della PR verso nashsu/llm_wiki_skill (gate umano) | LWS-US-010 | infra | P1 | todo | — | LWS-TSK-017 |
 
 ## Lookahead
-
-### EP-002 — Completare la conoscenza del layer di persistenza
-
-| TSK | Titolo | US | Layer | Pri | Status | Owner | Dipende da |
-|---|---|---|---|---|---|---|---|
-| [TSK-032](EP-002-conoscenza-layer-di-persistenza/US-035-rebuild-index-e-scrittori-log-index/TSK-032.md) | Chiudere il residuo rebuild_wiki_index del gap llm-wiki-log-index-formato in wiki/gaps.md | US-035 | docs | P2 | todo | — | TSK-031 |
 
 ### LWS-EP-001 — Allineare la skill llm-wiki all'app llm_wiki v0.6.13 (fase A, PR generica upstream)
 
