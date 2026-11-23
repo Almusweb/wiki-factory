@@ -16,9 +16,9 @@ updated: 2026-11-23
 | Epica | Titolo | Status epica | blocked | in_progress | review | todo |
 |---|---|---|---|---|---|---|
 | [EP-002](EP-002-conoscenza-layer-di-persistenza/EP-002.md) | Completare la conoscenza del layer di persistenza | defined | 0 | 0 | 0 | 3 |
-| [LWS-EP-001](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-EP-001.md) | Allineare la skill llm-wiki all'app llm_wiki v0.6.13 (fase A, PR generica upstream) | defined | 0 | 0 | 0 | 7 |
+| [LWS-EP-001](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-EP-001.md) | Allineare la skill llm-wiki all'app llm_wiki v0.6.13 (fase A, PR generica upstream) | defined | 0 | 0 | 0 | 6 |
 
-Totale TSK aperti: 10 (sprint corrente 4, lookahead 6).
+Totale TSK aperti: 9 (sprint corrente 3, lookahead 6).
 
 ## Sprint corrente
 
@@ -26,7 +26,6 @@ Totale TSK aperti: 10 (sprint corrente 4, lookahead 6).
 
 | TSK | Titolo | US | Layer | Pri | Status | Owner | Dipende da |
 |---|---|---|---|---|---|---|---|
-| [LWS-TSK-015](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-009-coerenza-interna-e-versione/LWS-TSK-015.md) | Verifica di coerenza fra i quattro file della skill sui termini toccati da 003..007 | LWS-US-009 | docs | P1 | todo | — | LWS-TSK-014 |
 | [LWS-TSK-016](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-010-preparare-la-pr-upstream/LWS-TSK-016.md) | Audit locale pre-PR: non-traccia, elementi non trasferibili, evidenza per ogni frase e bozza della descrizione | LWS-US-010 | docs | P1 | todo | — | LWS-TSK-015 |
 | [LWS-TSK-017](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-010-preparare-la-pr-upstream/LWS-TSK-017.md) | Push del branch condiviso sulla fork (gate umano) | LWS-US-010 | infra | P1 | todo | — | LWS-TSK-016 |
 | [LWS-TSK-018](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-010-preparare-la-pr-upstream/LWS-TSK-018.md) | Apertura della PR verso nashsu/llm_wiki_skill (gate umano) | LWS-US-010 | infra | P1 | todo | — | LWS-TSK-017 |

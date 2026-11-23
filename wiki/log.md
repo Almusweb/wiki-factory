@@ -332,3 +332,13 @@ scope: "EP-002 persistenza: prossimo TSK-009 (US-017)"
 **Commit:** 9c2669e (branch docs/align-v0-6-13, nessun push)
 **DoD:** pass
 **Note:** Versione dichiarata «API v1 come implementata dall'app 0.6.13» con base generica (codice sorgente e alcune risposte di un'app in esecuzione); tolti «0.4.10+» e la storia delle versioni; regola di drift su qualunque versione diversa; README con quattro file e `--skill llm-wiki`; tre forme di `{id}` lato server. Residui a LWS-TSK-015 (drift in SKILL.md, `examples.md` r.173) e LWS-TSK-016.
+
+## 2026-11-23 21:40 — develop LWS-TSK-015
+**Agente:** docs-dev (commit eseguito dalla sessione principale con OK dell'utente)
+**TSK:** [[../management/kanban/LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-009-coerenza-interna-e-versione/LWS-TSK-015]]
+**Layer:** docs
+**Code path:** code_repos/llm_wiki_skill
+**Files touched:** 2 (SKILL.md, examples.md)
+**Commit:** fd8a5a4 (branch docs/align-v0-6-13, nessun push)
+**DoD:** pass
+**Note:** Otto termini (CORS, localhost, 404, 405, 501, read-only, hybrid, write) coerenti in tutti e quattro i file, nessuna frase tolta. Regola di drift aggiunta in `SKILL.md`; intestazione della ricetta sulle review «(verified on 0.6.13)». Residui a LWS-TSK-016.
