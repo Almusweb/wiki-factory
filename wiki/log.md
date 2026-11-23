@@ -366,3 +366,13 @@ File toccati: wiki/sources/2026-11-23-repo-llm_wiki-rebuild-index-scrittori.md, 
 **Commit:** commit di chiusura del TSK nella factory
 **DoD:** 9/9 — controlli a comando eseguiti dalla sessione principale: `git -C code_repos/llm_wiki status --short` vuoto (exit 0), `gaps_append_guard.py` exit 0, `git status --short` coerente con i file dichiarati; stato `done`
 **Note:** Scheda `vettoriali.md`, sezioni A01 (`wiki_chunks_v2`, sei colonne) e A02 (`wiki_vectors`, due colonne); layout modello delle schede di `db_schemas/` per decisione dell'utente, senza ADR. Gap nuovo, non bloccante: `llm-wiki-vettoriali-colonne-non-dichiarate` (tipi e nullabilità di A02, dimensione del vettore v1, significato di `heading_path`). Marcatori: 9, tutti conformi alla regex, 4 slug presenti in `wiki/gaps.md`; citazioni a wiki e wikilink: 0. Segnalazioni al product-manager nel TSK (gap multimodale, cambio modello e chiamanti v1 chiusi ma storie non aggiornate). Validazione, limiti e A03 restano a TSK-034.
+
+## 2026-11-23 22:30 — develop LWS-TSK-016
+**Agente:** docs-dev (commit di correzione eseguito dalla sessione principale con OK dell'utente)
+**TSK:** [[../management/kanban/LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-010-preparare-la-pr-upstream/LWS-TSK-016]]
+**Layer:** docs
+**Code path:** code_repos/llm_wiki_skill
+**Files touched:** 4 (README.md, SKILL.md, api-reference.md, examples.md)
+**Commit:** f6a99c7 (branch docs/align-v0-6-13, 12 commit sopra main, nessun push)
+**DoD:** pass
+**Note:** Audit pre-PR: diff contro main solo sui quattro file; 0 tracce (pattern di `ai_policy.py`) nel diff, nei 12 messaggi di commit e nella bozza della descrizione PR; nessun elemento non trasferibile della bozza; 31 gruppi di frasi senza evidenza, storia delle versioni o numeri di riga tolti. Bozza della descrizione PR nella Chiusura. Prossimi: LWS-TSK-017 (push) e LWS-TSK-018 (PR), gate umani.
