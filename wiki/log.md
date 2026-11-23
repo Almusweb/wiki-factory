@@ -282,3 +282,13 @@ scope: "EP-002 persistenza: prossimo TSK-009 (US-017)"
 **Commit:** 541e610 (branch docs/align-v0-6-13, nessun push)
 **DoD:** pass
 **Note:** Paginazione del grafo (`offset`, `edgeScope`, `totalCount`, `hasMore`, `limit` 200 ridotto a [1, 1000], 400 per 0/negativo/non numerico), cache di 5 s come comportamento del codice, archi da `related:`, link ambigui scartati, nodi `type: query` tolti, `nodeType` aperto. Semantica di `totalCount`/`hasMore` e cache da verificare in LWS-TSK-011.
+
+## 2026-11-23 18:50 — develop LWS-TSK-008
+**Agente:** docs-dev (commit eseguito dalla sessione principale con OK dell'utente)
+**TSK:** [[../management/kanban/LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-006-metodi-errori-e-limiti/LWS-TSK-008]]
+**Layer:** docs
+**Code path:** code_repos/llm_wiki_skill
+**Files touched:** 4 (README.md, SKILL.md, api-reference.md, examples.md)
+**Commit:** 887df67 (branch docs/align-v0-6-13, nessun push)
+**DoD:** pass
+**Note:** 405 solo fuori da GET/POST/PATCH/DELETE, verbo sbagliato fra gli ammessi 404, OPTIONS 204 con CORS, preflight 600 s; rate limit 120 per finestra di 1 s prima dell'auth; limiti di corpo e in volo come limiti del codice non provati sotto carico; `Retry-After` non affermato; nessun codice per il corpo generico troppo grande. `chat` 501 e `examples.md` r.273 rinviati a LWS-TSK-009.
