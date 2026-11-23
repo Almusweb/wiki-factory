@@ -124,7 +124,7 @@ Cartella `code_repos/llm_wiki_skill`, file SKILL.md api-reference.md examples.md
 | Committati | `460d634` nel repo della skill (4 file, 37+/24-), dopo OK esplicito dell'utente in chat (2026-11-23); `sm_commit.py --dry-run` → messaggio invariato; `git log -1` senza trailer né attribution. Dopo il commit `git status --short` della skill vuoto. Punti dubbi 1-3: lasciati come sono; punto 4 (`examples.md` r.179, inferenza su `vectorScore`) rinviato a LWS-TSK-016, decisione dell'utente |
 | Working tree | skill (`git -C code_repos/llm_wiki_skill status --short`): ` M SKILL.md`, ` M api-reference.md`, ` M examples.md`. Factory (`git status --short`): ` m code_repos/llm_wiki_skill` (puntatore), questo TSK, `?? DOSSIER-llm-wiki-qualita-ingest.md` (già presente prima del lavoro) |
 
-README.md non toccato: l'esempio di `/health` con `version` è di LWS-TSK-014.
+README.md non toccato dal dev-agent. Superato: la sessione principale ha aggiunto la riga `version` all'esempio di `/health` su decisione dell'utente (vedi AC1 e «Dichiarati»); LWS-TSK-014 la verifica soltanto.
 
 ## Dependencies
 - LWS-TSK-005 — serializzazione per sovrapposizione di file.

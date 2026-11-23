@@ -118,7 +118,7 @@ Branch `docs/align-v0-6-13`, HEAD `778b149` (verificato a comando prima di scriv
 - Nel working tree della factory: `git status --short` → ` M code_repos/llm_wiki_skill`, ` M` LWS-TSK-001, LWS-TSK-002, LWS-TSK-003, `sprint.md`, `wiki/log.md`, `?? DOSSIER-llm-wiki-qualita-ingest.md` (preesistenti); in più questo TSK.
 - Messaggio di commit proposto: `docs: describe list-based CORS, configurable listen address and per-route token rules`
 
-> Stato: `in-progress`, DoD non spuntata. Passa a `done` solo dopo il commit con OK esplicito dell'utente.
+> Stato al momento del report del dev-agent: `in-progress`, DoD non spuntata. Superato: `done` dopo il commit `753cbbd` con OK dell'utente (2026-11-23), vedi frontmatter e «Committati».
 
 ## Dependencies
 - LWS-TSK-003 — serializzazione per sovrapposizione di file.

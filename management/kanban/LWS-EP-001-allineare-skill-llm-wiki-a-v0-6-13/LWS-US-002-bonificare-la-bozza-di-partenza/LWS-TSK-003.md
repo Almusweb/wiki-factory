@@ -118,7 +118,7 @@ La regola della bozza «senza etichetta = upstream» è contraddetta da novità 
 - Fine riga CRLF dei quattro file preservata.
 - Messaggio di commit proposto: `docs: drop unproven 0.6.13 additions and restore the original trigger wording`
 
-> Stato: `in-progress`, DoD non spuntata. Passa a `done` solo dopo il commit con OK esplicito dell'utente.
+> Stato al momento del report del dev-agent: `in-progress`, DoD non spuntata. Superato: `done` dopo il commit `778b149` con OK dell'utente (2026-11-23), vedi frontmatter e «Committati».
 
 ## Dependencies
 - LWS-TSK-002 — la bozza deve essere già applicata e bonificata.

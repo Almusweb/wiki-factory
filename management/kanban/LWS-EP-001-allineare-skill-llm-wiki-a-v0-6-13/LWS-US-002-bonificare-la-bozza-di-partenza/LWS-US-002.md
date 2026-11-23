@@ -3,11 +3,13 @@ id: LWS-US-002
 title: Bonificare la bozza come testo di partenza
 role: Maintainer della fork della skill llm-wiki
 priority: high
-status: ready
+status: done
 wiki_page: wiki/entities/llm-wiki-skill-bozza-alm-wiki.md
 blocked_by: []
 pending_clarification: []
 depends_on: [LWS-US-001]
+started_at: 2026-11-23
+closed_at: 2026-11-23
 ---
 
 # LWS-US-002 — Bonificare la bozza come testo di partenza
@@ -29,13 +31,16 @@ Come maintainer della fork della skill `llm-wiki`, voglio partire dalla bozza di
 [^src: wiki/entities/llm-wiki-skill-bozza-alm-wiki.md §Anomalie A1-A5 (della fonte)]
 
 ## Acceptance Criteria
-- [ ] Il punto di partenza è la bozza applicata su un branch da `main` del submodule; nessun file nuovo oltre ai quattro della skill (`SKILL.md`, `api-reference.md`, `examples.md`, `README.md`).
-- [ ] Nei quattro file non resta nessuno di questi elementi: etichette `[obs]` e `[code]` e legende; `FORK.md` e ogni riferimento ad esso; avvisi di fork e istruzioni «non da eseguire su questa copia»; riferimenti a task interni; percorsi locali reali; dati di un progetto reale con data (score 122, 102 e 82, «Values seen on a real wiki», fonti accodate il 2026-11-13, «seen once», id e timestamp dell'esempio di review). La verifica è una ricerca testuale su questi elementi nei quattro file, con comando ed esito riportati nel TSK.
-- [ ] Gli esempi non contengono nomi del progetto reale né dell'utente.
-- [ ] La `description` (trigger) è quella originale, con la sola clausola «read-only except for source rescan» riformulata in «lettura per default, scrittura su richiesta esplicita dell'utente»; gli altri cambi di trigger della bozza non sono presenti.
-- [ ] Le novità senza etichetta della bozza (A1) non coperte da una riga di evidenza sono assenti dai quattro file; l'elenco di quelle scartate è registrato nel TSK senza riportare dati del progetto reale.
-- [ ] Nessun file e nessun dato della bozza è copiato dentro il repository della factory; il TSK riporta solo il riferimento alla scheda wiki, non il percorso assoluto dell'utente.
-- [ ] Nessun ID kanban, riferimento alla factory o attribution AI nei quattro file; nessun commit senza OK esplicito dell'utente.
+- [x] Il punto di partenza è la bozza applicata su un branch da `main` del submodule; nessun file nuovo oltre ai quattro della skill (`SKILL.md`, `api-reference.md`, `examples.md`, `README.md`). (LWS-TSK-002 §Chiusura, AC1)
+- [x] Nei quattro file non resta nessuno di questi elementi: etichette `[obs]` e `[code]` e legende; `FORK.md` e ogni riferimento ad esso; avvisi di fork e istruzioni «non da eseguire su questa copia»; riferimenti a task interni; percorsi locali reali; dati di un progetto reale con data (score 122, 102 e 82, «Values seen on a real wiki», fonti accodate il 2026-11-13, «seen once», id e timestamp dell'esempio di review). La verifica è una ricerca testuale su questi elementi nei quattro file, con comando ed esito riportati nel TSK. (LWS-TSK-002 §Chiusura, AC2)
+- [x] Gli esempi non contengono nomi del progetto reale né dell'utente. (LWS-TSK-002 §Chiusura, AC3)
+- [x] La `description` (trigger) è quella originale, con la sola clausola «read-only except for source rescan» riformulata in «lettura per default, scrittura su richiesta esplicita dell'utente»; gli altri cambi di trigger della bozza non sono presenti. (LWS-TSK-003 §Chiusura, AC4)
+- [x] Le novità senza etichetta della bozza (A1) non coperte da una riga di evidenza sono assenti dai quattro file; l'elenco di quelle scartate è registrato nel TSK senza riportare dati del progetto reale. (LWS-TSK-003 §Chiusura, AC5)
+- [x] Nessun file e nessun dato della bozza è copiato dentro il repository della factory; il TSK riporta solo il riferimento alla scheda wiki, non il percorso assoluto dell'utente. (LWS-TSK-002 §Chiusura, AC6)
+- [x] Nessun ID kanban, riferimento alla factory o attribution AI nei quattro file; nessun commit senza OK esplicito dell'utente. (LWS-TSK-002 §Chiusura, AC7; LWS-TSK-003 §Chiusura, AC7)
+
+## Nota di modifica
+- 2026-11-23 — Chiusura (rollup; fonte: tabelle §Chiusura di LWS-TSK-002 e LWS-TSK-003, entrambi `done`). Prima: `status: ready`, AC non spuntati. Ora: `status: done`, AC1..AC7 spuntati con riferimento ai TSK pertinenti (AC1, AC2, AC3, AC6 da LWS-TSK-002; AC4, AC5 da LWS-TSK-003; AC7 da entrambi); commit nel repo della skill `aeada6b` e `778b149` sul branch `docs/align-v0-6-13`; `started_at` e `closed_at` 2026-11-23 (date del lavoro, dai TSK).
 
 ## Fonti
 [^src: wiki/entities/llm-wiki-skill-bozza-alm-wiki.md §Dettaglio]

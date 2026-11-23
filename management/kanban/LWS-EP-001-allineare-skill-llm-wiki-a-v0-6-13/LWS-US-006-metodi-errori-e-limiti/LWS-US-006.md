@@ -3,11 +3,13 @@ id: LWS-US-006
 title: Metodi, errori e limiti
 role: Agente AI che usa la skill llm-wiki
 priority: medium
-status: ready
+status: done
 wiki_page: wiki/concepts/llm-wiki-api-locale.md
 blocked_by: []
 pending_clarification: []
 depends_on: [LWS-US-002]
+started_at: 2026-11-23
+closed_at: 2026-11-23
 ---
 
 # LWS-US-006 — Metodi, errori e limiti
@@ -43,12 +45,15 @@ Come agente AI che usa la skill `llm-wiki`, voglio che la skill descriva metodi 
 [^src: wiki/entities/llm-wiki-skill.md §Incoerenze interne della skill (materiale per la PR)]
 
 ## Acceptance Criteria
-- [ ] La skill dice che i metodi ammessi sono GET, POST, PATCH, DELETE; che il 405 vale per gli altri metodi; che su una route nota un verbo sbagliato dà 404; che `OPTIONS` dà 204 con CORS prima di ogni altro controllo. La contraddizione 405/preflight è chiusa (n. 8).
-- [ ] Il preflight è dichiarato di 600 secondi.
-- [ ] Il rate limit è dichiarato prima dell'auth e con `/health` e `OPTIONS` esclusi; restano 120 richieste per finestra di 1 s con 429; la tabella dei limiti aggiunge body di `chat` 40 MiB, `pages/write` circa 12 MiB, 8 stream chat in volo e 4 embed in volo, oltre al limite generale di 1 MiB sul body.
-- [ ] La skill non afferma l'esistenza di `Retry-After`: dice che i 429 e 503 non lo portano nei percorsi noti (n. 7); i tempi di attesa consigliati (almeno 1 s su 429, almeno 2 s su 503) restano come prudenza dell'agente, non come dato del server.
-- [ ] Il corpo troppo grande di `pages/write` è dichiarato 400; per il corpo generico oltre il limite la skill non indica un codice specifico e non resta la doppia indicazione 400 e 413 (n. 1).
-- [ ] Ogni affermazione cambiata ha nel TSK la riga di evidenza corrispondente; nessuna è priva di evidenza.
+- [x] La skill dice che i metodi ammessi sono GET, POST, PATCH, DELETE; che il 405 vale per gli altri metodi; che su una route nota un verbo sbagliato dà 404; che `OPTIONS` dà 204 con CORS prima di ogni altro controllo. La contraddizione 405/preflight è chiusa (n. 8). (LWS-TSK-008 §Chiusura, AC1)
+- [x] Il preflight è dichiarato di 600 secondi. (LWS-TSK-008 §Chiusura, AC2)
+- [x] Il rate limit è dichiarato prima dell'auth e con `/health` e `OPTIONS` esclusi; restano 120 richieste per finestra di 1 s con 429; la tabella dei limiti aggiunge body di `chat` 40 MiB, `pages/write` circa 12 MiB, 8 stream chat in volo e 4 embed in volo, oltre al limite generale di 1 MiB sul body. (LWS-TSK-008 §Chiusura, AC3)
+- [x] La skill non afferma l'esistenza di `Retry-After`: dice che i 429 e 503 non lo portano nei percorsi noti (n. 7); i tempi di attesa consigliati (almeno 1 s su 429, almeno 2 s su 503) restano come prudenza dell'agente, non come dato del server. (LWS-TSK-008 §Chiusura, AC4)
+- [x] Il corpo troppo grande di `pages/write` è dichiarato 400; per il corpo generico oltre il limite la skill non indica un codice specifico e non resta la doppia indicazione 400 e 413 (n. 1). (LWS-TSK-008 §Chiusura, AC5)
+- [x] Ogni affermazione cambiata ha nel TSK la riga di evidenza corrispondente; nessuna è priva di evidenza. (LWS-TSK-008 §Chiusura, AC6)
+
+## Nota di modifica
+- 2026-11-23 — Chiusura (rollup; fonte: tabella §Chiusura di LWS-TSK-008, unico TSK della storia, `done`). Prima: `status: ready`, AC non spuntati. Ora: `status: done`, AC1..AC6 spuntati con riferimento a LWS-TSK-008 §Chiusura; commit nel repo della skill `887df67` sul branch `docs/align-v0-6-13`; `started_at` e `closed_at` 2026-11-23 (date del lavoro, da LWS-TSK-008). I limiti di corpo, il rate limit e il 503 restano dichiarati nella skill come non provati in esecuzione.
 
 ## Fonti
 [^src: wiki/syntheses/llm-wiki-skill-vs-app-v0-6-13.md §Dettaglio]

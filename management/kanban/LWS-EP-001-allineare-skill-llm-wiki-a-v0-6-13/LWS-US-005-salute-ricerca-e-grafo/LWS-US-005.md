@@ -3,11 +3,13 @@ id: LWS-US-005
 title: Salute, ricerca e grafo
 role: Agente AI che usa la skill llm-wiki
 priority: high
-status: ready
+status: done
 wiki_page: wiki/concepts/llm-wiki-ricerca-e-grafo-api.md
 blocked_by: []
 pending_clarification: []
 depends_on: [LWS-US-002]
+started_at: 2026-11-23
+closed_at: 2026-11-23
 ---
 
 # LWS-US-005 — Salute, ricerca e grafo
@@ -50,15 +52,18 @@ Come agente AI che usa la skill `llm-wiki`, voglio che la skill descriva `/healt
 [^src: wiki/concepts/llm-wiki-skill-api-v1-dichiarata.md §`GET /projects/{id}/graph`]
 
 ## Acceptance Criteria
-- [ ] `/health` documenta anche `mcpEnabled`, `allowLanAccess` e `agent{chat, streaming, streamProtocol}` e dice che risponde anche su `/health` senza prefisso; l'elenco dei campi è lo stesso in tutti i file, `version` incluso, e l'esempio del README ha `version` (n. 3).
-- [ ] `search` documenta `graphHits` accanto a `tokenHits` e `vectorHits` e dice di guardare `vectorHits` e `graphHits`, non solo `mode`; `queryEmbedding` compare nel corpo anche in `SKILL.md` (n. 4).
-- [ ] La skill dice che `hybrid` può avere `vectorHits` 0, che l'RRF si applica solo con risultati vettoriali, che senza vettori il punteggio keyword è additivo, che `vectorScore` non è un coseno grezzo e che gli score non sono confrontabili fra modalità; non resta alcun intervallo numerico RRF dichiarato come universale.
-- [ ] La skill documenta la copertura della ricerca: solo `wiki/**/*.md`, fino a 10.000 file, senza segnalazione di troncamento nella risposta.
-- [ ] La lunghezza dello snippet non è più dichiarata «circa 160 caratteri»; la dicitura è neutra e non introduce una nuova garanzia (D14).
-- [ ] `graph` documenta `offset`, `edgeScope` (`page` o `filtered`), i campi di risposta `offset`, `limit`, `totalCount` e `hasMore`, la cache di 5 s e il clamp di `limit` a [1, 1000] con 400 per 0, negativo e non numerico; `q` filtra solo i nodi; la frase «nessuna paginazione» riguarda solo `files`.
-- [ ] La skill dice che gli archi vengono anche da `related:`, che i link ambigui sono scartati e che le pagine `type: query` non sono nodi; `nodeType` è descritto come insieme aperto derivato da `type:`, con esempi non esaustivi (n. 15).
-- [ ] La skill non dichiara completo l'elenco dei campi di un risultato di `search` e non porta `images` sempre vuoto né l'ordine non strettamente decrescente.
-- [ ] Ogni affermazione cambiata ha nel TSK la riga di evidenza corrispondente; nessuna è priva di evidenza.
+- [x] `/health` documenta anche `mcpEnabled`, `allowLanAccess` e `agent{chat, streaming, streamProtocol}` e dice che risponde anche su `/health` senza prefisso; l'elenco dei campi è lo stesso in tutti i file, `version` incluso, e l'esempio del README ha `version` (n. 3). (LWS-TSK-006 §Chiusura, AC1)
+- [x] `search` documenta `graphHits` accanto a `tokenHits` e `vectorHits` e dice di guardare `vectorHits` e `graphHits`, non solo `mode`; `queryEmbedding` compare nel corpo anche in `SKILL.md` (n. 4). (LWS-TSK-006 §Chiusura, AC2)
+- [x] La skill dice che `hybrid` può avere `vectorHits` 0, che l'RRF si applica solo con risultati vettoriali, che senza vettori il punteggio keyword è additivo, che `vectorScore` non è un coseno grezzo e che gli score non sono confrontabili fra modalità; non resta alcun intervallo numerico RRF dichiarato come universale. (LWS-TSK-006 §Chiusura, AC3)
+- [x] La skill documenta la copertura della ricerca: solo `wiki/**/*.md`, fino a 10.000 file, senza segnalazione di troncamento nella risposta. (LWS-TSK-006 §Chiusura, AC4)
+- [x] La lunghezza dello snippet non è più dichiarata «circa 160 caratteri»; la dicitura è neutra e non introduce una nuova garanzia (D14). (LWS-TSK-006 §Chiusura, AC5)
+- [x] `graph` documenta `offset`, `edgeScope` (`page` o `filtered`), i campi di risposta `offset`, `limit`, `totalCount` e `hasMore`, la cache di 5 s e il clamp di `limit` a [1, 1000] con 400 per 0, negativo e non numerico; `q` filtra solo i nodi; la frase «nessuna paginazione» riguarda solo `files`. (LWS-TSK-007 §Chiusura, AC6)
+- [x] La skill dice che gli archi vengono anche da `related:`, che i link ambigui sono scartati e che le pagine `type: query` non sono nodi; `nodeType` è descritto come insieme aperto derivato da `type:`, con esempi non esaustivi (n. 15). (LWS-TSK-007 §Chiusura, AC7)
+- [x] La skill non dichiara completo l'elenco dei campi di un risultato di `search` e non porta `images` sempre vuoto né l'ordine non strettamente decrescente. (LWS-TSK-006 §Chiusura, AC8)
+- [x] Ogni affermazione cambiata ha nel TSK la riga di evidenza corrispondente; nessuna è priva di evidenza. (LWS-TSK-006 §Chiusura, AC9, per `/health` e `search`; LWS-TSK-007 §Chiusura, AC9, per `graph`)
+
+## Nota di modifica
+- 2026-11-23 — Chiusura (rollup; fonte: tabelle §Chiusura di LWS-TSK-006 e LWS-TSK-007, entrambi `done`). Prima: `status: ready`, AC non spuntati. Ora: `status: done`, AC1..AC9 spuntati con riferimento ai TSK pertinenti (AC1..AC5, AC8 da LWS-TSK-006; AC6, AC7 da LWS-TSK-007; AC9 da entrambi, ciascuno per la sua parte); commit nel repo della skill `460d634` e `541e610` sul branch `docs/align-v0-6-13`; `started_at` e `closed_at` 2026-11-23 (date del lavoro, dai TSK). Decisioni dell'utente riportate dai TSK: l'esempio di `/health` del README con `version` è stato completato in LWS-TSK-006 (non rinviato a LWS-TSK-014); la cache di 5 s del grafo resta [C] da raw api-mcp, non provata in esecuzione, da verificare in LWS-TSK-011.
 
 ## Fonti
 [^src: wiki/syntheses/llm-wiki-skill-vs-app-v0-6-13.md §Dettaglio]

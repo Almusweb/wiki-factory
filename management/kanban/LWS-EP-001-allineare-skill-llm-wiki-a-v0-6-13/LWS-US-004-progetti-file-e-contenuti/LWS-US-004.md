@@ -3,11 +3,13 @@ id: LWS-US-004
 title: Progetti, file e contenuti
 role: Agente AI che usa la skill llm-wiki
 priority: high
-status: ready
+status: done
 wiki_page: wiki/concepts/llm-wiki-api-locale.md
 blocked_by: []
 pending_clarification: []
 depends_on: [LWS-US-002]
+started_at: 2026-11-23
+closed_at: 2026-11-23
 ---
 
 # LWS-US-004 — Progetti, file e contenuti
@@ -44,13 +46,16 @@ Come agente AI che usa la skill `llm-wiki`, voglio che la skill descriva corrett
 [^src: wiki/concepts/llm-wiki-skill-api-v1-dichiarata.md §`GET /projects/{id}/files/content`]
 
 ## Acceptance Criteria
-- [ ] `projects` documenta la chiave `currentProject` oltre a `projects[]`, e l'esempio della risposta è coerente; la skill non la attribuisce a `/health`.
-- [ ] La forma «percorso» di `{id}` non è più dichiarata «esatta» né accompagnata da prescrizioni su maiuscole e slash: il codice accetta maiuscole diverse e `\` su Windows. Resta l'avvertenza che una `/` nell'id va codificata `%2F`; non si prescrive di codificare i due punti.
-- [ ] `files/content` elenca come leggibili md, mdx, txt, csv, json, yaml, yml, xml, html, htm, log e dice che `rtf` non è leggibile (415); l'elenco è identico in tutti i file che lo citano (n. 6).
-- [ ] `files` dice 413 oltre `maxFiles` e non descrive il campo `truncated` (n. 2); gli alias `raw` e `raw/sources` di `root` compaiono in tutti i file che descrivono `files` (n. 5).
-- [ ] Il `Content-Type` non è più dichiarato con `charset=utf-8`; se non si riporta il dato osservato, la dicitura è neutra («`application/json`») (D13).
-- [ ] La skill non afferma che negli script serva l'UUID né che `/projects` elenchi progetti esterni; non porta la permissività osservata di `files/content`.
-- [ ] Ogni affermazione cambiata ha nel TSK la riga di evidenza corrispondente; nessuna è priva di evidenza.
+- [x] `projects` documenta la chiave `currentProject` oltre a `projects[]`, e l'esempio della risposta è coerente; la skill non la attribuisce a `/health`. (LWS-TSK-005 §Chiusura, AC1)
+- [x] La forma «percorso» di `{id}` non è più dichiarata «esatta» né accompagnata da prescrizioni su maiuscole e slash: il codice accetta maiuscole diverse e `\` su Windows. Resta l'avvertenza che una `/` nell'id va codificata `%2F`; non si prescrive di codificare i due punti. (LWS-TSK-005 §Chiusura, AC2)
+- [x] `files/content` elenca come leggibili md, mdx, txt, csv, json, yaml, yml, xml, html, htm, log e dice che `rtf` non è leggibile (415); l'elenco è identico in tutti i file che lo citano (n. 6). (LWS-TSK-005 §Chiusura, AC3)
+- [x] `files` dice 413 oltre `maxFiles` e non descrive il campo `truncated` (n. 2); gli alias `raw` e `raw/sources` di `root` compaiono in tutti i file che descrivono `files` (n. 5). (LWS-TSK-005 §Chiusura, AC4)
+- [x] Il `Content-Type` non è più dichiarato con `charset=utf-8`; se non si riporta il dato osservato, la dicitura è neutra («`application/json`») (D13). (LWS-TSK-005 §Chiusura, AC5)
+- [x] La skill non afferma che negli script serva l'UUID né che `/projects` elenchi progetti esterni; non porta la permissività osservata di `files/content`. (LWS-TSK-005 §Chiusura, AC6)
+- [x] Ogni affermazione cambiata ha nel TSK la riga di evidenza corrispondente; nessuna è priva di evidenza. (LWS-TSK-005 §Chiusura, AC7)
+
+## Nota di modifica
+- 2026-11-23 — Chiusura (rollup; fonte: tabella §Chiusura di LWS-TSK-005, unico TSK della storia, `done`). Prima: `status: ready`, AC non spuntati. Ora: `status: done`, AC1..AC7 spuntati con riferimento a LWS-TSK-005 §Chiusura; commit nel repo della skill `69dece1` sul branch `docs/align-v0-6-13`; `started_at` e `closed_at` 2026-11-23 (date del lavoro, da LWS-TSK-005).
 
 ## Fonti
 [^src: wiki/syntheses/llm-wiki-skill-vs-app-v0-6-13.md §Dettaglio]

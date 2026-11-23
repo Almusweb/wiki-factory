@@ -3,11 +3,13 @@ id: LWS-US-001
 title: Confermare la base di partenza
 role: Maintainer della fork della skill llm-wiki
 priority: high
-status: ready
+status: done
 wiki_page: wiki/entities/llm-wiki-skill.md
 blocked_by: []
 pending_clarification: []
 depends_on: []
+started_at: 2026-11-23
+closed_at: 2026-11-23
 ---
 
 # LWS-US-001 — Confermare la base di partenza
@@ -26,11 +28,14 @@ Come maintainer della fork della skill `llm-wiki`, voglio confermare che `main` 
 [^src: wiki/entities/llm-wiki-skill.md §Struttura e installazione]
 
 ## Acceptance Criteria
-- [ ] `main` della fork è confrontato con `main` di `nashsu/llm_wiki_skill`; l'esito (identici, oppure elenco dei commit di scarto) è registrato nel TSK con il comando eseguito e il suo esito.
-- [ ] Se l'upstream è avanti, il lavoro riparte dal suo stato e sono elencate le sovrapposizioni fra i commit di scarto e le correzioni previste dall'epica.
-- [ ] È registrato il commit di partenza del lavoro, su un branch da `main` dedicato a questa PR.
-- [ ] Il fetch dell'upstream ha OK esplicito dell'utente, riportato nel TSK.
-- [ ] Nessun file della skill è modificato da questa storia.
+- [x] `main` della fork è confrontato con `main` di `nashsu/llm_wiki_skill`; l'esito (identici, oppure elenco dei commit di scarto) è registrato nel TSK con il comando eseguito e il suo esito. (LWS-TSK-001 §Chiusura, AC1: `main` e `upstream/main` identici a `642b438`)
+- [x] Se l'upstream è avanti, il lavoro riparte dal suo stato e sono elencate le sovrapposizioni fra i commit di scarto e le correzioni previste dall'epica. (LWS-TSK-001 §Chiusura, AC2: non applicabile, la condizione «upstream avanti» è falsa; `main..upstream/main` vuoto, verificato da AC1 dello stesso TSK)
+- [x] È registrato il commit di partenza del lavoro, su un branch da `main` dedicato a questa PR. (LWS-TSK-001 §Chiusura, AC3: branch `docs/align-v0-6-13`, commit di partenza `642b438`)
+- [x] Il fetch dell'upstream ha OK esplicito dell'utente, riportato nel TSK. (LWS-TSK-001 §Chiusura, AC4)
+- [x] Nessun file della skill è modificato da questa storia. (LWS-TSK-001 §Chiusura, AC5: `git status --short` e `git diff --name-only` vuoti)
+
+## Nota di modifica
+- 2026-11-23 — Chiusura (rollup; fonte: LWS-TSK-001 §Chiusura, unico TSK della storia, `done`). Prima: `status: ready`, AC non spuntati. Ora: `status: done`, AC1..AC5 spuntati con riferimento a LWS-TSK-001 §Chiusura; AC2 è spuntato perché non applicabile (condizione falsa, provata da AC1); `started_at` e `closed_at` 2026-11-23 (date del lavoro, da LWS-TSK-001).
 
 ## Fonti
 [^src: wiki/entities/llm-wiki-skill.md §Contesto]
