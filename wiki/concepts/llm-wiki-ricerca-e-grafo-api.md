@@ -4,8 +4,8 @@ type: concept
 title: llm-wiki — ricerca ibrida e grafo dell'API, come li calcola il codice (v0.6.13)
 status: draft
 created: 2026-11-22
-updated: 2026-11-22
-sources: ["raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md"]
+updated: 2026-11-23
+sources: ["raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md", "raw/2026-11-23-repo-llm_wiki-residui-api-skill.md", "raw/2026-11-23-repo-llm_wiki-residui-watch-skill.md"]
 tags: [llm-wiki, api, ricerca, grafo, diff-skill-app]
 ---
 
@@ -43,3 +43,13 @@ Lettura statica, nessuna esecuzione. Non sono coperti da questo raw: `offset`, `
 Epica LWS-EP-001 — Allineare la skill llm-wiki all'app llm_wiki v0.6.13 (fase A, PR generica upstream)
 - LWS-US-005 — Salute, ricerca e grafo
 - LWS-US-008 — Verificare sul codice i soli residui
+
+## Aggiornamenti (v2026-11-23, residui API)
+Dalla source page [[2026-11-23-repo-llm_wiki-residui-api-skill]]: lettura del codice di `e08cfce`, non eseguita; righe come nel raw. Il testo sopra non è modificato; **supera** la frase del primo elenco di §Dettaglio («Il raw non riporta la costante dell'RRF né il comportamento di `resolve_query_embedding`») e la riga di §Limiti su `offset`, `totalCount`, `hasMore`, cache di 5 s, scala RRF e `resolve_query_embedding`.
+
+- **Scala RRF.** Con risultati vettoriali il punteggio è `Σ 1/(60+rank)` sui ranghi dei token e del vettore (`RRF_K=60`): massimo 2/61, circa 0,0328. Un vicino del grafo vale `graph_score/61` con `graph_score = Σ 1/(rank+1)` sulle sementi, quindi può superare 1/61 con più sementi. Senza vettori restano i punteggi keyword (costanti 200, 50, 20 per occorrenza, 5,0, 1,0) su un'altra scala. **Non conclusivo:** la scala keyword esatta, perché `score_file` non è letto. [^src: raw/2026-11-23-repo-llm_wiki-residui-api-skill.md §Esiti per residuo]
+- **Campi della risposta e per risultato.** Top-level `{ok, projectId, mode, note, tokenHits, vectorHits, graphHits, results}`, con `mode` `keyword`, `vector` o `hybrid`; per risultato `path, title, snippet, titleMatch, score`, più `vectorScore` (omesso se assente), `images[{url, alt}]`, `content` (solo con `includeContent`), `graphRelatedTo` (omesso se vuoto). `topK` default 10, limitato a 1..50. [^src: raw/2026-11-23-repo-llm_wiki-residui-api-skill.md §Esiti per residuo]
+- **`resolve_query_embedding`.** Un `queryEmbedding` esplicito prevale ed è validato (vuoto o non finito dà 400). Senza configurazione, o con `enabled` falso o `endpoint` o `model` vuoti, restituisce `None`. Con configurazione valida chiama `fetch_embedding_with_retry`; se fallisce non c'è errore: log su stderr e ricerca solo keyword. **Non conclusivo:** l'uso della costante `SEARCH_EMBEDDING_TIMEOUT_SECS = 8` (sta in `fetch_embedding_with_retry`, non letto) e la verifica della dimensione contro l'indice (`vectorstore.rs` non letto). [^src: raw/2026-11-23-repo-llm_wiki-residui-api-skill.md §Esiti per residuo]
+- **Soglia del 5% (V4).** Nel codice letto un risultato è scartato solo se nome file esatto, frase nel titolo, occorrenze nel contenuto e punteggi dei token sono tutti nulli; non esiste una soglia relativa del 5% (il «5» è `TITLE_TOKEN_WEIGHT=5.0`). **Non conclusivo** per il percorso vettoriale: `vectorstore::vector_search_chunks` non è letto. [^src: raw/2026-11-23-repo-llm_wiki-residui-watch-skill.md §Voci V4/V20/V21/V22]
+- **Grafo: paginazione.** `offset` assente 0, non numerico o negativo 400; `limit` assente 200, 0 o negativo o non numerico 400, oltre 1000 ridotto a 1000; risposta `nodes, edges, offset, limit` (già ridotto), `totalCount, hasMore`. `totalCount` conta i nodi che passano `q` e `nodeType`, prima di `offset` e `limit`; `hasMore = offset + nodes.len() < totalCount`. `edgeScope` `page` (default) o `filtered`, altro 400. Nodi ordinati per id. [^src: raw/2026-11-23-repo-llm_wiki-residui-api-skill.md §Esiti per residuo]
+- **Grafo: cache di 5 s.** `GRAPH_CACHE_TTL` 5 s, al massimo 8 progetti. Entro 5 s restituisce la voce senza toccare il disco; scaduti, ricalcola l'impronta (percorso, dimensione e mtime di ogni `.md` sotto `wiki/`) e, se coincide, restituisce la voce vecchia senza aggiornare `loaded_at`: **riscansiona l'impronta a ogni richiesta dopo il TTL**. Il rescan invalida la voce. Non è `APP_STATE_CACHE_TTL`, anch'essa 5 s ma sulla configurazione. [^src: raw/2026-11-23-repo-llm_wiki-residui-api-skill.md §Esiti per residuo]

@@ -4,8 +4,8 @@ type: synthesis
 title: Affermazioni di alm-wiki sul codice llm_wiki e08cfce, confronto con la wiki e punti da verificare
 status: draft
 created: 2026-11-22
-updated: 2026-11-22
-sources: ["raw/2026-11-22-repo-alm-wiki-evidenze-api.md", "raw/2026-11-22-repo-alm-wiki-bozza-skill.md", "raw/2026-11-21-repo-llm_wiki-api-mcp.md", "raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md"]
+updated: 2026-11-23
+sources: ["raw/2026-11-23-repo-llm_wiki-residui-api-skill.md", "raw/2026-11-23-repo-llm_wiki-residui-watch-skill.md", "raw/2026-11-22-repo-alm-wiki-evidenze-api.md", "raw/2026-11-22-repo-alm-wiki-bozza-skill.md", "raw/2026-11-21-repo-llm_wiki-api-mcp.md", "raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md"]
 tags: [llm-wiki, api, diff-skill-app, da-verificare]
 ---
 
@@ -118,3 +118,20 @@ La riga della tabella «Altre affermazioni C della bozza» («con "Watch all pro
 
 ### Che cosa resta da verificare
 Voci n. 20, 21 e 22; soglia del 5%; parte «i file si perdono» di n. 18; `handle_write_page`, `handle_chat` e `respond_chat_sse` (e gli header SSE di successo); `enqueueInactiveProjectBatch` e un eventuale controllo LLM nel ramo inattivi; chiamante di `sweepResolvedReviews`; nome del file di coda dell'ingest; cosa passano i chiamanti come `sourceContent`; quasi tutta l'anomalia A1 (novità 0.6.13 della bozza senza etichetta: sono toccati solo `limit` 0 con 400, CORS e l'esclusione di `rtf`). Gap `llm-wiki-affermazioni-codice-da-verificare`, parziale, resta aperto ([[gaps]]). [^src: raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md §Gap evidenti]
+
+## Aggiornamenti (v2026-11-23, residui)
+Dalle source page [[2026-11-23-repo-llm_wiki-residui-api-skill]] e [[2026-11-23-repo-llm_wiki-residui-watch-skill]]: seconda lettura del codice di `e08cfce` (upstream v0.6.13), non eseguita. Il testo sopra e la sezione precedente non sono modificati. **Supera** la sezione «Che cosa resta da verificare» per i punti sotto; ciò che i raw dichiarano «non conclusivo» o «non verificato» resta tale.
+
+| Voce | Esito | Cosa dicono i raw |
+|---|---|---|
+| n. 4, soglia del 5% | **Non conclusivo** | Nel codice letto non esiste una soglia relativa del 5% (il «5» è `TITLE_TOKEN_WEIGHT=5.0`); non conclusivo solo perché `vector_search_chunks` non è letto [^src: raw/2026-11-23-repo-llm_wiki-residui-watch-skill.md §Voci V4/V20/V21/V22] |
+| n. 20, «Non fare POST /chat (501)» | **Non conclusivo sulle versioni precedenti** | Nessun 501 sul percorso POST chat letto; che cosa dicessero le versioni precedenti non è decidibile dal solo commit [^src: raw/2026-11-23-repo-llm_wiki-residui-watch-skill.md §Voci V4/V20/V21/V22] |
+| n. 21, scrittura esterna «bypassa il watcher» | **Smentita per il watcher; «accodate subito» non verificato** | Il watcher vede le scritture esterne; non verificato se le scritture del server API siano marcate come scritture dell'app; tempi reali non verificati [^src: raw/2026-11-23-repo-llm_wiki-residui-watch-skill.md §Voci V4/V20/V21/V22] |
+| n. 22, corsa review / auto-save | **Meccanismo possibile; osservazione del 2026-11-10 non decidibile** | Vedi [[llm-wiki-review-store-e-auto-save]] [^src: raw/2026-11-23-repo-llm_wiki-residui-watch-skill.md §Voci V4/V20/V21/V22] |
+| `handle_write_page`, `handle_chat`, `respond_chat_sse` | **Letti** | [[llm-wiki-api-locale]] §Aggiornamenti v2026-11-23; non conclusivi: codifica di trasferimento SSE, `approvedShellCommands` e `shellCommand` nel runtime, eventi emessi dal runtime, `normalize_wiki_write_path` [^src: raw/2026-11-23-repo-llm_wiki-residui-api-skill.md §Esiti per residuo] |
+| `enqueueInactiveProjectBatch` e controllo LLM nel ramo inattivi | **Letto** | Nessun controllo LLM né parsing all'accodamento; ingest alla riapertura [^src: raw/2026-11-23-repo-llm_wiki-residui-watch-skill.md §«Watch all projects» W1-W3] |
+| `stable_review_id` in Rust | **Letto in parte** | L'id stabile `review-<hex8>` è confrontato nel server API; resta non letto il chiamante di `sweepResolvedReviews` [^src: raw/2026-11-23-repo-llm_wiki-residui-api-skill.md §Esiti per residuo] |
+| Anomalia A1 (novità 0.6.13 senza etichetta) | **Toccata, non chiusa** | Il codice conferma limiti di corpo per route (chat 40 MiB, `pages/write` circa 12 MiB), `limit` e `offset` del grafo e i 409/499; la classificazione dell'etichetta della bozza (upstream, nuove, inferite) non è decidibile dal codice [^src: raw/2026-11-23-repo-llm_wiki-residui-api-skill.md §Esiti per residuo] |
+
+**Restano non letti o non decisi:** n. 22 e la parte «i file si perdono» di n. 18 (rescan HTTP su progetto non aperto); chiamante di `sweepResolvedReviews`; nome del file di coda dell'ingest; cosa passano i chiamanti come `sourceContent`; classificazione di A1. Gap `llm-wiki-affermazioni-codice-da-verificare`, parziale, resta aperto ([[gaps]]).
+

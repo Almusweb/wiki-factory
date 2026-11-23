@@ -4,8 +4,8 @@ type: concept
 title: llm-wiki — review, id, auto-save della UI e pulizia automatica (v0.6.13)
 status: draft
 created: 2026-11-22
-updated: 2026-11-22
-sources: ["raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md"]
+updated: 2026-11-23
+sources: ["raw/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md", "raw/2026-11-23-repo-llm_wiki-residui-api-skill.md", "raw/2026-11-23-repo-llm_wiki-residui-watch-skill.md"]
 tags: [llm-wiki, review, persistenza, concorrenza, api]
 ---
 
@@ -47,3 +47,10 @@ Lettura statica. Non letti: `stable_review_id` in Rust, il chiamante di `sweepRe
 <!-- Sezione gestita dal product-manager — non modificare se sei wiki-keeper -->
 Epica LWS-EP-001 — Allineare la skill llm-wiki all'app llm_wiki v0.6.13 (fase A, PR generica upstream)
 - LWS-US-007 — Scritture, chat e rescan
+
+## Aggiornamenti (v2026-11-23, residui)
+Dalle source page [[2026-11-23-repo-llm_wiki-residui-watch-skill]] e [[2026-11-23-repo-llm_wiki-residui-api-skill]]: lettura del codice di `e08cfce`, non eseguita. Il testo sopra non è modificato; **supera** in parte la riga di §Limiti («Non letti: `stable_review_id` in Rust …»).
+
+- **`stable_review_id` in Rust.** L'id si confronta con l'id grezzo o con l'id stabile FNV-1a `review-<hex8>` nel server API; il raw dà le righe 1266-1285 di `api_server.rs`. Restano non letti il chiamante di `sweepResolvedReviews`, `review-store.ts` e `sweep-reviews.ts`. [^src: raw/2026-11-23-repo-llm_wiki-residui-api-skill.md §Esiti per residuo]
+- **Corpi di PATCH e `resolve`.** Descritti in [[llm-wiki-api-locale]] (§Aggiornamenti v2026-11-23). `resolve` legge e scrive il file una sola volta; `PATCH` con `resolved=false` rimuove `resolvedAction`. [^src: raw/2026-11-23-repo-llm_wiki-residui-api-skill.md §Esiti per residuo]
+- **Corsa review / auto-save (V22).** Ogni cambio dello store review riscrive l'intero `.llm-wiki/review.json` dopo 1 s di debounce, con `writeFile` dell'array intero; l'auto-save è sospeso durante il cambio progetto. `resolve_review_items` legge, modifica e riscrive il file senza coordinamento con la UI nel codice letto. Quindi **per costruzione** una risoluzione via API può essere sovrascritta dal prossimo salvataggio della UI se lo store non è stato ricaricato. **Non decidibile dal codice:** che sia successo il 2026-11-10. **Non letti:** come lo store si riallinei al file (`review-store.ts`) e il comportamento con DELETE. [^src: raw/2026-11-23-repo-llm_wiki-residui-watch-skill.md §Voci V4/V20/V21/V22]

@@ -3,11 +3,13 @@ id: LWS-US-008
 title: Verificare sul codice i soli residui
 role: Maintainer della fork della skill llm-wiki
 priority: medium
-status: ready
+status: done
 wiki_page: wiki/syntheses/llm-wiki-api-affermazioni-codice-da-verificare.md
 blocked_by: []
 pending_clarification: []
 depends_on: []
+started_at: 2026-11-23
+closed_at: 2026-11-23
 ---
 
 # LWS-US-008 — Verificare sul codice i soli residui
@@ -48,11 +50,11 @@ Come maintainer della fork della skill `llm-wiki`, voglio far leggere nel codice
 [^src: wiki/concepts/llm-wiki-api-osservazioni-esecuzione-v0-6-13.md §Cosa questa prova non copre]
 
 ## Acceptance Criteria
-- [ ] È emessa una richiesta di estrazione mirata a `repo-sync` per `code_repos/llm_wiki` a `e08cfce` con l'elenco dei residui sopra; l'estrazione e l'ingest sono eseguiti dai ruoli competenti (non dal product-manager).
-- [ ] L'esito di ciascun residuo è «confermato», «smentito» o «non conclusivo», con file e riga riportati dal raw ingerito.
-- [ ] Le prove in esecuzione non pianificate restano elencate come «non verificate» e non sono portate nella skill: scritture con token, chat, `pages/embed`, 429 e 503 sotto carico, 413 e 415 sul contenuto, bind LAN, `allowUnauthenticated`, rescan su progetto non aperto, embedding attivi, corsa review/auto-save.
-- [ ] Le correzioni della skill che derivano dagli esiti non entrano in questa storia: diventano storie nuove o una PR successiva; se l'esito arriva prima della chiusura di LWS-US-007 può essere incorporato solo per decisione esplicita dell'utente.
-- [ ] I gap interessati sono aggiornati dal wiki-keeper (chiusi, ristretti o ancora aperti con il motivo).
+- [x] È emessa una richiesta di estrazione mirata a `repo-sync` per `code_repos/llm_wiki` a `e08cfce` con l'elenco dei residui sopra; l'estrazione e l'ingest sono eseguiti dai ruoli competenti (non dal product-manager).
+- [x] L'esito di ciascun residuo è «confermato», «smentito» o «non conclusivo», con file e riga riportati dal raw ingerito.
+- [x] Le prove in esecuzione non pianificate restano elencate come «non verificate» e non sono portate nella skill: scritture con token, chat, `pages/embed`, 429 e 503 sotto carico, 413 e 415 sul contenuto, bind LAN, `allowUnauthenticated`, rescan su progetto non aperto, embedding attivi, corsa review/auto-save.
+- [x] Le correzioni della skill che derivano dagli esiti non entrano in questa storia: diventano storie nuove o una PR successiva; se l'esito arriva prima della chiusura di LWS-US-007 può essere incorporato solo per decisione esplicita dell'utente.
+- [x] I gap interessati sono aggiornati dal wiki-keeper (chiusi, ristretti o ancora aperti con il motivo).
 
 ## Fonti
 [^src: wiki/gaps.md §2026-11-22 12:39 — llm-wiki-affermazioni-codice-da-verificare]

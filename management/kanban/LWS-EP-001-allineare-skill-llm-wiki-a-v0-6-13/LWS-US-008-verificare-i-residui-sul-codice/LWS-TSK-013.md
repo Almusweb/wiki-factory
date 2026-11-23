@@ -7,12 +7,12 @@ layer: docs
 consumer: human
 priority: P2
 estimate: S
-status: todo
+status: done
 depends_on: [LWS-TSK-011, LWS-TSK-012]
 blocked_by: []
 code_path: ["wiki/**"]
-started_at:
-closed_at:
+started_at: 2026-11-23
+closed_at: 2026-11-23
 decision_refs: []
 ---
 
@@ -37,16 +37,16 @@ Gli esiti delle due estrazioni devono entrare in wiki attraverso `wiki-keeper`, 
 5. `python3 tools/lint/run-deterministic.py` e riportare l'esito.
 
 ## Definition of Done
-- [ ] Esiti ingeriti; nulla scritto in `wiki/` fuori dal flusso `wiki-keeper`.
-- [ ] Sei gap aggiornati con stato e motivo.
-- [ ] Correzioni proposte elencate come non applicate.
+- [x] Esiti ingeriti; nulla scritto in `wiki/` fuori dal flusso `wiki-keeper`.
+- [x] Sei gap aggiornati con stato e motivo.
+- [x] Correzioni proposte elencate come non applicate.
 
 ## Chiusura
 
 | AC | Esito | Evidenza |
 |---|---|---|
-| LWS-US-008 AC4 | | |
-| LWS-US-008 AC5 | | |
+| LWS-US-008 AC4 | soddisfatto | 6 correzioni proposte dal keeper, nessuna applicata; code_repos non toccato |
+| LWS-US-008 AC5 | soddisfatto | gap: 1 chiuso (source-watch-default), 5 ristretti e aperti con motivo; run-deterministic 0 ERROR, verify_gap_closures --check ok |
 
 ## Dependencies
 - LWS-TSK-011 — estrazione A.
