@@ -4,7 +4,7 @@ type: index
 title: Wiki Index
 status: draft
 created: 2026-11-20
-updated: 2026-11-22
+updated: 2026-11-23
 sources: []
 tags: [navigation]
 ---
@@ -38,6 +38,7 @@ Indice delle pagine di `wiki/`, aggiornato da `wiki-keeper` a ogni ingest.
 - [[2026-11-22-repo-alm-wiki-evidenze-api]] — estrazione 2026-11-22 da alm-wiki (progetto locale dell'utente, `partial`, 5 file): prova in esecuzione dell'API 0.6.13 del 2026-11-13 (una prova, un progetto, non replicata), confronto skill/codice con livelli R/C/I, prove aperte
 - [[2026-11-22-repo-alm-wiki-bozza-skill]] — estrazione 2026-11-22 da alm-wiki: bozza di riscrittura della skill `llm-wiki` per l'app 0.6.13, testo candidato con etichette `[obs]` e `[code]` e 173 differenze rispetto all'originale
 - [[2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki]] — estrazione 2026-11-22 di `code_repos/llm_wiki` (`e08cfce`, `partial`, 17 file): verifica sul codice delle affermazioni C di alm-wiki (24 confermate, 6 parziali, 1 non conclusiva) e decisione delle due contraddizioni aperte
+- [[2026-11-23-repo-llm_wiki-rebuild-index-scrittori]] — estrazione 2026-11-23 di `code_repos/llm_wiki` (`e08cfce`, `success`, 33 file): indice prodotto da `rebuild_wiki_index`, 120 occorrenze di `index.md` e `log.md` classificate, scrittori di indice (9) e log (7), `rewriteIndexMd`, ingest da conversazione; letto, non eseguito
 - [[session-2026-11-20-16-3649aa67]] — sessione di bootstrap `wiki-factory` 2.48 su `llm_wiki` (in `wiki/sessions/`; indice delle sessioni: [sessions/index.md](sessions/index.md))
 
 ## Entities

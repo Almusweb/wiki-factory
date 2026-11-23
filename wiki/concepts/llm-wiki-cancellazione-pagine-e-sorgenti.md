@@ -4,8 +4,8 @@ type: concept
 title: llm-wiki — cascata di cancellazione di una pagina e ciclo di vita delle sorgenti
 status: draft
 created: 2026-11-20
-updated: 2026-11-21
-sources: ["raw/2026-11-20-repo-llm_wiki-persistenza-c.md", "raw/2026-11-21-repo-llm_wiki-ingest.md", "raw/2026-11-21-repo-llm_wiki-ricerca-ui-residui.md"]
+updated: 2026-11-23
+sources: ["raw/2026-11-20-repo-llm_wiki-persistenza-c.md", "raw/2026-11-21-repo-llm_wiki-ingest.md", "raw/2026-11-21-repo-llm_wiki-ricerca-ui-residui.md", "raw/2026-11-23-repo-llm_wiki-rebuild-index-scrittori.md"]
 tags: [llm-wiki, dati, persistenza, db]
 ---
 
@@ -77,3 +77,13 @@ Dalle fette C2 ed E del giro del 2026-11-21 ([[2026-11-21-repo-llm_wiki-ingest]]
 ## Contradictions
 - **Conferma nella cancellazione di una pagina orfana e origine di `delete:`.** Prima (Chiamanti della cascata): `lint-view.tsx:343-346` usa la cascata per una pagina orfana e «una eventuale conferma non è visibile»; l'origine delle stringhe `delete:` non era nota. Ora (fetta C2 ed E): la conferma `destructive` è presente (`handleDeleteOrphan`); le azioni `delete:` hanno origine in `lint-view.tsx` (review `broken-link`) e, per le review da ingest, nell'etichetta `OPTIONS:` del modello senza validazione, ed `review-view.tsx` le esegue senza conferma. [^src: raw/2026-11-21-repo-llm_wiki-ingest.md §Cancellazione, lato TypeScript (gap 34)]
 - **File `.revision` dopo `vector_delete_page`.** Prima (Archivi toccati e non toccati): se `vector_delete_page` tolga anche `embedding-revisions/<sha256>.revision` non è verificato (lato Rust non letto). Ora (fetta E): non lo toglie; l'orfano non causa falsi «unchanged». [^src: raw/2026-11-21-repo-llm_wiki-ricerca-ui-residui.md §Cancellazione di revisioni e sessioni (gap cancellazione-file-orfani)]
+
+## Aggiornamenti (v2026-11-23, TSK-030)
+Dalla source page [[2026-11-23-repo-llm_wiki-rebuild-index-scrittori]]: upstream v0.6.13, commit `e08cfce`, branch `develop` coincidente con `main`; lettura del codice, non eseguita. Il testo sopra non è modificato e resta compatibile. «Osservato» = letto nel sorgente; «dedotto» = mai eseguito.
+
+- **`cleanupDeletedWikiPages` scrive `index.md` (osservato).** La funzione è in `source-lifecycle.ts:606-663`. La riga 642 è una guardia di ramo: sceglie quando applicare `cleanIndexListing` al testo letto e vale per `wiki/index.md` e per qualsiasi file chiamato `index.md`. La scrittura è a riga 657, solo se il testo è cambiato (riga 655). Il chiamante è `cleanupDeletedFiles` (`project-file-sync.ts:419`). Precisa la voce «duplica la logica di sweep» di §Chiamanti del ciclo di vita: nella pulizia dei riferimenti rientra la riscrittura di `wiki/index.md`. [^src: raw/2026-11-23-repo-llm_wiki-rebuild-index-scrittori.md §`src/lib/source-lifecycle.ts` riga 642 (osservato)]
+- **Righe di `wiki-page-delete.ts` (osservato).** Le righe 244 e 256 sono guardie di ramo, con scrittura a riga 277 (`cascadeDeleteWikiPagesWithRefs`). Le righe 177 e 188 sono commenti. [^src: raw/2026-11-23-repo-llm_wiki-rebuild-index-scrittori.md §Tabella delle 120 occorrenze]
+- **Quali voci toglie `cleanIndexListing` (osservato).** La funzione è in `wiki-cleanup.ts:98-108`. Toglie le righe di elenco (iniziano con `-` o `*`) il cui **primo** wikilink ha una chiave uguale a quella di una pagina cancellata. Le altre righe restano invariate. La chiave è l'ultimo segmento del percorso, in minuscolo, senza `.md`, senza spazi, trattini e underscore. Per ogni pagina cancellata il set contiene la chiave dello slug e quella del titolo. Le voci con prefisso di cartella (formati di `rebuild_wiki_index` e dell'ingest) corrispondono. Un bersaglio con `#` è confrontato così com'è: nel codice letto non c'è trattamento dell'ancora. [^src: raw/2026-11-23-repo-llm_wiki-rebuild-index-scrittori.md §Effetto di `cleanIndexListing` (osservato)]
+- **Omonimi (dedotto, non testato).** Due pagine in cartelle diverse con lo stesso nome base hanno la stessa chiave: la cancellazione di una toglie le voci di entrambe. [^src: raw/2026-11-23-repo-llm_wiki-rebuild-index-scrittori.md §Effetto di `cleanIndexListing` (osservato)]
+- **Confronto con il merge (osservato).** Il merge di duplicati usa un altro criterio (`rewriteIndexMd`, che confronta il bersaglio con lo slug): vedi [[llm-wiki-operazioni-distruttive]] §Aggiornamenti (v2026-11-23, TSK-030). [^src: raw/2026-11-23-repo-llm_wiki-rebuild-index-scrittori.md §Effetto di `cleanIndexListing` (osservato)]
+- **Percorso di `log.md`.** `appendSourceDeleteLog` accoda la voce di cancellazione alla riga 704 di `source-lifecycle.ts`, dopo aver letto il log a riga 699. Conferma §Voce di log di cancellazione. [^src: raw/2026-11-23-repo-llm_wiki-rebuild-index-scrittori.md §Scrittori di `log.md`]

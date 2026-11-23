@@ -15,10 +15,10 @@ updated: 2026-11-23
 
 | Epica | Titolo | Status epica | blocked | in_progress | review | todo |
 |---|---|---|---|---|---|---|
-| [EP-002](EP-002-conoscenza-layer-di-persistenza/EP-002.md) | Completare la conoscenza del layer di persistenza | defined | 0 | 0 | 0 | 3 |
+| [EP-002](EP-002-conoscenza-layer-di-persistenza/EP-002.md) | Completare la conoscenza del layer di persistenza | defined | 0 | 0 | 0 | 2 |
 | [LWS-EP-001](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-EP-001.md) | Allineare la skill llm-wiki all'app llm_wiki v0.6.13 (fase A, PR generica upstream) | defined | 0 | 0 | 0 | 6 |
 
-Totale TSK aperti: 9 (sprint corrente 3, lookahead 6).
+Totale TSK aperti: 8 (sprint corrente 3, lookahead 5).
 
 ## Sprint corrente
 
@@ -36,7 +36,6 @@ Totale TSK aperti: 9 (sprint corrente 3, lookahead 6).
 
 | TSK | Titolo | US | Layer | Pri | Status | Owner | Dipende da |
 |---|---|---|---|---|---|---|---|
-| [TSK-030](EP-002-conoscenza-layer-di-persistenza/US-035-rebuild-index-e-scrittori-log-index/TSK-030.md) | Ingest wiki-keeper del raw su rebuild_wiki_index e scrittori di log e indice, con controllo segreti | US-035 | docs | P2 | todo | — | TSK-029 |
 | [TSK-031](EP-002-conoscenza-layer-di-persistenza/US-035-rebuild-index-e-scrittori-log-index/TSK-031.md) | Chiudere i punti di US-035 sul raw ingerito: formato dell'indice ricostruito e tabella degli scrittori in llm-wiki-schema-dati | US-035 | docs | P2 | todo | — | TSK-030 |
 | [TSK-032](EP-002-conoscenza-layer-di-persistenza/US-035-rebuild-index-e-scrittori-log-index/TSK-032.md) | Chiudere il residuo rebuild_wiki_index del gap llm-wiki-log-index-formato in wiki/gaps.md | US-035 | docs | P2 | todo | — | TSK-031 |
 
