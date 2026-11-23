@@ -190,3 +190,65 @@ File toccati: wiki/sources/2026-11-22-repo-alm-wiki-evidenze-api.md, wiki/source
 Ora: 13:30. Pagine create: 3 | Figure: 0 | Aggiornamenti: 12 pagine più gaps | Gap nuovi: 1 | Gap chiusi: 1 | ramo: seriale, N=1. Ingest del raw `repo-sync` di `code_repos/llm_wiki` (upstream v0.6.13, commit `e08cfce`, `develop` coincide con `main`, status `partial`, 17 file su 476): verifica mirata, in sola lettura, delle affermazioni «C» di alm-wiki elencate in [[llm-wiki-api-affermazioni-codice-da-verificare]]. **Natura della fonte:** lettura diretta del codice, stesso livello dei raw `repo-sync` di `llm_wiki` già ingeriti; non eseguito. Esiti del raw: 24 affermazioni distinte CONFERMATA (25 righe, una è un rimando a n. 23), 6 PARZIALE, 1 SMENTITA (lettura letterale), 1 NON CONCLUSIVA. CONFERMATA entra come fatto letto nel codice citando il raw; PARZIALE per la parte confermata con la precisazione del codice; NON CONCLUSIVA resta aperta. Create: [[2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki]], [[llm-wiki-ricerca-e-grafo-api]], [[llm-wiki-review-store-e-auto-save]]. Aggiornate solo in accodamento (`## Aggiornamenti (v2026-11-22, verifica sul codice)`): [[llm-wiki-api-affermazioni-codice-da-verificare]], [[llm-wiki-api-locale]], [[llm-wiki-sincronizzazione-file]], [[llm-wiki-pipeline-ingest]], [[llm-wiki-rischi-persistenza]], [[llm-wiki-sicurezza]], [[llm-wiki-skill-vs-app-v0-6-13]], [[llm-wiki-skill]], [[llm-wiki-skill-bozza-alm-wiki]], [[llm-wiki-api-osservazioni-esecuzione-v0-6-13]], [[2026-11-22-repo-alm-wiki-evidenze-api]], [[2026-11-22-repo-alm-wiki-bozza-skill]]; nessuna sezione `## Storie collegate` toccata (non vuota in rischi-persistenza e sicurezza, trattate solo in accodamento). **Contraddizioni risolte dal codice** (nota di risoluzione sotto la voce di `## Contradictions` più Aggiornamenti): (a) [[llm-wiki-api-locale]], «path esatto»: la fonte ha ragione, il confronto per percorso normalizza `\` e la `/` finale su ogni piattaforma e ignora le maiuscole solo con `cfg!(windows)` (target dell'eseguibile osservato non noto); (b) [[llm-wiki-sincronizzazione-file]], «progetto attivo o inattivo» contro «solo il progetto aperto»: dipende da «Watch all projects». **Riga «Watch all projects spento, 60 s»:** non registrata come smentita della bozza. Era una sintesi ambigua del raw della bozza; la verifica sul codice conferma «60 s solo con l'opzione accesa» (intervallo solo in `startAllProjectFileSync`). L'unica occorrenza come affermazione della bozza stava nella tabella di [[llm-wiki-api-affermazioni-codice-da-verificare]], rettificata in accodamento; `llm-wiki-skill-bozza-alm-wiki` non la conteneva. **Differenze con la skill:** stato di D1, D4, D5, D7, D9, D10, D11, D12, D15, D16, D17 aggiornato; nuove D18-D21 (approvate dal gate: `rtf`, archi da `related:` e nodi `query`, copertura della ricerca, id non corrente non in sola lettura). **Fatti nuovi collocati:** auto-resolve LLM con prudenza solo nel testo del prompt, nessun filtro per tipo (righe del raw 182-184, 303-314, 342-433; la riga `:229` indicata dalla sessione principale non è nel raw e non è citata); cache di ingest con chiave nome sorgente più SHA-256 del solo testo; `resolve_project` non verifica `current`. **Gap:** chiuso `llm-wiki-monitoraggio-piu-progetti` (`- [x]` e `**Risolto:**` in coda), con residui nel gap nuovo `llm-wiki-watch-all-projects-residui`. Aggiornamenti parziali, restano aperti: `llm-wiki-affermazioni-codice-da-verificare`, `llm-wiki-skill-punti-da-verificare` (dei dieci punti: quattro chiusi per lettura, quattro ristretti, due aperti), `llm-wiki-api-corpi-handler-non-letti`, `llm-wiki-review-concorrenza-webview` (lettura fatta, corsa reale non provata), `llm-wiki-source-watch-default` (scope noto, default non nel raw); annotata l'inferenza sul rescan HTTP in `llm-wiki-prove-in-esecuzione-aperte`. Nessuna `Q_NNN` citata dai gap chiusi: `propagate-resolution` non applicabile. Esclusi dalla wiki per `purpose.md`: nessun dato del progetto di prova di alm-wiki riportato; nessun contenuto del repo riprodotto alla lettera (solo nomi di simboli, file e righe citati dal raw). Controllo segreti: solo nomi di variabili e campi (`LLM_WIKI_BIND_HOST`, `allowLanAccess`), nessun valore; nessuna istruzione rivolta al keeper nel raw. Le righe di codice citate sono quelle del raw e non sono state rilette dal wiki-keeper. Non eseguiti dal wiki-keeper (senza Bash): `git status`, lint, `gaps_append_guard.py`, `verify_gap_closures.py --check`, `/wiki-search reindex`; nessun commit.
 File toccati: wiki/sources/2026-11-22-repo-llm_wiki-verifica-affermazioni-alm-wiki.md, wiki/concepts/llm-wiki-ricerca-e-grafo-api.md, wiki/concepts/llm-wiki-review-store-e-auto-save.md, wiki/syntheses/llm-wiki-api-affermazioni-codice-da-verificare.md, wiki/concepts/llm-wiki-api-locale.md, wiki/concepts/llm-wiki-sincronizzazione-file.md, wiki/concepts/llm-wiki-pipeline-ingest.md, wiki/concepts/llm-wiki-rischi-persistenza.md, wiki/concepts/llm-wiki-sicurezza.md, wiki/syntheses/llm-wiki-skill-vs-app-v0-6-13.md, wiki/entities/llm-wiki-skill.md, wiki/entities/llm-wiki-skill-bozza-alm-wiki.md, wiki/concepts/llm-wiki-api-osservazioni-esecuzione-v0-6-13.md, wiki/sources/2026-11-22-repo-alm-wiki-evidenze-api.md, wiki/sources/2026-11-22-repo-alm-wiki-bozza-skill.md, wiki/gaps.md, wiki/index.md, wiki/log.md
 [2026-11-22 13:30] gap-closed — llm-wiki-monitoraggio-piu-progetti via [[llm-wiki-sincronizzazione-file]] — files touched: 1
+
+---
+date: 2026-11-23
+type: session-start
+session_id: 39ce913c
+operator: Alessandro Musio
+branch: main
+synced_repos: [llm_wiki_skill]
+pending_ingest_count: 0
+scope: "LWS-EP-001 — catena allineamento skill llm-wiki a v0.6.13, partenza da LWS-TSK-001"
+---
+
+## 2026-11-23 13:20 — develop LWS-TSK-001
+**Agente:** sessione principale (override esplicito dell'utente; layer infra senza dev-agent)
+**TSK:** [[../management/kanban/LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-001-confermare-base-di-partenza/LWS-TSK-001]]
+**Layer:** infra
+**Code path:** code_repos/llm_wiki_skill
+**Files touched:** 0 nel repo della skill; factory: 3 (TSK, wiki/log.md, management/kanban/sprint.md)
+**Commit:** n/a (nessun commit; partenza `642b438` su `docs/align-v0-6-13`)
+**DoD:** pass
+**Note:** main della fork, origin/main e upstream/main identici a `642b438`. Aggiunto il remote `upstream` (nashsu) e creato il branch condiviso `docs/align-v0-6-13` da main, con OK dell'utente. LWS-TSK-002 sbloccato.
+
+## 2026-11-23 14:05 — develop LWS-TSK-002
+**Agente:** docs-dev (commit eseguito dalla sessione principale con OK dell'utente)
+**TSK:** [[../management/kanban/LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-002-bonificare-la-bozza-di-partenza/LWS-TSK-002]]
+**Layer:** docs
+**Code path:** code_repos/llm_wiki_skill
+**Files touched:** 4 (README.md, SKILL.md, api-reference.md, examples.md)
+**Commit:** aeada6b (branch docs/align-v0-6-13, nessun push; puntatore del submodule nella factory non committato)
+**DoD:** pass
+**Note:** Bozza descritta in [[llm-wiki-skill-bozza-alm-wiki]] applicata ai 4 file; tolti etichette, legende, avviso di fork, dati del progetto reale. Novità senza etichetta e trigger restano a LWS-TSK-003; incongruenze A4 a LWS-TSK-008/014.
+
+## 2026-11-23 15:10 — develop LWS-TSK-003
+**Agente:** docs-dev (commit eseguito dalla sessione principale con OK dell'utente)
+**TSK:** [[../management/kanban/LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-002-bonificare-la-bozza-di-partenza/LWS-TSK-003]]
+**Layer:** docs
+**Code path:** code_repos/llm_wiki_skill
+**Files touched:** 4 (README.md, SKILL.md, api-reference.md, examples.md)
+**Commit:** 778b149 (branch docs/align-v0-6-13, nessun push; puntatore del submodule nella factory non committato)
+**DoD:** pass
+**Note:** Tolte le novità 0.6.13 senza etichetta e senza riga di evidenza (A1); restano `limit` 0 con 400, CORS ed esclusione di `rtf`. `description` = originale con la sola clausola «read-only by default, writes only on the user's explicit request». Residui annotati per LWS-TSK-004/007/009/016.
+
+---
+date: 2026-11-23
+type: session-start
+session_id: 158388fc
+operator: Alessandro Musio
+branch: main
+synced_repos: [llm_wiki]
+pending_ingest_count: 0
+scope: "EP-002 persistenza: prossimo TSK-009 (US-017)"
+---
+
+## 2026-11-23 15:50 — develop LWS-TSK-004
+**Agente:** docs-dev (commit eseguito dalla sessione principale con OK dell'utente)
+**TSK:** [[../management/kanban/LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-003-sicurezza-rete-e-autenticazione/LWS-TSK-004]]
+**Layer:** docs
+**Code path:** code_repos/llm_wiki_skill
+**Files touched:** 3 (README.md, SKILL.md, api-reference.md)
+**Commit:** 753cbbd (branch docs/align-v0-6-13, nessun push; puntatore del submodule nella factory non committato)
+**DoD:** pass
+**Note:** CORS ad elenco senza `*`; sezione «Listen address» con precedenza del bind e avvertenza sul token in chiaro su LAN; route sempre autenticate distinte da quelle aperte con `allowUnauthenticated`; avvertenza `?token=` uniforme. `Max-Age: 600` e OPTIONS 204 restano a LWS-TSK-008.

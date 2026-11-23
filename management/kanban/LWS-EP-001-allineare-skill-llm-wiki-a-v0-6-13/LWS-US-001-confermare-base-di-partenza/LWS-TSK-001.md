@@ -7,13 +7,13 @@ layer: infra
 consumer: human
 priority: P1
 estimate: XS
-status: todo
+status: done
 depends_on: []
 blocked_by: []
 code_path: ["code_repos/llm_wiki_skill"]
 target: llm_wiki_skill
-started_at:
-closed_at:
+started_at: 2026-11-23
+closed_at: 2026-11-23
 decision_refs: []
 ---
 
@@ -39,21 +39,27 @@ La PR upstream non deve poggiare su uno stato superato di `nashsu/llm_wiki_skill
 7. Registrare il commit di partenza (`git rev-parse --short HEAD`) e verificare che nessun file sia modificato.
 
 ## Definition of Done
-- [ ] OK esplicito al fetch riportato nella Chiusura.
-- [ ] Esito del confronto `main` / `upstream/main` con comando ed esito.
-- [ ] Branch condiviso creato, nome neutro, commit di partenza registrato.
-- [ ] `git status --short` e `git diff --name-only` vuoti nel repo della skill.
+- [x] OK esplicito al fetch riportato nella Chiusura.
+- [x] Esito del confronto `main` / `upstream/main` con comando ed esito.
+- [x] Branch condiviso creato, nome neutro, commit di partenza registrato.
+- [x] `git status --short` e `git diff --name-only` vuoti nel repo della skill.
 
 ## Chiusura
 <!-- compilata a lavoro finito secondo dev-handoff §Semantica di `done` -->
 
+Eseguito dalla sessione principale con override esplicito dell'utente in chat (2026-11-23): TSK `infra`/`consumer: human`, nessun dev-agent per il layer. Stesso turno: OK all'aggiunta del remote `upstream` e al fetch, nome del branch confermato (`docs/align-v0-6-13`).
+
 | AC | Esito | Evidenza |
 |---|---|---|
-| LWS-US-001 AC1 | | |
-| LWS-US-001 AC2 | | |
-| LWS-US-001 AC3 | | |
-| LWS-US-001 AC4 | | |
-| LWS-US-001 AC5 | | |
+| LWS-US-001 AC1 | verificato | `git -C code_repos/llm_wiki_skill rev-parse --short main` → `642b438`; `rev-parse --short upstream/main` → `642b438`; `log --oneline main..upstream/main` e `upstream/main..main` → vuoti. Esito: **identici** (anche `origin/main` = `642b438`) |
+| LWS-US-001 AC2 | non applicabile | condizione «upstream avanti» non verificata: `main..upstream/main` vuoto (AC1). Nessuna sovrapposizione da elencare |
+| LWS-US-001 AC3 | verificato | `git -C code_repos/llm_wiki_skill switch -c docs/align-v0-6-13 main` → «Switched to a new branch»; `rev-parse --short HEAD` → `642b438` (commit di partenza) |
+| LWS-US-001 AC4 | verificato | OK esplicito dell'utente in chat prima di `git fetch upstream` (esito: `* [new branch] main -> upstream/main`, exit 0) |
+| LWS-US-001 AC5 | verificato | nel repo della skill `git status --short` → vuoto, `git diff --name-only` → vuoto |
+
+Scritture di configurazione locale nel repo cliente: `git remote add upstream https://github.com/nashsu/llm_wiki_skill.git` (con OK), branch locale `docs/align-v0-6-13`. Nessun commit, nessun push. Il puntatore del submodule nella factory resta `642b438` (`git submodule status`).
+
+Diff di chiusura (factory, `git status --short`): dichiarati = questo TSK, `wiki/log.md`, `management/kanban/sprint.md` (rigenerato); committati = nessuno; working tree = ` M wiki/log.md`, ` M management/kanban/sprint.md`, ` M` questo TSK, `?? DOSSIER-llm-wiki-qualita-ingest.md` (preesistente, non di questo TSK).
 
 ## Dependencies
 - Nessuna. Blocca `LWS-TSK-002` (branch condiviso).

@@ -1,5 +1,5 @@
 ---
-updated: 2026-11-22
+updated: 2026-11-23
 ---
 <!-- generated, do not edit: python3 tools/kanban/generate_sprint.py -->
 
@@ -16,9 +16,9 @@ updated: 2026-11-22
 | Epica | Titolo | Status epica | blocked | in_progress | review | todo |
 |---|---|---|---|---|---|---|
 | [EP-002](EP-002-conoscenza-layer-di-persistenza/EP-002.md) | Completare la conoscenza del layer di persistenza | defined | 0 | 0 | 0 | 1 |
-| [LWS-EP-001](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-EP-001.md) | Allineare la skill llm-wiki all'app llm_wiki v0.6.13 (fase A, PR generica upstream) | defined | 0 | 0 | 0 | 18 |
+| [LWS-EP-001](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-EP-001.md) | Allineare la skill llm-wiki all'app llm_wiki v0.6.13 (fase A, PR generica upstream) | defined | 0 | 0 | 0 | 14 |
 
-Totale TSK aperti: 19 (sprint corrente 15, lookahead 4).
+Totale TSK aperti: 15 (sprint corrente 11, lookahead 4).
 
 ## Sprint corrente
 
@@ -26,10 +26,6 @@ Totale TSK aperti: 19 (sprint corrente 15, lookahead 4).
 
 | TSK | Titolo | US | Layer | Pri | Status | Owner | Dipende da |
 |---|---|---|---|---|---|---|---|
-| [LWS-TSK-001](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-001-confermare-base-di-partenza/LWS-TSK-001.md) | Confrontare main della fork con main di nashsu/llm_wiki_skill e creare il branch condiviso di lavoro | LWS-US-001 | infra | P1 | todo | — | — |
-| [LWS-TSK-002](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-002-bonificare-la-bozza-di-partenza/LWS-TSK-002.md) | Applicare la bozza sul branch condiviso e togliere gli elementi non trasferibili | LWS-US-002 | docs | P1 | todo | — | LWS-TSK-001 |
-| [LWS-TSK-003](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-002-bonificare-la-bozza-di-partenza/LWS-TSK-003.md) | Scartare le novità senza etichetta e senza evidenza e ripristinare il trigger originale | LWS-US-002 | docs | P1 | todo | — | LWS-TSK-002 |
-| [LWS-TSK-004](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-003-sicurezza-rete-e-autenticazione/LWS-TSK-004.md) | Sicurezza della skill: CORS ad elenco, bind di rete e route che richiedono sempre il token | LWS-US-003 | docs | P1 | todo | — | LWS-TSK-003 |
 | [LWS-TSK-005](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-004-progetti-file-e-contenuti/LWS-TSK-005.md) | Progetti, forme di {id}, files e files/content nella skill | LWS-US-004 | docs | P1 | todo | — | LWS-TSK-004 |
 | [LWS-TSK-006](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-005-salute-ricerca-e-grafo/LWS-TSK-006.md) | Salute e ricerca nella skill: campi di /health, graphHits, copertura e snippet | LWS-US-005 | docs | P1 | todo | — | LWS-TSK-005 |
 | [LWS-TSK-007](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-005-salute-ricerca-e-grafo/LWS-TSK-007.md) | Grafo nella skill: paginazione, edgeScope, cache, archi da related e tipi di nodo | LWS-US-005 | docs | P1 | todo | — | LWS-TSK-006 |

@@ -7,13 +7,13 @@ layer: docs
 consumer: agent
 priority: P1
 estimate: M
-status: todo
+status: done
 depends_on: [LWS-TSK-001]
 blocked_by: []
 code_path: ["code_repos/llm_wiki_skill/SKILL.md", "code_repos/llm_wiki_skill/api-reference.md", "code_repos/llm_wiki_skill/examples.md", "code_repos/llm_wiki_skill/README.md"]
 target: llm_wiki_skill
-started_at:
-closed_at:
+started_at: 2026-11-23
+closed_at: 2026-11-23
 decision_refs: []
 ---
 
@@ -44,24 +44,32 @@ Si riusano le 173 modifiche della bozza di riscrittura, privata di tutto ciò ch
 5. `git status --short` e `git diff --name-only HEAD` nel repo della skill e nella factory (nessun file della bozza copiato nella factory).
 
 ## Definition of Done
-- [ ] AC1: punto di partenza = bozza applicata; nessun file oltre ai quattro.
-- [ ] AC2: ricerca testuale su tutti gli elementi non trasferibili → 0 occorrenze, comando ed esito riportati.
-- [ ] AC3: nessun nome del progetto reale o dell'utente negli esempi.
-- [ ] AC6: nessun file o dato della bozza nella factory; nel TSK solo il riferimento alla scheda wiki, mai il percorso assoluto.
-- [ ] AC7: nessun ID kanban, riferimento a factory o attribution AI nei quattro file; commit solo dopo OK.
+- [x] AC1: punto di partenza = bozza applicata; nessun file oltre ai quattro.
+- [x] AC2: ricerca testuale su tutti gli elementi non trasferibili → 0 occorrenze, comando ed esito riportati.
+- [x] AC3: nessun nome del progetto reale o dell'utente negli esempi.
+- [x] AC6: nessun file o dato della bozza nella factory; nel TSK solo il riferimento alla scheda wiki, mai il percorso assoluto.
+- [x] AC7: nessun ID kanban, riferimento a factory o attribution AI nei quattro file; commit solo dopo OK.
 
 ## Chiusura
 <!-- US-002 AC4 e AC5 sono coperti da LWS-TSK-003: riportarli come n/a con rinvio -->
 
 | AC | Esito | Evidenza |
 |---|---|---|
-| LWS-US-002 AC1 | | |
-| LWS-US-002 AC2 | | |
-| LWS-US-002 AC3 | | |
+| LWS-US-002 AC1 | verificato | Branch `docs/align-v0-6-13` a `642b438`, working tree pulito prima di scrivere (`git branch --show-current`, `git rev-parse --short HEAD`, `git status --short`). Testo dei 4 file della bozza applicato; `git status --short` nel repo della skill: solo ` M` su `README.md`, `SKILL.md`, `api-reference.md`, `examples.md`; nessun file nuovo. Origine della bozza: scheda `wiki/entities/llm-wiki-skill-bozza-alm-wiki.md`. |
+| LWS-US-002 AC2 | verificato | `cat *.md \| grep -cE "<pattern>"` nel repo della skill, esito 0 per ognuno di: `\[obs\]`, `\[code\]`, `FORK`, `[Ff]ork`, `task 0`, `122`, `102`, `82`, `real wiki`, `2026-11-13`, `seen once`, `Values seen`, `non da eseguire\|do not run\|this copy`, id e timestamp dell'esempio di review (`1794168986046`, `review-1a2b3c4d`), `e08cfce`. Legende e avviso di fork tolti per intero; le frasi restano senza etichetta. |
+| LWS-US-002 AC3 | verificato | `grep -cE "Alessandro\|Musio\|Almusweb\|alm-wiki\|local_git\|knowledge/"` = 0. `C:/` ha 7 occorrenze, tutte con l'utente segnaposto `me` (`C:/Users/me/...`) o prefisso `C:/...` generico: valutate a mano, legittime. Gli UUID, i nomi di progetto e i percorsi `/Users/me/...` degli esempi sono quelli dell'originale (presenti in `HEAD`). Id e `createdAt` dell'esempio di review sostituiti con segnaposto (`review-00000000`, `1700000000000.0`). |
 | LWS-US-002 AC4 | n/a | coperto da LWS-TSK-003 |
 | LWS-US-002 AC5 | n/a | coperto da LWS-TSK-003 |
-| LWS-US-002 AC6 | | |
-| LWS-US-002 AC7 | | |
+| LWS-US-002 AC6 | verificato | `git status --short` nella factory: nessun file nuovo o copiato; modificati solo file kanban e `wiki/log.md` (già modificati prima) e il puntatore del sottomodulo `code_repos/llm_wiki_skill`. Il TSK rinvia solo alla scheda wiki, senza percorso assoluto. |
+| LWS-US-002 AC7 | verificato | `grep -cE "EP-\|US-\|TSK-\|LWS-"` = 0; `grep -cE "Co-Authored\|Generated with"` = 0; nessun riferimento a factory, wiki o ADR (`grep -nEi "factory\|wiki-keeper\|ADR\|kanban"` sui 4 file: solo «gap» generico in `examples.md`, nessun altro esito). `Claude` compare 3 volte in `README.md` come nome del client (3 su `HEAD`, originale). Commit dopo OK esplicito dell'utente in chat (2026-11-23): `tools/vcs/sm_commit.py --dry-run` → messaggio invariato; `--yes` → `aeada6b` su `docs/align-v0-6-13`, 4 file, 322+/114-; `git log -1` senza trailer né attribution. |
+
+Diff di chiusura (a comando, dopo il commit):
+- **Dichiarati:** `README.md`, `SKILL.md`, `api-reference.md`, `examples.md` (repo della skill); questo TSK, `wiki/log.md`, `management/kanban/sprint.md` (factory).
+- **Committati:** `aeada6b` nel repo della skill con i 4 file (`git diff --cached --name-only` prima del commit). Nella factory nessun commit.
+- **Nel working tree:** repo della skill pulito (`git status --short` e `git diff --name-only HEAD` vuoti). Factory: ` M code_repos/llm_wiki_skill` (puntatore `642b438` → `aeada6b`, non committato), ` M` questo TSK, `LWS-TSK-001.md`, `sprint.md`, `wiki/log.md`; `?? DOSSIER-llm-wiki-qualita-ingest.md` preesistente, non di questo TSK.
+
+Nota di verifica: la regex di AC3 senza `/` (`knowledge`) dà 6 occorrenze, tutte «knowledge base» generico (5 già in `HEAD`, 1 nella nota di esempio di `api-reference.md`): nessun nome né percorso.
+Da passare a LWS-TSK-003: «within seconds» resta in `examples.md` ma non in `api-reference.md`; i riferimenti a righe di codice (es. `api_server.rs` 855-896) restano e non sono verificati.
 
 ## Dependencies
 - LWS-TSK-001 — branch condiviso e base confermata.
