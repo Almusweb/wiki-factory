@@ -379,3 +379,13 @@ File toccati: wiki/sources/2026-11-23-repo-llm_wiki-rebuild-index-scrittori.md, 
 **Commit:** f6a99c7 (branch docs/align-v0-6-13, 12 commit sopra main, nessun push)
 **DoD:** pass
 **Note:** Audit pre-PR: diff contro main solo sui quattro file; 0 tracce (pattern di `ai_policy.py`) nel diff, nei 12 messaggi di commit e nella bozza della descrizione PR; nessun elemento non trasferibile della bozza; 31 gruppi di frasi senza evidenza, storia delle versioni o numeri di riga tolti. Bozza della descrizione PR nella Chiusura. Prossimi: LWS-TSK-017 (push) e LWS-TSK-018 (PR), gate umani.
+
+## 2026-11-23 22:50 — develop LWS-TSK-017
+**Agente:** utente (push eseguito in persona); Chiusura compilata dalla sessione principale
+**TSK:** [[../management/kanban/LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-010-preparare-la-pr-upstream/LWS-TSK-017]]
+**Layer:** infra
+**Code path:** code_repos/llm_wiki_skill
+**Files touched:** 0 nel repo della skill
+**Commit:** n/a (push di `docs/align-v0-6-13` su origin = fork Almusweb: `c73a69c` alle 16:32, `f6a99c7` alle 17:10; remote = locale)
+**DoD:** pass
+**Note:** 12 commit per TSK, nessuno squash; upstream configurato. Prossimo: LWS-TSK-018 (apertura della PR verso nashsu/llm_wiki_skill, gate umano).

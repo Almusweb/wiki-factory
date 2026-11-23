@@ -7,13 +7,13 @@ layer: infra
 consumer: human
 priority: P1
 estimate: XS
-status: todo
+status: done
 depends_on: [LWS-TSK-016]
 blocked_by: []
 code_path: ["code_repos/llm_wiki_skill"]
 target: llm_wiki_skill
-started_at:
-closed_at:
+started_at: 2026-11-23
+closed_at: 2026-11-23
 decision_refs: []
 ---
 
@@ -37,16 +37,25 @@ Il branch condiviso (nome neutro fissato da `LWS-TSK-001`, senza ID kanban) è l
 5. Riportare comando ed esito, e `git -C code_repos/llm_wiki_skill rev-parse --short HEAD origin/<branch>` (uguali).
 
 ## Definition of Done
-- [ ] Decisione dell'utente su commit per TSK o squash riportata.
-- [ ] OK esplicito al push riportato.
-- [ ] Push eseguito sulla fork con comando ed esito; `origin` verificato.
-- [ ] Nessun ID kanban nel nome del branch.
+- [x] Decisione dell'utente su commit per TSK o squash riportata.
+- [x] OK esplicito al push riportato.
+- [x] Push eseguito sulla fork con comando ed esito; `origin` verificato.
+- [x] Nessun ID kanban nel nome del branch.
 
 ## Chiusura
 
 | AC | Esito | Evidenza |
 |---|---|---|
-| LWS-US-010 AC6 | | |
+| LWS-US-010 AC6 | verificato (parte push) | Push eseguito dall'utente in persona, quindi con il suo consenso esplicito; dichiarato in chat il 2026-11-23 («ho già fatto io LWS-TSK-017»). Evidenza a comando, rilevata dalla sessione principale: `git -C code_repos/llm_wiki_skill reflog show origin/docs/align-v0-6-13` → `c73a69c` «update by push» 2026-11-23 16:32 +0100, poi `f6a99c7` «update by push» 2026-11-23 17:10 +0100; `git ls-remote --heads origin docs/align-v0-6-13` → `f6a99c7`, uguale a `git rev-parse HEAD`; upstream configurato `origin/docs/align-v0-6-13` (push con `-u`). Il comando letterale non è noto alla factory: il reflog registra solo «update by push». La parte PR di AC6 è di LWS-TSK-018. |
+
+Eseguito dall'utente fuori dalla sessione principale; Chiusura compilata dalla sessione principale con le verifiche a comando.
+
+- **Commit per TSK o squash (gate 1):** commit per TSK. `git log --oneline main..origin/docs/align-v0-6-13` → 12 commit, gli stessi del branch locale; nessuno squash.
+- **`origin`:** `git remote get-url origin` → `https://github.com/Almusweb/llm_wiki_skill.git` (la fork).
+- **Nome del branch:** `docs/align-v0-6-13`, senza ID kanban.
+- **Messaggi dei commit pubblicati:** già verificati in LWS-TSK-016 con `ai_policy.find_factory_ids` e `is_ai_attribution` sui 12 messaggi → 0 hit.
+- **Nota:** il primo push (`c73a69c`) è avvenuto prima dell'audit di LWS-TSK-016; per circa 40 minuti il branch pubblico conteneva i commit fino a LWS-TSK-010, senza le rimozioni dell'audit. I messaggi di quei commit non avevano tracce.
+- **Diff di chiusura (factory):** dichiarati = questo TSK, `wiki/log.md`, `sprint.md`; nel repo della skill nessun file toccato da questo TSK.
 
 ## Dependencies
 - LWS-TSK-016 — audit locale chiuso.

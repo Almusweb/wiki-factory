@@ -15,9 +15,9 @@ updated: 2026-11-23
 
 | Epica | Titolo | Status epica | blocked | in_progress | review | todo |
 |---|---|---|---|---|---|---|
-| [LWS-EP-001](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-EP-001.md) | Allineare la skill llm-wiki all'app llm_wiki v0.6.13 (fase A, PR generica upstream) | defined | 0 | 0 | 0 | 5 |
+| [LWS-EP-001](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-EP-001.md) | Allineare la skill llm-wiki all'app llm_wiki v0.6.13 (fase A, PR generica upstream) | defined | 0 | 0 | 0 | 4 |
 
-Totale TSK aperti: 5 (sprint corrente 2, lookahead 3).
+Totale TSK aperti: 4 (sprint corrente 1, lookahead 3).
 
 ## Sprint corrente
 
@@ -25,7 +25,6 @@ Totale TSK aperti: 5 (sprint corrente 2, lookahead 3).
 
 | TSK | Titolo | US | Layer | Pri | Status | Owner | Dipende da |
 |---|---|---|---|---|---|---|---|
-| [LWS-TSK-017](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-010-preparare-la-pr-upstream/LWS-TSK-017.md) | Push del branch condiviso sulla fork (gate umano) | LWS-US-010 | infra | P1 | todo | — | LWS-TSK-016 |
 | [LWS-TSK-018](LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-010-preparare-la-pr-upstream/LWS-TSK-018.md) | Apertura della PR verso nashsu/llm_wiki_skill (gate umano) | LWS-US-010 | infra | P1 | todo | — | LWS-TSK-017 |
 
 ## Lookahead
