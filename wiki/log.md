@@ -252,3 +252,13 @@ scope: "EP-002 persistenza: prossimo TSK-009 (US-017)"
 **Commit:** 753cbbd (branch docs/align-v0-6-13, nessun push; puntatore del submodule nella factory non committato)
 **DoD:** pass
 **Note:** CORS ad elenco senza `*`; sezione «Listen address» con precedenza del bind e avvertenza sul token in chiaro su LAN; route sempre autenticate distinte da quelle aperte con `allowUnauthenticated`; avvertenza `?token=` uniforme. `Max-Age: 600` e OPTIONS 204 restano a LWS-TSK-008.
+
+## 2026-11-23 16:40 — develop LWS-TSK-005
+**Agente:** docs-dev (commit eseguito dalla sessione principale con OK dell'utente)
+**TSK:** [[../management/kanban/LWS-EP-001-allineare-skill-llm-wiki-a-v0-6-13/LWS-US-004-progetti-file-e-contenuti/LWS-TSK-005]]
+**Layer:** docs
+**Code path:** code_repos/llm_wiki_skill
+**Files touched:** 4 (README.md, SKILL.md, api-reference.md, examples.md)
+**Commit:** 69dece1 (branch docs/align-v0-6-13, nessun push)
+**DoD:** pass
+**Note:** `currentProject` in `/projects`; forme di `{id}` senza «exact», `%2F` resta; elenco estensioni identico e `rtf` 415; `files` 413 oltre `maxFiles`, nessun `truncated`; `Content-Type` neutro; tolti «UUID negli script» e progetti esterni.
